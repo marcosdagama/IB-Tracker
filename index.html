@@ -208,6 +208,9 @@ details.tip.block summary::before{color:var(--accent)}
 .needs ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
 @media (max-width:820px){.needs-grid{grid-template-columns:1fr}}
 .tip-body.book{display:block;line-height:1.55}
+.sprint-btn .sd{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.offdays{font-size:13px;color:var(--ink-2);background:var(--mark-soft);border-radius:5px;padding:6px 10px}
+.offdays b{color:var(--ink)}
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
@@ -216,7 +219,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 <div class="wrap">
   <header>
     <div>
-      <div class="eyebrow">IB Diploma · DP1 (Diploma Programme, year 1) · Term 1 · 28 Sep – 18 Dec 2026 · Exams May 2028</div>
+      <div class="eyebrow">IB Diploma · DP1 (Diploma Programme, year 1) · Term 1 · 28 Sep – 21 Dec 2026 · Exams May 2028</div>
       <h1>DP1 Term One Tracker</h1>
       <p class="lead">Six fortnightly sprints. Each one lists what should be <em>acquired</em> (can-do statements), a practice target, and a 1–4 self-check. Physics HL (Higher Level) and Maths AA SL (Analysis and Approaches, Standard Level) lead the plan (technology route); the other subjects and the Core (Theory of Knowledge, Creativity-Activity-Service and the Extended Essay) are kept on a steady, lighter track.</p>
     </div>
@@ -239,7 +242,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       <p>The plan uses sensible defaults where these answers are missing. Each answer makes the checklists more accurate.</p>
       <div class="needs-grid">
         <div><h4>Calendar and deadlines</h4><ol>
-          <li>The school calendar: term dates, holidays and the December exam or test week.</li>
+          <li>The school calendar. <em>For now the official Catalan calendar is used;</em> still needed: the school's own free days (dies de lliure disposició) and the December test week.</li>
           <li>Internal deadlines set by the school for the IAs (internal assessments), the TOK exhibition, the Extended Essay and CAS.</li>
         </ol></div>
         <div><h4>Subjects and levels</h4><ol start="3">
@@ -332,6 +335,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         <h3>What applies to his year group</h3>
         <ul class="facts">
           <li>Starting the Diploma Programme in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
+          <li><strong>Calendar</strong>: dates follow the official Catalan school calendar 2026–27 (classes from 8 Sept, Christmas break 22 Dec – 7 Jan, public holidays 12 Oct and 8 Dec). Free days of 30 Oct and 7 Dec are Barcelona's proposal; each school sets its own.</li>
           <li><strong>Physics</strong> uses the themes A–E syllabus (first exams 2025). Older past papers organised by old topics or options need care.</li>
           <li><strong>Maths AA (Analysis and Approaches)</strong> stays on the current guide for his year group. A new maths guide starts teaching in Aug 2027, after he has begun.</li>
           <li><strong>History</strong> is on a brand-new guide (first teaching Aug 2026, first exams May 2028). Pre-2026 past papers won't match.</li>
@@ -684,7 +688,7 @@ const SPRINTS = [
    core:["CAS: meet the coordinator and plan one experience for each strand","TOK: start a weekly knowledge journal (one real-world example per week)","EE: list three subjects that could host an Extended Essay"],
    hab:["Weekly study timetable written, with fixed slots for Physics and Maths"]
   }},
- {id:"s2", n:"Sprint 2", title:"Motion", start:"2026-10-12", end:"2026-10-23",
+ {id:"s2", n:"Sprint 2", title:"Motion", start:"2026-10-12", end:"2026-10-23", off:[{d:"2026-10-12",t:"public holiday (Fiesta Nacional de España)"}],
   focus:"Kinematics in Physics, exponents and logarithms in Maths. First lab write-up with proper uncertainty treatment.",
   items:{
    phy:{practice:"25 kinematics problems, including 5 graph questions; one short lab with error bars.",
@@ -698,7 +702,7 @@ const SPRINTS = [
    core:["CAS: first experience logged with a reflection naming a learning outcome","EE: read a short summary of the 2027 EE guide (pathways and criteria)"],
    hab:["First error-log review: top three recurring mistakes identified"]
   }},
- {id:"s3", n:"Sprint 3", title:"Projectiles & functions", start:"2026-10-26", end:"2026-11-06",
+ {id:"s3", n:"Sprint 3", title:"Projectiles & functions", start:"2026-10-26", end:"2026-11-06", off:[{d:"2026-10-30",t:"free day for Castanyada and All Saints (Barcelona's proposal; the school sets its own)"}],
   focus:"Projectile motion and the language of functions. Mid-term checkpoint: first timed self-test in both lead subjects.",
   items:{
    phy:{practice:"15 projectile problems + a timed 15-question multiple-choice set (about 30 min).",
@@ -740,7 +744,7 @@ const SPRINTS = [
    core:["EE: two possible research areas written down with one source each","CAS: reflections up to date for every experience"],
    hab:["Revision timetable for December tests written"]
   }},
- {id:"s6", n:"Sprint 6", title:"Tests & term review", start:"2026-12-07", end:"2026-12-18",
+ {id:"s6", n:"Sprint 6", title:"Tests & term review", start:"2026-12-07", end:"2026-12-21", off:[{d:"2026-12-07",t:"free day (Barcelona's proposal; the school sets its own)"},{d:"2026-12-08",t:"public holiday (Immaculate Conception)"}],
   focus:"Timed practice under exam conditions, then an honest term review that sets the targets for January.",
   items:{
    phy:{practice:"Two timed practice sections (multiple choice + structured questions) on the mechanics block.",
@@ -794,6 +798,14 @@ function currentSprint(){
   return SPRINTS[SPRINTS.length-1].id;
 }
 const nowId = currentSprint();
+function schoolDays(sp){
+  const off = new Set((sp.off||[]).map(o=>o.d)); let n = 0;
+  for(let d = new Date(sp.start+"T12:00:00"); d <= new Date(sp.end+"T12:00:00"); d.setDate(d.getDate()+1)){
+    const wd = d.getDay(), iso = d.toISOString().slice(0,10);
+    if(wd>0 && wd<6 && !off.has(iso)) n++;
+  }
+  return n;
+}
 function todayISO(){ const d = new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 try{ active = localStorage.getItem(LS_KEY+".tab"); }catch(e){}
 if(!SPRINTS.find(s=>s.id===active)) active = nowId;
@@ -808,6 +820,7 @@ function renderTimeline(){
       <span class="n">${s.n.toUpperCase()}</span>
       <span class="t">${esc(s.title)}</span>
       <span class="d">${fmt(s.start)} – ${fmt(s.end)}</span>
+      <span class="sd">${schoolDays(s)} school days${(s.off||[]).length?` · ${s.off.length} off`:""}</span>
       <span class="bar" aria-hidden="true"><i style="width:${p}%"></i></span>
     </button>`;
   }).join("");
@@ -877,6 +890,7 @@ function renderSprint(){
         <span class="phase">${sp.id===nowId ? "Current sprint" : (sp.end < new Date().toISOString().slice(0,10) ? "Past sprint" : "Coming up")}</span>
       </div>
       <p class="focus">${esc(sp.focus)}</p>
+      <p class="offdays"><b>${schoolDays(sp)} school days</b>${(sp.off||[]).length ? " · No school: " + sp.off.map(o=>`${fmt(o.d)} – ${esc(o.t)}`).join("; ") : " · No holidays in this sprint"}. Based on the official Catalan school calendar 2026–27.</p>
     </section>
     ${leadCards}
     <div class="minor-grid">${minor}

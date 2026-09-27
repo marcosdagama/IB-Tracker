@@ -1,6 +1,6 @@
 # IB Tracker
 
-Fortnightly tracker for the first term of the IB Diploma (DP1, 28 Sep – 18 Dec 2026).
+Fortnightly tracker for the first term of the IB Diploma (DP1, 28 Sep – 21 Dec 2026; dates follow the official Catalan school calendar 2026–27).
 Live page: https://marcosdagama.github.io/IB-Tracker/
 
 ## What it measures
