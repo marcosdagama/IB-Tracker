@@ -245,7 +245,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   <section class="summary" id="summary" aria-label="Term progress"></section>
 
   <details class="needs" id="needs">
-    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 12 questions for Leo and his school</summary>
+    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 10 questions for Leo and his school</summary>
     <div class="needs-body">
       <p>The plan uses sensible defaults where these answers are missing. Each answer makes the checklists more accurate.</p>
       <div class="needs-grid">
@@ -254,14 +254,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
           <li>Internal deadlines set by the school for the IAs (internal assessments), the TOK exhibition, the Extended Essay and CAS.</li>
         </ol></div>
         <div><h4>Subjects and levels</h4><ol start="3">
-          <li>Which three subjects are Higher Level (HL)? Physics is one; the other two are unconfirmed.</li>
           <li>English: which course (Language and Literature, Literature, or Language B), and the texts after <em>The Hunger Games</em>.</li>
-          <li>Literature: which course, in which language, at which level, and the works on the reading list.</li>
+          <li>Literature: which course, in which language, and the works on the reading list.</li>
           <li>History: which case studies and themes the school has chosen under the new 2026 guide.</li>
-          <li>Business Management: HL or SL?</li>
           <li>Which language each subject is taught in (English, Spanish, or mixed).</li>
         </ol></div>
-        <div><h4>Teaching and resources</h4><ol start="9">
+        <div><h4>Teaching and resources</h4><ol start="7">
           <li>The teaching order (scheme of work) for Physics and Maths this term.</li>
           <li>The Physics and Maths textbooks, and the school platform (ManageBac, Kognity, Toddle…).</li>
           <li>Tutor sessions: which subjects, and how often.</li>
@@ -344,8 +342,10 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         <ul class="facts">
           <li>Starting the Diploma Programme in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
           <li><strong>Calendar</strong>: dates follow the official Catalan school calendar 2026–27 (classes from 8 Sept, Christmas break 22 Dec – 7 Jan, public holidays 12 Oct and 8 Dec). Free days of 30 Oct and 7 Dec are Barcelona's proposal; each school sets its own.</li>
+          <li><strong>Levels</strong>: Higher Level (HL) in Physics, English and Business Management; Standard Level (SL) in Maths AA, History and Literature.</li>
           <li><strong>Physics</strong> uses the themes A–E syllabus (first exams 2025). Older past papers organised by old topics or options need care.</li>
           <li><strong>Maths AA (Analysis and Approaches)</strong> stays on the current guide for his year group. A new maths guide starts teaching in Aug 2027, after he has begun.</li>
+          <li><strong>Business Management HL</strong> adds an HL-only Paper 3 to the SL exams.</li>
           <li><strong>History</strong> is on a brand-new guide (first teaching Aug 2026, first exams May 2028). Pre-2026 past papers won't match.</li>
           <li><strong>Extended Essay</strong> follows the 2027 guide: 4,000 words, marked out of 30, subject-focused or interdisciplinary pathway.</li>
           <li><strong>TOK (Theory of Knowledge)</strong>: exhibition (one of 35 IA (internal assessment) prompts, three objects, 950 words) is usually done by the end of DP1; the essay comes in DP2.</li>
@@ -669,10 +669,10 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 const SUBJECTS = [
   {id:"phy", name:"Physics HL", long:"Higher Level", lead:true},
   {id:"mat", name:"Maths AA SL", long:"Analysis and Approaches, Standard Level", lead:true},
-  {id:"eng", name:"English", book:"Current text: Suzanne Collins, <em>The Hunger Games</em> (2008). You read it in August, so the re-read is about <em>how</em> it is written, not what happens.<br><br><strong>How to summarise a chapter for IB English</strong><br>1. Re-read with a pencil and mark 3–4 key moments per chapter.<br>2. For each chapter, write 3–5 sentences: what happens, who is involved, and where.<br>3. Add one or two lines on how the writer shapes it: the narrative voice (who tells the story, and in which tense), the setting and how power is shown, and how characters are introduced.<br>4. Quote one short phrase per chapter that supports a point.<br>5. Keep to your own words and to the teacher's length. Summarise; don't retell every event.<br>6. File the summaries in the learner portfolio."},
-  {id:"bus", name:"Business Management", book:"Book: Paul Hoang, <em>Business Management for the IB Diploma: Prepare for Success</em> (Hodder, 2023). For each section: read it, close the book, write the key points from memory, then do its practice questions and mark them."},
-  {id:"his", name:"History"},
-  {id:"lit", name:"Literature"},
+  {id:"eng", name:"English HL", book:"Current text: Suzanne Collins, <em>The Hunger Games</em> (2008). You read it in August, so the re-read is about <em>how</em> it is written, not what happens.<br><br><strong>How to summarise a chapter for IB English</strong><br>1. Re-read with a pencil and mark 3–4 key moments per chapter.<br>2. For each chapter, write 3–5 sentences: what happens, who is involved, and where.<br>3. Add one or two lines on how the writer shapes it: the narrative voice (who tells the story, and in which tense), the setting and how power is shown, and how characters are introduced.<br>4. Quote one short phrase per chapter that supports a point.<br>5. Keep to your own words and to the teacher's length. Summarise; don't retell every event.<br>6. File the summaries in the learner portfolio."},
+  {id:"bus", name:"Business Management HL", book:"Book: Paul Hoang, <em>Business Management for the IB Diploma: Prepare for Success</em> (Hodder, 2023). For each section: read it, close the book, write the key points from memory, then do its practice questions and mark them."},
+  {id:"his", name:"History SL"},
+  {id:"lit", name:"Literature SL"},
   {id:"core", name:"Core", long:"TOK: Theory of Knowledge · CAS: Creativity, Activity, Service · EE: Extended Essay"},
   {id:"hab", name:"Habits"}
 ];
@@ -848,7 +848,7 @@ function renderSummary(){
     {k:"Term overall", ids:collect(null), sub:`${pct(dueIds)}% of items due so far ticked · ${onTimeText()}`},
     {k:"Physics HL", ids:collect(phy), sub:"Mechanics block + measurement"},
     {k:"Maths AA SL", ids:collect(mat), sub:"Number & algebra, functions"},
-    {k:"Other subjects + Core", ids:collect(rest), sub:"History, Business, English, Literature, TOK, CAS, EE"}
+    {k:"Other subjects + Core", ids:collect(rest), sub:"English HL, Business HL, History, Literature, TOK, CAS, EE"}
   ];
   document.getElementById("summary").innerHTML = cards.map(c=>{
     const done = c.ids.filter(i=>state.done[i]).length, p = pct(c.ids);
