@@ -277,6 +277,12 @@ table.cal{border-collapse:separate;border-spacing:3px;width:100%;min-width:720px
 .lg.off{background:repeating-linear-gradient(135deg,var(--surface-2) 0 3px,var(--line) 3px 5px)}
 .lg.event{background:var(--mark-soft);border:1px solid var(--mark)}
 .lg.today{background:var(--surface);outline:2px solid var(--accent);outline-offset:-2px}
+
+.t-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.t-list li{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:9px 12px;display:flex;flex-direction:column;gap:2px;background:var(--surface)}
+.t-subj{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.t-name{font-family:var(--display);font-size:17px;font-weight:600;color:var(--ink)}
+.t-note{font-size:12.5px;color:var(--ink-2)}
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
@@ -433,6 +439,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       <p class="note" id="ttTeachers"></p>
     </div>
   </details>
+
   </div>
 
   <div id="view-guide" class="view" role="tabpanel" aria-labelledby="tab-guide" hidden>
@@ -1240,7 +1247,6 @@ renderBackup();
 })();
 })();
 </script>
-
 <script>
 (function(){
   const SLOTS = ["8:00","9:00","10:00","11:30","12:30","13:30"];
@@ -1256,6 +1262,8 @@ renderBackup();
   const TEACH = window.TT_TEACH || null;
   const REVIEW = ["Physics","Maths","English","Business","History","Literature","TOK"];
   const grid = document.getElementById("ttGrid"); if(!grid) return;
+  const tp = document.getElementById("teachersPanel");
+  if(tp){ let o = true; try{ const v = localStorage.getItem("dp1-term1-v1.teachers"); if(v!==null) o = v==="1"; }catch(e){} tp.open = o; tp.addEventListener("toggle", ()=>{ try{ localStorage.setItem("dp1-term1-v1.teachers", tp.open?"1":"0"); }catch(e){} }); }
   const det = document.getElementById("timetable");
   let open = true; try{ const v = localStorage.getItem("dp1-term1-v1.tt"); if(v!==null) open = v==="1"; }catch(e){}
   det.open = open;
