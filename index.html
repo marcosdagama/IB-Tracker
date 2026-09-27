@@ -195,6 +195,18 @@ details.tip.block summary::before{color:var(--accent)}
 .lang-switch{display:inline-flex;align-self:flex-end;border:1.5px solid var(--accent);border-radius:6px;overflow:hidden;margin-bottom:-8px}
 .lang-switch button{appearance:none;font:inherit;font-size:13.5px;font-weight:600;padding:6px 14px;border:0;background:var(--surface);color:var(--accent);cursor:pointer}
 .lang-switch button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+.needs{background:#FFF1BF;border:1.5px solid #E0B11F;border-radius:8px;color:#3A2E05}
+.needs summary{cursor:pointer;list-style:none;padding:12px 16px;font-weight:600;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.needs summary::-webkit-details-marker{display:none}
+.needs summary::after{content:"Show";margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border:1px solid #B88A00;border-radius:4px}
+.needs[open] summary::after{content:"Hide"}
+.needs-tag{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;background:#E0B11F;color:#2A2000;padding:2px 8px;border-radius:3px}
+.needs-body{padding:0 16px 14px;display:flex;flex-direction:column;gap:10px;font-size:14px}
+.needs-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 20px}
+.needs h4{margin:0 0 4px;font-family:var(--display);font-size:15px}
+.needs ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+@media (max-width:820px){.needs-grid{grid-template-columns:1fr}}
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
@@ -219,6 +231,33 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   <nav class="timeline" id="timeline" aria-label="Fortnightly sprints"></nav>
 
   <section class="summary" id="summary" aria-label="Term progress"></section>
+
+  <details class="needs" id="needs">
+    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 12 questions for Leo and his school</summary>
+    <div class="needs-body">
+      <p>The plan uses sensible defaults where these answers are missing. Each answer makes the checklists more accurate.</p>
+      <div class="needs-grid">
+        <div><h4>Calendar and deadlines</h4><ol>
+          <li>The school calendar: term dates, holidays and the December exam or test week.</li>
+          <li>Internal deadlines set by the school for the IAs (internal assessments), the TOK exhibition, the Extended Essay and CAS.</li>
+        </ol></div>
+        <div><h4>Subjects and levels</h4><ol start="3">
+          <li>Which three subjects are Higher Level (HL)? Physics is one; the other two are unconfirmed.</li>
+          <li>English: which course (Language and Literature, Literature, or Language B), and the texts being studied.</li>
+          <li>Literature: which course, in which language, at which level, and the works on the reading list.</li>
+          <li>History: which case studies and themes the school has chosen under the new 2026 guide.</li>
+          <li>Business Management: HL or SL?</li>
+          <li>Which language each subject is taught in (English, Spanish, or mixed).</li>
+        </ol></div>
+        <div><h4>Teaching and resources</h4><ol start="9">
+          <li>The teaching order (scheme of work) for Physics and Maths this term.</li>
+          <li>The Physics and Maths textbooks, and the school platform (ManageBac, Kognity, Toddle…).</li>
+          <li>Tutor sessions: which subjects, and how often.</li>
+          <li>First test results or target grades, to set a baseline for the self-check ratings.</li>
+        </ol></div>
+      </div>
+    </div>
+  </details>
 
   <div class="main">
     <div class="col" id="sprintCol"></div>
