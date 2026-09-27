@@ -142,6 +142,25 @@ table.heat th{font-family:var(--mono);font-weight:400;color:var(--muted);text-al
 table.heat td{text-align:center;font-family:var(--mono);font-variant-numeric:tabular-nums;border-radius:4px;height:26px;background:var(--surface-2);color:var(--ink);min-width:22px}
 table.heat td.v1{background:var(--r1)} table.heat td.v2{background:var(--r2)} table.heat td.v3{background:var(--r3)} table.heat td.v4{background:var(--r4)}
 table.heat td.empty{color:var(--muted)}
+
+details.tip{border-top:1px dashed var(--line);padding-top:8px}
+details.tip summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);list-style:none;display:flex;gap:8px;align-items:center;width:fit-content}
+details.tip summary::-webkit-details-marker{display:none}
+details.tip summary::before{content:"+";font-family:var(--mono);font-size:12px;line-height:1;width:16px;height:16px;border:1px solid currentColor;border-radius:3px;display:inline-grid;place-items:center;flex:none}
+details.tip[open] > summary::before{content:"−"}
+.tip-body{font-size:13.5px;color:var(--ink-2);margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+ul.tip-body,ol.tip-body,.tip-body ol{padding-left:18px}
+.tip-body ol{margin:4px 0 0;display:flex;flex-direction:column;gap:6px}
+details.tip.inline{border-top:0;padding:0 6px 4px 36px}
+details.tip.inline summary{font-size:12px;font-weight:600}
+.stack{display:flex;flex-direction:column;gap:8px}
+.guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 18px;align-items:start}
+.tip-body ul{padding-left:18px;margin:0;display:flex;flex-direction:column;gap:6px}
+.tip-body p{margin:0}
+details.tip.block{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--surface)}
+details.tip.block summary{font-family:var(--display);font-size:16px;color:var(--ink)}
+details.tip.block summary::before{color:var(--accent)}
+@media (max-width:820px){.guide-grid{grid-template-columns:1fr}}
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
@@ -184,6 +203,18 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
           <span class="s" style="background:var(--r4)">4</span><span>Can explain it to someone else and spot errors</span>
         </div>
         <p class="note">Aim for 3+ on every lead-subject item by the end of the sprint after it was taught.</p>
+        <details class="tip"><summary>How to measure confidence</summary>
+          <div class="tip-body">
+            <p>Feeling familiar with a topic after re-reading is not the same as being able to do it. Test, then rate.</p>
+            <ol>
+              <li>Pick 3 questions on the item that you haven't done before (question bank, textbook, or from the teacher).</li>
+              <li>Close the notes and set a timer at roughly exam pace (about 1–1.5 minutes per mark).</li>
+              <li>Score it: 0–1 right = <strong>1</strong>. Right only after checking notes or an example = <strong>2</strong>. 2–3 right with no notes = <strong>3</strong>. All right, and you can explain the method aloud in under a minute or spot the mistake in a wrong worked answer = <strong>4</strong>.</li>
+              <li>Rate the subject for the sprint by its weakest important item, not the average, and write any 1s in the reflection.</li>
+              <li>Retest 1–2 weeks later. A rating that survives the gap is real.</li>
+            </ol>
+          </div>
+        </details>
       </div>
 
       <div class="panel">
@@ -195,12 +226,13 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       <div class="panel">
         <h3>Study methods that work</h3>
         <p class="note">From Dunlosky et al. (2013), a review of 10 study techniques.</p>
-        <ul class="facts">
-          <li><strong>Practice testing</strong> (high utility): questions, flashcards, past-paper style items. Rated most effective.</li>
-          <li><strong>Distributed practice</strong> (high utility): short sessions spread over days, never one cram.</li>
-          <li><strong>Interleaving</strong> (moderate): mix topics in a problem set, especially in maths and physics.</li>
-          <li><strong>Re-reading and highlighting</strong> (low utility): feel productive, do little. Replace them with the three above.</li>
-        </ul>
+        <div class="stack">
+          <details class="tip"><summary>Practice testing (high utility)</summary><p class="tip-body">Close the book and write down everything you remember, then check. Do questions before re-reading the chapter, and try each worked example yourself before reading the solution. Flashcards count.</p></details>
+          <details class="tip"><summary>Distributed practice (high utility)</summary><p class="tip-body">Three 40-minute sessions across a week beat one 2-hour session. Revisit a topic after about a day, a week, and three weeks. Anki does this scheduling automatically.</p></details>
+          <details class="tip"><summary>Interleaving (moderate)</summary><p class="tip-body">Mix 3–4 topics in one problem set and hide the topic labels, so you have to choose the method yourself. It feels harder and works better, especially in maths and physics.</p></details>
+          <details class="tip"><summary>Self-explanation (moderate)</summary><p class="tip-body">After each step of a solution, ask "why does this step work?" and answer in one sentence. Explaining to someone else is the strongest version.</p></details>
+          <details class="tip"><summary>Re-reading and highlighting (low utility)</summary><p class="tip-body">They feel productive but do little. Turn highlights into questions on flashcards, and after reading a page, close it and recall the main points.</p></details>
+        </div>
       </div>
 
       <div class="panel">
@@ -228,6 +260,106 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
     </aside>
   </div>
 
+  <section class="panel guide" aria-labelledby="guideH">
+    <div><div class="eyebrow">Every study session</div><h2 id="guideH">Before, while and after you study</h2></div>
+    <div class="guide-grid">
+      <details class="tip block" open><summary>Before</summary><ul class="tip-body">
+        <li><strong>Clear desk:</strong> only the book, notes, calculator and data booklet for this session.</li>
+        <li><strong>Phone in another room.</strong> Even a silent phone on the desk pulls attention.</li>
+        <li><strong>Quiet space:</strong> silence or steady background noise; no lyrics, no TV.</li>
+        <li><strong>One clear goal</strong> written down, e.g. "10 suvat questions, 80% right".</li>
+        <li>Water within reach, good light, chair and screen at a comfortable height.</li>
+      </ul></details>
+      <details class="tip block" open><summary>While</summary><ul class="tip-body">
+        <li><strong>Blocks of 25–45 minutes</strong> with a 5–10 minute break away from screens.</li>
+        <li><strong>Questions first, notes second.</strong> Try before you look.</li>
+        <li><strong>Stuck for 10 minutes?</strong> Mark it, move on, and bring it to the teacher or tutor.</li>
+        <li>Hardest subject first, while your energy is highest.</li>
+        <li>Stand, stretch or walk during breaks.</li>
+      </ul></details>
+      <details class="tip block" open><summary>After</summary><ul class="tip-body">
+        <li><strong>Check answers</strong> against the markscheme and update the error log.</li>
+        <li><strong>Two-minute recall:</strong> write the three main ideas of the session from memory.</li>
+        <li><strong>Plan the next session</strong> so starting tomorrow is easy.</li>
+        <li>Tick the tracker; seeing progress keeps the habit going.</li>
+        <li>Screens off 30–60 minutes before bed.</li>
+      </ul></details>
+      <details class="tip block"><summary>Asking for help</summary><ul class="tip-body">
+        <li>Ask the teacher within 48 hours of getting stuck, before the next topic builds on it.</li>
+        <li>Bring specific questions ("step 3 of question 4"), not "I don't get it".</li>
+        <li>Use tutor time for items rated 1 or 2, with the error log open.</li>
+        <li>Study with a classmate and take turns explaining solutions.</li>
+      </ul></details>
+      <details class="tip block"><summary>Health</summary><ul class="tip-body">
+        <li><strong>Sleep 8–10 hours</strong>, the range sleep specialists recommend for teenagers. Memory consolidates during sleep.</li>
+        <li>Move every day: sport, a walk, cycling. It also counts towards CAS.</li>
+        <li>Regular meals, and water through the day.</li>
+        <li>If stress stays high for more than a couple of weeks, talk to a parent, the tutor or the school counsellor.</li>
+      </ul></details>
+      <details class="tip block"><summary>Motivation</summary><ul class="tip-body">
+        <li>Start small: "just 10 minutes" is often enough to keep going.</li>
+        <li>Compare yourself with your past self: last sprint's ratings, not classmates.</li>
+        <li>Connect the work to the goal: the degree, the career, the university.</li>
+        <li>Plan a reward after a finished block, not before.</li>
+        <li>Aim for consistency, not perfection. A missed day is fine; two in a row, restart.</li>
+      </ul></details>
+    </div>
+  </section>
+
+  <section class="panel guide" aria-labelledby="coreH">
+    <div><div class="eyebrow">Core · finding good topics early, with less effort</div><h2 id="coreH">Ideas for CAS, TOK and the Extended Essay</h2>
+    <p class="note">Methods, not rules. His school's CAS coordinator, TOK teacher and EE supervisor have the final say.</p></div>
+    <div class="guide-grid">
+      <details class="tip block" open><summary>CAS (Creativity, Activity, Service)</summary><div class="tip-body">
+        <p><strong>Finding ideas</strong></p>
+        <ul>
+          <li><strong>Interest audit (15 min):</strong> list 10 things you already do or want to try, then sort them into Creativity, Activity and Service. Something you already do can count if you set a new challenge in it.</li>
+          <li><strong>Skill × need:</strong> pair a skill (maths, physics, coding, design) with a real local need. Examples: maths tutoring for younger students, a website for a local association, a science demo afternoon at a primary school.</li>
+          <li><strong>Outcome gaps:</strong> check the seven learning outcomes and choose experiences for the ones students usually lack: starting and planning something, and sticking with it over time.</li>
+        </ul>
+        <p><strong>Saving time</strong></p>
+        <ul>
+          <li>One experience can cover two strands (e.g. designing posters for a charity run = Creativity + Service).</li>
+          <li>Log evidence within 24 hours: one photo and a three-line reflection (what I did, what was hard, what I learned).</li>
+          <li>Fixed 10-minute CAS slot every Sunday to keep the portfolio current.</li>
+        </ul>
+      </div></details>
+      <details class="tip block" open><summary>TOK (Theory of Knowledge)</summary><div class="tip-body">
+        <p><strong>Finding ideas</strong></p>
+        <ul>
+          <li><strong>"How do we know?" journal:</strong> once a week, note a moment when knowledge was uncertain or disputed: a lab result, two history sources that disagree, a news story with competing claims.</li>
+          <li><strong>Physics is a gift for TOK:</strong> measurement uncertainty, models that are "wrong but useful", and theories replaced over time are all strong TOK material.</li>
+          <li><strong>Object walk (exhibition):</strong> photograph 20 specific things in one day at home, school and in the city, then match them to the 35 prompts. Specific beats generic: <em>your</em> lab data sheet from 14 October, not "a ruler".</li>
+        </ul>
+        <p><strong>Saving time</strong></p>
+        <ul>
+          <li>Choose the prompt first, then the objects. Keep a prompt only if all three objects give different angles on it.</li>
+          <li>Reuse material from subjects and the EE as TOK examples.</li>
+        </ul>
+      </div></details>
+      <details class="tip block" open><summary>EE (Extended Essay)</summary><div class="tip-body">
+        <p><strong>Finding ideas</strong></p>
+        <ul>
+          <li><strong>Curiosity week:</strong> for 7 days, write down every "I wonder why/how…" question from class, news or daily life. Pick the three that keep coming back.</li>
+          <li><strong>Funnel:</strong> interest → subject → topic → a question narrow enough to answer in 4,000 words. "Energy" is too wide; "How does blade angle affect the power output of a small wind turbine?" is workable.</li>
+          <li><strong>Interdisciplinary pathway:</strong> the 2027 guide allows two subjects together, e.g. Physics + Business (the cost-efficiency of home solar panels).</li>
+        </ul>
+        <p><strong>Feasibility test before committing</strong></p>
+        <ul>
+          <li>Can I get the data or sources (school lab, public datasets, library)?</li>
+          <li>Can it be done in about 40 hours of work?</li>
+          <li>Is there room to evaluate and compare interpretations? Discussion and evaluation is the highest-weighted criterion (8 of 30 marks).</li>
+        </ul>
+        <p><strong>Saving time</strong></p>
+        <ul>
+          <li>Read 2–3 good past essays in the subject for structure, not for ideas.</li>
+          <li>Keep one "researcher's reflection space" document from day one (sources, notes, dates, decisions). It feeds the 500-word reflection later.</li>
+          <li>Bring two candidate questions to the first supervisor meeting.</li>
+        </ul>
+      </div></details>
+    </div>
+  </section>
+
   <footer>Teaching order differs by school. Line each sprint up against his teachers' schemes of work and move items between sprints as needed; the can-do lists matter more than the dates. Progress saves automatically in this browser, on this device. Use the same device and browser to keep one record.</footer>
 </div>
 
@@ -244,13 +376,9 @@ const SUBJECTS = [
   {id:"hab", name:"Habits"}
 ];
 
-const HABITS = [
-  "Two short retrieval sessions per week for each lead subject (questions first, notes after)",
-  "Error log updated: every wrong answer written down with the reason and the fix",
-  "One spaced review of the previous sprint's topics (10–15 mixed questions)",
-  "Flashcards reviewed at least 4 days out of 7",
-  "Homework and deadlines logged the day they are set"
-];
+const PRACTICE_TIPS = {"s1": {"phy": ["Do the first 5 with a worked example open, the other 15 closed-book.", "Before each uncertainty calculation, write the rule you are using: add absolute uncertainties for sums, add percentages for products, multiply the percentage by the power for powers.", "Sketch every vector. A drawing catches sign errors that algebra hides.", "Start the error log now: date, question, what went wrong, the correct idea."], "mat": ["Work easy to medium in order. After two wrong in a row, stop and review the method.", "Write down u₁ (first term), d or r (difference or ratio) and n before choosing a formula.", "A sum to infinity only exists when |r| < 1. Write that condition in your answer; it earns marks.", "Do half the set by hand and half with the calculator to learn when each is faster."]}, "s2": {"phy": ["List the known quantities (s, u, v, a, t) and the one you need, then pick the equation that leaves out the one you don't need.", "For graphs, say what the gradient and the area mean before calculating anything.", "In the lab, put the uncertainty in the table header and keep decimal places consistent in each column.", "Use a PhET motion simulation to check what the graph shapes should look like."], "mat": ["Make one flashcard per log law and review them daily this sprint.", "Try to write both sides with the same base first; use logarithms only if that fails.", "Check every answer by substituting it back into the original equation.", "In proofs, work from one side only, one justified step per line."]}, "s3": {"phy": ["Split each projectile into a horizontal row (constant velocity) and a vertical row (constant acceleration).", "Time links the two rows, so find it first.", "In the timed multiple-choice set, allow about 1.5 minutes per question. Skip hard ones and come back.", "Afterwards, label each wrong answer: concept, misreading the question, or arithmetic."], "mat": ["Sketch the function before answering; domain and range are easier to read from a picture.", "For composite functions, work from the inside out and write the middle step.", "For inverses, swap x and y, then solve for y. Check that f(f⁻¹(x)) = x.", "Do the self-test with no notes and a timer, then mark it honestly against the markscheme."]}, "s4": {"phy": ["Draw the free-body diagram before writing any equation, and label each force with its cause.", "Choose a positive direction and keep it for the whole problem.", "For collisions, make the first line: total momentum before = total momentum after.", "Mix in 5 kinematics questions from Sprint 2 (interleaving)."], "mat": ["Describe each transformation in words (for example 'vertical stretch, factor 2') before sketching.", "Complete the square by hand at least three times until the vertex form feels automatic.", "Use the discriminant as a check: its sign must match the number of roots on your sketch.", "Check binomial coefficients with the calculator's nCr function."]}, "s5": {"phy": ["Start each problem by naming the energy stores at the beginning and at the end.", "In W = Fs cos θ, θ is the angle between the force and the displacement.", "Mixed sets feel harder than topic sets. That difficulty is what makes them work, so don't sort them.", "Mark any question that took over 5 minutes and redo it in Sprint 6."], "mat": ["For rational functions, find the asymptotes first, then plot two points on each side.", "Draw eˣ and ln x on one sketch; they are reflections in y = x.", "In the mixed review, cover the topic label and choose the method yourself.", "Log every error with the exact step that went wrong."]}, "s6": {"phy": ["Simulate the exam: clear desk, phone in another room, timer on, data booklet only.", "Mark with the markscheme and note where method marks were lost.", "Spend more time redoing wrong questions than doing new ones.", "A full night's sleep before a test helps more than an extra late hour of revision."], "mat": ["Do the no-calculator section first while you are fresh.", "Show working even when the answer seems obvious; method marks add up.", "Redo error-log questions without looking at the old solution.", "Finish with a list of three topics to revisit in January."]}};
+
+const HABITS = [{"t": "Two short retrieval sessions per week for each lead subject (questions first, notes after)", "tip": "20–30 minutes each: 5 minutes writing down what you remember, 15–20 minutes of questions, 5 minutes checking. Put them in the calendar like a class."}, {"t": "Error log updated: every wrong answer written down with the reason and the fix", "tip": "Columns: date · question · what I did · why it was wrong (concept, misread, arithmetic) · the correct idea. Redo logged questions a week later without looking."}, {"t": "One spaced review of the previous sprint's topics (10–15 mixed questions)", "tip": "Pick 10–15 questions from last sprint, mixed, and do them cold. Anything wrong goes into the error log."}, {"t": "Flashcards reviewed at least 4 days out of 7", "tip": "10–15 minutes a day beats an hour on Sunday. One fact per card, written as a question. Anki schedules the reviews for you."}, {"t": "Homework and deadlines logged the day they are set", "tip": "Use one place only (the school platform or one planner). Write the task, the due date and how long you think it will take."}];
 
 const SPRINTS = [
  {id:"s1", n:"Sprint 1", title:"Foundations", start:"2026-09-28", end:"2026-10-09",
@@ -434,6 +562,7 @@ function renderSprint(){
       <div class="subj-h"><h3>${s.name}${s.long?` <span class="exp">(${s.long})</span>`:""}</h3><div class="meta"><span class="tag lead">LEAD</span><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span>${rateHTML(sp,s.id)}</div></div>
       <div class="subj-b">
         <p class="practice"><b>Practice</b><span>${esc(it.practice)}</span></p>
+        ${(PRACTICE_TIPS[sp.id]||{})[s.id] ? `<details class="tip"><summary>Tips for this practice</summary><ul class="tip-body">${PRACTICE_TIPS[sp.id][s.id].map(t=>`<li>${esc(t)}</li>`).join("")}</ul></details>` : ""}
         ${checksHTML(sp, s.id, it.list)}
       </div></article>`;
   }).join("");
@@ -443,7 +572,7 @@ function renderSprint(){
       <div class="subj-h"><h3>${s.name}${s.long?` <span class="exp">(${s.long})</span>`:""}</h3><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span></div>
       <div class="subj-b">${checksHTML(sp, s.id, list)}</div></article>`;
   }).join("");
-  const habList = HABITS.map((t,i)=>{ const id = sp.id+".hbase."+i; return `<li><label><input type="checkbox" id="c-${id}" data-id="${id}" ${state.done[id]?"checked":""}><span>${esc(t)}</span></label></li>`; }).join("");
+  const habList = HABITS.map((h,i)=>{ const id = sp.id+".hbase."+i; return `<li><label><input type="checkbox" id="c-${id}" data-id="${id}" ${state.done[id]?"checked":""}><span>${esc(h.t)}</span></label><details class="tip inline"><summary>How</summary><p class="tip-body">${esc(h.tip)}</p></details></li>`; }).join("");
   const extra = listFor(sp,"hab");
   col.innerHTML = `
     <section class="panel">
