@@ -190,10 +190,14 @@ details.tip.block summary::before{color:var(--accent)}
 .guide-grid > details.tip.block:has(.cornell){grid-column:span 2}
 @media (max-width:820px){.guide-grid > details.tip.block:has(.cornell){grid-column:auto}}
 
-.tabbar{display:flex;gap:4px;background:var(--accent);padding:5px;border-radius:8px;width:100%}
-.tabbar button{appearance:none;flex:1 1 0;font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:.01em;padding:9px 14px;border:0;border-radius:5px;background:transparent;color:var(--accent-ink);cursor:pointer}
-.tabbar button:hover{background:rgba(255,255,255,.14)}
-.tabbar button[aria-selected="true"]{background:var(--surface);color:var(--accent)}
+.tabbar{--t1:#0E5F5B;--t2:#1E7650;--t3:#3C8540;--tabc:var(--t1);display:flex;gap:6px;align-items:flex-end;width:100%;padding:0 6px;border-bottom:5px solid var(--tabc);transition:border-color .2s ease}
+.tabbar button{appearance:none;flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:.01em;line-height:1.15;padding:9px 16px 8px;margin-top:8px;border:0;border-radius:10px 10px 0 0;background:color-mix(in srgb, var(--c) 18%, #ffffff);color:var(--c);box-shadow:inset 0 0 0 1.5px color-mix(in srgb, var(--c) 45%, #ffffff);cursor:pointer;white-space:nowrap;transition:background .15s ease,margin .15s ease,padding .15s ease}
+.tabbar button small{font-family:var(--body);font-size:12px;font-weight:400;opacity:.9;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tabbar button:hover{background:color-mix(in srgb, var(--c) 30%, #ffffff)}
+.tabbar button[aria-selected="true"]{background:var(--c);color:#fff;box-shadow:none;margin-top:0;padding-top:13px;padding-bottom:10px}
+.tabbar button:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+#tab-tracker{--c:var(--t1)} #tab-cal{--c:var(--t2)} #tab-guide{--c:var(--t3)}
+@media (max-width:520px){.tabbar{gap:4px;padding:0 2px}.tabbar button small{display:none}.tabbar button{font-size:14px;padding:8px 8px 7px}}
 .view{display:flex;flex-direction:column;gap:22px}
 .view[hidden],[hidden]{display:none!important}
 .guide-intro{color:var(--ink-2);max-width:70ch}
@@ -288,9 +292,9 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   </header>
 
   <div class="tabbar" role="tablist" aria-label="Sections">
-    <button type="button" role="tab" id="tab-tracker" data-view="tracker" aria-selected="true" aria-controls="view-tracker">Tracker</button>
-    <button type="button" role="tab" id="tab-cal" data-view="cal" aria-selected="false" aria-controls="view-cal">Calendar</button>
-    <button type="button" role="tab" id="tab-guide" data-view="guide" aria-selected="false" aria-controls="view-guide">Study guide</button>
+    <button type="button" role="tab" id="tab-tracker" data-view="tracker" aria-selected="true" aria-controls="view-tracker">Tracker<small>Sprints and checklists</small></button>
+    <button type="button" role="tab" id="tab-cal" data-view="cal" aria-selected="false" aria-controls="view-cal">Calendar<small>Term dates and timetable</small></button>
+    <button type="button" role="tab" id="tab-guide" data-view="guide" aria-selected="false" aria-controls="view-guide">Study guide<small>How to study</small></button>
   </div>
 
   <div id="view-tracker" class="view" role="tabpanel" aria-labelledby="tab-tracker">
@@ -1119,6 +1123,7 @@ renderCalendar();
 /* ---------- tabs ---------- */
 function showView(v){
   document.querySelectorAll(".tabbar [role=tab]").forEach(b=> b.setAttribute("aria-selected", String(b.dataset.view===v)));
+  document.querySelector(".tabbar").style.setProperty("--tabc", "var(--t"+({tracker:1,cal:2,guide:3}[v])+")");
   ["tracker","cal","guide"].forEach(x=> document.getElementById("view-"+x).hidden = v!==x);
   try{ localStorage.setItem(LS_KEY+".view", v); }catch(e){}
 }
