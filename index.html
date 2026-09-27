@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
 :root{
+  color-scheme:light;
   --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#EEF2EF; --ink:#17212B; --ink-2:#4A5560; --muted:#77828C;
   --line:#D6DCD6; --grid:rgba(15,110,106,.035);
   --accent:#0F6E6A; --accent-soft:#D5EAE7; --accent-ink:#FFFFFF;
@@ -22,31 +23,10 @@
   --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#10171C; --surface:#172128; --surface-2:#1E2A32; --ink:#E6ECEA; --ink-2:#B3BEBC; --muted:#85918F;
-    --line:#2B3942; --grid:rgba(94,200,190,.06);
-    --accent:#4FC1B6; --accent-soft:#16403E; --accent-ink:#0B1A1C;
-    --mark:#E0A84A; --mark-soft:#3B2E17;
-    --good:#6CC47A; --warn:#E3A93F; --crit:#EF7C6E;
-    --r1:#4A2A27; --r2:#4A3C1E; --r3:#1F4232; --r4:#2C6B55;
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --bg:#10171C; --surface:#172128; --surface-2:#1E2A32; --ink:#E6ECEA; --ink-2:#B3BEBC; --muted:#85918F;
-  --line:#2B3942; --grid:rgba(94,200,190,.06);
-  --accent:#4FC1B6; --accent-soft:#16403E; --accent-ink:#0B1A1C;
-  --mark:#E0A84A; --mark-soft:#3B2E17;
-  --good:#6CC47A; --warn:#E3A93F; --crit:#EF7C6E;
-  --r1:#4A2A27; --r2:#4A3C1E; --r3:#1F4232; --r4:#2C6B55;
-}
+
 *{box-sizing:border-box}
 body{
   background:var(--bg);
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:24px 24px;
   color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.5;
   padding-inline:16px; padding-block:20px 48px;
 }
