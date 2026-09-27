@@ -1181,6 +1181,8 @@ renderCalendar();
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.7", date:"27 Sep 2026", items:[
+    "Weekly timetable: the Tuesday 18:00–19:00 slot is now labelled Physics class"]},
   {v:"1.6", date:"27 Sep 2026", items:[
     "Weekly Physics tutoring, Tuesdays 18:00–19:00, added to the timetable",
     "Physics: a tutoring item in every sprint and a routine for the session in Book and method",
@@ -1349,6 +1351,7 @@ renderBackup();
 })();
 })();
 </script>
+
 <script>
 (function(){
   const SLOTS = ["8:00","9:00","10:00","11:30","12:30","13:30"];
@@ -1384,7 +1387,7 @@ renderBackup();
     });
     h += "</tr>";
   });
-  h += `<tr class="brk"><th>14:30</th><td colspan="5">School ends</td></tr><tr><th>18:00</th>${DAYS.map(d=> d==="Tue" ? `<td class="lead after ${d===today?"is-today":""}">Physics tutoring<br><small>18:00–19:00</small></td>` : `<td class="free"></td>`).join("")}</tr>`;
+  h += `<tr class="brk"><th>14:30</th><td colspan="5">School ends</td></tr><tr><th>18:00</th>${DAYS.map(d=> d==="Tue" ? `<td class="lead after ${d===today?"is-today":""}">Physics class${window.TT_TUTOR ? " ("+window.TT_TUTOR+")" : ""}<br><small>18:00–19:00</small></td>` : `<td class="free"></td>`).join("")}</tr>`;
   grid.innerHTML = h + "</tbody>";
   const counts = {}; DAYS.forEach(d=> TT[d].forEach((v,i)=>{ if(!v) { const prev = TT[d][i-1]; counts[prev]=(counts[prev]||0)+1; } else counts[v]=(counts[v]||0)+1; }));
   document.getElementById("ttCounts").textContent = "Class hours per week: " + Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k} ${v}`).join(" · ") + ". School ends at 14:30 every day.";
