@@ -43,6 +43,12 @@ A backup file can move progress between the two versions (download from one, res
 This public page leaves out personal details (student's name, school, teachers' names). The private version on claude.ai also shows the teachers.
 The source keeps private parts between `<!--PRIVATE-->` and `<!--/PRIVATE-->` markers, which are removed before publishing here.
 
+## What's new box
+
+Every change to the tracker gets a new entry at the top of `CHANGELOG` in `index.html`
+(version number, date, a short list of changes). The box in the top-right corner shows the latest entry
+and opens automatically the first time the page is opened after an update.
+
 ## Changing the tracker without losing progress
 
 Progress is saved against item positions, for example `s2.phy.3` = Sprint 2, Physics, 4th item.

@@ -52,7 +52,25 @@ a{color:var(--accent)}
 a:focus-visible,button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
 
 /* header */
-header{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end}
+header{display:grid;grid-template-columns:1fr minmax(260px,340px);gap:18px 28px;align-items:start}
+.hdr-side{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.hdr-side .sync{justify-content:flex-end}
+.whatsnew{position:relative;z-index:20;background:var(--surface);border:1.5px solid var(--accent);border-radius:8px;box-shadow:0 2px 10px rgba(15,110,106,.10)}
+.whatsnew[open]{border-bottom-left-radius:0;border-bottom-right-radius:0}
+.whatsnew summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:9px 12px;flex-wrap:wrap}
+.whatsnew summary::-webkit-details-marker{display:none}
+.whatsnew summary::after{content:"+";margin-left:auto;font-family:var(--mono);font-weight:600;color:var(--accent)}
+.whatsnew[open] summary::after{content:"−"}
+.wn-title{font-family:var(--display);font-weight:600;font-size:15px;color:var(--ink)}
+.wn-ver{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.wn-badge{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--mark);color:#fff;border-radius:3px;padding:1px 6px}
+.wn-body{position:absolute;left:-1.5px;right:-1.5px;top:100%;background:var(--surface);border:1.5px solid var(--accent);border-top:0;border-radius:0 0 8px 8px;box-shadow:0 10px 24px rgba(15,110,106,.18);padding:4px 12px 12px;font-size:13px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px;max-height:360px;overflow:auto}
+.wn-body ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.wn-body .wn-date{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.wn-body details summary{padding:0;font-size:12.5px;color:var(--accent);font-weight:600}
+.wn-body details summary::after{content:none}
+.wn-body details ul{margin-top:6px}
+.wn-body details .wn-old{margin-top:8px}
 header .lead{color:var(--ink-2);max-width:66ch;margin-top:8px}
 .sync{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;white-space:nowrap}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
@@ -298,7 +316,13 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       <h1>DP1 Term One Tracker</h1>
       <p class="lead">Six fortnightly sprints. Each one lists what should be <em>acquired</em> (can-do statements), a practice target, and a 1–4 self-check. Physics HL (Higher Level) and Maths AA SL (Analysis and Approaches, Standard Level) lead the plan (technology route); the other subjects and the Core (Theory of Knowledge, Creativity-Activity-Service and the Extended Essay) are kept on a steady, lighter track.</p>
     </div>
-    <div class="sync" id="sync"><span class="dot" id="syncDot"></span><span id="syncTxt">Saved in this browser</span></div>
+    <div class="hdr-side">
+      <details class="whatsnew" id="whatsNew">
+        <summary><span class="wn-badge" id="wnBadge">New</span><span class="wn-title">What's new in this version</span><span class="wn-ver" id="wnVer"></span></summary>
+        <div class="wn-body" id="wnBody"></div>
+      </details>
+      <div class="sync" id="sync"><span class="dot" id="syncDot"></span><span id="syncTxt">Saved in this browser</span></div>
+    </div>
   </header>
 
   <div class="tabbar" role="tablist" aria-label="Sections">
@@ -1143,6 +1167,52 @@ document.addEventListener("click", e=>{
   det.addEventListener("toggle", ()=>{ try{ localStorage.setItem(LS_KEY+".cal", det.open?"1":"0"); }catch(e){} });
 })();
 renderCalendar();
+
+
+/* ---------- what's new ----------
+   Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
+const CHANGELOG = [
+  {v:"1.4", date:"27 Sep 2026", items:[
+    "\"What's new\" box (this one): lists the changes in each version",
+    "Maths follows the school's plan: U2 Sequences to 18 Oct, U3 Functions to 15 Nov, then U4 Models",
+    "Maths: weekly Kognity assignment, school exam format and 1–7 grade bands in Book and method",
+    "Physics: forces list completed (Hooke's law, drag, buoyancy) and circular motion added to Sprint 6",
+    "Business HL: Unit 1 items use the IB syllabus wording; HL exam outline added",
+    "History: exam themes Protest and change (Paper 1) and Authoritarian government (Paper 2)",
+    "Physics HL exam outline added to Book and method",
+    "October partials shown as an assessment window, not daily exams",
+    "International Literature: reading list of five works and a reading method"]},
+  {v:"1.3", date:"27 Sep 2026", items:[
+    "New tab: Calendar and timetable, with the term calendar and the weekly timetable",
+    "Tabs redesigned in three greens",
+    "Teachers panel (Claude version only)",
+    "Subject levels (HL/SL), teaching-language tags and Kognity books per subject",
+    "English is English B HL: items rewritten for Language B"]},
+  {v:"1.2", date:"27 Sep 2026", items:[
+    "Sprints follow the school calendar: partials 5–23 Oct, term exams 20–26 Nov, evaluation week, holidays",
+    "Sprint 5 became Term exams & review",
+    "App icon for Safari's Add to Dock",
+    "Yellow box listing the information still missing"]},
+  {v:"1.1", date:"27 Sep 2026", items:[
+    "Study guide tab, in English and Spanish",
+    "Backup & restore, dated ticks and on-time measure",
+    "Cornell notes, paper filing, study methods, CAS/TOK/EE ideas"]},
+  {v:"1.0", date:"26 Sep 2026", items:[
+    "First version: six sprints with checklists, practice targets and a 1–4 self-check"]}
+];
+(function(){
+  const det = document.getElementById("whatsNew"); if(!det) return;
+  const cur = CHANGELOG[0];
+  document.getElementById("wnVer").textContent = "v" + cur.v + " · " + cur.date;
+  const li = a => "<ul>" + a.map(t=>"<li>"+esc(t)+"</li>").join("") + "</ul>";
+  document.getElementById("wnBody").innerHTML = li(cur.items) +
+    (CHANGELOG.length>1 ? `<details><summary>Earlier versions</summary>${CHANGELOG.slice(1).map(c=>`<div class="wn-old"><span class="wn-date">v${c.v} · ${esc(c.date)}</span>${li(c.items)}</div>`).join("")}</details>` : "");
+  let seen = null; try{ seen = localStorage.getItem(LS_KEY+".seenVersion"); }catch(e){}
+  const isNew = seen !== cur.v;
+  document.getElementById("wnBadge").hidden = !isNew;
+  det.open = isNew;
+  det.addEventListener("toggle", ()=>{ if(!det.open){ try{ localStorage.setItem(LS_KEY+".seenVersion", cur.v); }catch(e){} document.getElementById("wnBadge").hidden = true; } });
+})();
 
 /* ---------- tabs ---------- */
 function showView(v){
