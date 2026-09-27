@@ -264,7 +264,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   <section class="summary" id="summary" aria-label="Term progress"></section>
 
   <details class="needs" id="needs">
-    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 9 questions for the student and the school</summary>
+    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 8 questions for the student and the school</summary>
     <div class="needs-body">
       <p>The plan uses sensible defaults where these answers are missing. Each answer makes the checklists more accurate.</p>
       <div class="needs-grid">
@@ -273,13 +273,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
           <li>Deadlines set by the school for the TOK exhibition, the Extended Essay and CAS (the IA period is known: 4–18 June).</li>
         </ol></div>
         <div><h4>Subjects and levels</h4><ol start="3">
-          <li>English: which course (Language and Literature, Literature, or Language B), and the texts after <em>The Hunger Games</em>.</li>
+          <li>English B HL: the second literary work after <em>The Hunger Games</em>, and when the individual oral practice happens.</li>
           <li>International Literature (works by authors from around the world, read in Catalan translation): which works are on this year's reading list, and in what order?</li>
           <li>History: which case studies and themes the school has chosen under the new 2026 guide.</li>
         </ol></div>
         <div><h4>Teaching and resources</h4><ol start="6">
-          <li>The teaching order (scheme of work) for Physics and Maths this term.</li>
-          <li>The Physics and Maths textbooks, and which subjects use Kognity.</li>
+          <li>The order of topics this term: it can be checked in each Kognity class (Physics, Maths, Business, English, TOK). Where it differs from the sprints, the tracker should follow Kognity.</li>
           <li>Tutor sessions: which subjects, and how often.</li>
           <li>First test results or target grades, to set a baseline for the self-check ratings.</li>
         </ol></div>
@@ -352,7 +351,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
           <li><a href="https://phet.colorado.edu/" target="_blank" rel="noopener">PhET simulations</a> Free physics sims (projectile motion, forces, energy skate park) to build intuition before problems.</li>
           <li><a href="https://apps.ankiweb.net/" target="_blank" rel="noopener">Anki</a> Spaced-repetition flashcards for definitions, formulas and Business/History key terms.</li>
           <li><a href="https://www.khanacademy.org/math/algebra2" target="_blank" rel="noopener">Khan Academy</a> Quick repair of algebra gaps (logs, rearranging, quadratics) when a rating is 1.</li>
-          <li><a href="https://app.kognity.com/" target="_blank" rel="noopener">Kognity</a> The school's online textbook. Do its end-of-subtopic questions and quizzes as practice testing, not just the reading.</li>
+          <li><a href="https://app.kognity.com/" target="_blank" rel="noopener">Kognity</a> The school's online textbook for Physics, Maths (in Spanish), Business, English B and TOK. Do its end-of-subtopic questions and quizzes as practice testing, not just the reading.</li>
           <li><strong>Data booklet and formula booklet</strong> The official Physics data booklet and Maths formula booklet, used from week one so they are familiar by the exams.</li>
         </ul>
       </div>
@@ -362,8 +361,8 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         <ul class="facts">
           <li>Starting the Diploma Programme in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
           <li><strong>School year 2026–27</strong>: partial exams 5–23 Oct, 11–29 Jan and 19 Apr – 2 May; term exams 20–26 Nov and 1–5 Mar; mock final exams 26 May – 3 Jun; intensive internal assessment (IA) period 4–18 Jun. Holidays: 12 Oct, 7–8 Dec, 22 Dec – 7 Jan, 8 Feb, 20–29 Mar.</li>
-          <li><strong>Levels</strong>: Higher Level (HL) in Physics, English and Business Management; Standard Level (SL) in Maths AA, History and International Literature.</li>
-          <li><strong>Languages of teaching</strong>: English for Physics, Business Management and English (tag EN); Spanish for Maths and History (ES); Catalan for International Literature and TOK (CA). Use the vocabulary of the teaching language in notes and flashcards.</li>
+          <li><strong>Levels</strong>: Higher Level (HL) in Physics, English B and Business Management; Standard Level (SL) in Maths AA, History and International Literature.</li>
+          <li><strong>Languages of teaching</strong>: English for Physics, Business Management and English B (tag EN); Spanish for Maths and History (ES); Catalan for International Literature and TOK (CA). Use the vocabulary of the teaching language in notes and flashcards.</li>
           <li><strong>Physics</strong> uses the themes A–E syllabus (first exams 2025). Older past papers organised by old topics or options need care.</li>
           <li><strong>Maths AA (Analysis and Approaches)</strong> stays on the current guide for his year group. A new maths guide starts teaching in Aug 2027, after he has begun.</li>
           <li><strong>Business Management HL</strong> adds an HL-only Paper 3 to the SL exams.</li>
@@ -688,13 +687,13 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 <script>
 (function(){
 const SUBJECTS = [
-  {id:"phy", tl:"EN", name:"Physics HL", long:"Higher Level", lead:true},
-  {id:"mat", tl:"ES", name:"Maths AA SL", long:"Analysis and Approaches, Standard Level", lead:true},
-  {id:"eng", tl:"EN", name:"English HL", book:"Current text: Suzanne Collins, <em>The Hunger Games</em> (2008). You read it in August, so the re-read is about <em>how</em> it is written, not what happens.<br><br><strong>How to summarise a chapter for IB English</strong><br>1. Re-read with a pencil and mark 3–4 key moments per chapter.<br>2. For each chapter, write 3–5 sentences: what happens, who is involved, and where.<br>3. Add one or two lines on how the writer shapes it: the narrative voice (who tells the story, and in which tense), the setting and how power is shown, and how characters are introduced.<br>4. Quote one short phrase per chapter that supports a point.<br>5. Keep to your own words and to the teacher's length. Summarise; don't retell every event.<br>6. File the summaries in the learner portfolio."},
-  {id:"bus", tl:"EN", name:"Business Management HL", book:"Book: Paul Hoang, <em>Business Management for the IB Diploma: Prepare for Success</em> (Hodder, 2023). For each section: read it, close the book, write the key points from memory, then do its practice questions and mark them."},
+  {id:"phy", tl:"EN", name:"Physics HL", long:"Higher Level", lead:true, book:"Kognity: <em>IB DP Physics SL/HL</em>, class <em>Physics HL 2026–2028</em>. Read the subtopic before class; after class, do its questions and the quiz without notes (practice testing)."},
+  {id:"mat", tl:"ES", name:"Maths AA SL", long:"Analysis and Approaches, Standard Level", lead:true, book:"Kognity, in Spanish: <em>Matemáticas: Análisis y enfoques NM</em>, class <em>2026–28</em>. Use it for the Spanish terms used in class and in the exams (sucesión, dominio y recorrido, función inversa…). Revision Village is in English: use it for extra practice questions."},
+  {id:"eng", tl:"EN", name:"English B HL", book:"Kognity: <em>IB English B HL · 1st Term</em>. Language B is organised around five themes; the exams are a writing paper (Paper 1) and a reading and listening paper (Paper 2), and at HL the individual oral is based on a passage from one of the literary works studied.<br><br>Current text: Suzanne Collins, <em>The Hunger Games</em> (2008). You read it in August, so the re-read is about <em>how</em> it is written, not what happens.<br><br><strong>How to summarise a chapter</strong><br>1. Re-read with a pencil and mark 3–4 key moments per chapter.<br>2. For each chapter, write 3–5 sentences: what happens, who is involved, and where.<br>3. Add one or two lines on how the writer shapes it: the narrative voice (who tells the story, and in which tense), the setting and how power is shown, and how characters are introduced.<br>4. Quote one short phrase per chapter that supports a point.<br>5. Keep to your own words and to the teacher's length. Summarise; don't retell every event.<br>6. File the summaries in the English notebook."},
+  {id:"bus", tl:"EN", name:"Business Management HL", book:"Kognity: <em>Business Management HL · 1st Term</em>. Book: Paul Hoang, <em>Business Management for the IB Diploma: Prepare for Success</em> (Hodder, 2023). For each section: read it, close the book, write the key points from memory, then do its practice questions and mark them."},
   {id:"his", tl:"ES", name:"History SL"},
   {id:"lit", tl:"CA", name:"International Literature SL", long:"world authors, read in Catalan"},
-  {id:"core", tl:"TOK: CA", name:"Core", long:"TOK: Theory of Knowledge · CAS: Creativity, Activity, Service · EE: Extended Essay"},
+  {id:"core", tl:"TOK: CA", name:"Core", book:"Kognity: <em>Theory of Knowledge 2026–2028</em> for TOK.", long:"TOK: Theory of Knowledge · CAS: Creativity, Activity, Service · EE: Extended Essay"},
   {id:"hab", name:"Habits"}
 ];
 
@@ -711,7 +710,7 @@ const SPRINTS = [
         list:["Use SI units (Système International: metre, kilogram, second…), prefixes and significant figures correctly","Tell random from systematic error and give one way to reduce each","Calculate absolute, fractional and percentage uncertainty","Propagate uncertainty through sums, products and powers","Resolve a vector into components and add two vectors"]},
    mat:{practice:"Revision Village: Sequences & Series, easy and medium questions (about 15).",
         list:["Write numbers in scientific notation and round to the required accuracy","Find the nth term and sum of an arithmetic sequence","Find the nth term, sum and sum to infinity of a geometric sequence","Solve a compound interest / depreciation problem with the GDC (graphic display calculator)","Use the GDC sequence and table functions confidently"]},
-   eng:["Set up the learner portfolio and make the first annotated entry","The Hunger Games: re-read chapters 1–3 and hand in the summary (set in mid-September, so check the due date now)"],
+   eng:["Set up the English notebook: a vocabulary list and one section per theme (Identities, Experiences, Human ingenuity, Social organization, Sharing the planet)","The Hunger Games: re-read chapters 1–3 and hand in the summary (set in mid-September, so check the due date now)"],
    bus:["1.1 Introduction to business management: explain the four sectors, entrepreneurship and the purpose of a business plan","1.2 Types of business entities: compare sole traders, partnerships, companies and non-profits","Start a key-terms flashcard deck from the guide's definitions"],
    his:["Explain the four history concepts: causation, continuity and change, perspectives, significance"],
    lit:["Reading schedule for the first work agreed and started"],
@@ -726,7 +725,7 @@ const SPRINTS = [
         list:["Distinguish distance/displacement and speed/velocity","Read gradient and area from displacement-time and velocity-time graphs","Choose and rearrange the right suvat equation (constant-acceleration equations linking s displacement, u initial velocity, v final velocity, a acceleration, t time), stating when they apply","Linearise data and read a physical quantity from the gradient","Plot error bars and draw best-fit and worst-fit lines"]},
    mat:{practice:"Revision Village: Exponents & Logarithms, about 15 questions, mixed with 3 sequence questions.",
         list:["Apply the laws of exponents, including negative and fractional powers","Convert between exponential and logarithmic form","Use the laws of logarithms and change of base","Solve exponential equations using logarithms","Write a simple deductive proof (show LHS = RHS: left-hand side equals right-hand side)"]},
-   eng:["Analyse one non-literary or literary extract using authorial choices, not plot summary"],
+   eng:["Write one Paper 1 practice text (e.g. a blog post, article or email) using the conventions of that text type"],
    bus:["1.3 Business objectives: vision vs mission, SMART objectives, CSR (corporate social responsibility)","Apply the SWOT tool (strengths, weaknesses, opportunities, threats) to a company you know"],
    his:["Evaluate a source for origin, purpose and value/limitations in one paragraph"],
    lit:["First work: notes on context, themes and two key passages"],
@@ -740,7 +739,7 @@ const SPRINTS = [
         list:["Treat horizontal and vertical motion independently in a projectile","Find time of flight, range and maximum height","Describe qualitatively how air resistance changes the path","Explain terminal velocity with a force argument"]},
    mat:{practice:"Revision Village: Functions (intro), about 15 questions; 20-minute no-calculator self-test on sprints 1–3.",
         list:["State domain and range, and use function notation","Work with gradient forms of a line, including parallel and perpendicular lines","Form and evaluate composite functions","Find an inverse function and sketch it as a reflection in y = x"]},
-   eng:["Write one timed practice paragraph under Paper 1 conditions"],
+   eng:["One reading and one listening practice (Paper 2 style), answers checked against the key"],
    bus:["1.4 Stakeholders: internal vs external, conflicts between them, and a stakeholder map for one real business"],
    his:["Build a timeline and cause map for the first case study"],
    lit:["Short comparative note linking the first work to a second text"],
@@ -754,7 +753,7 @@ const SPRINTS = [
         list:["Draw correct free-body diagrams","Apply Newton's three laws to connected and inclined systems","Use static and dynamic friction correctly (μ = coefficient of friction)","Find impulse from the area under a force-time graph","Apply conservation of momentum to collisions and explosions"]},
    mat:{practice:"Revision Village: Transformations and Quadratics, about 15 questions; 3 binomial questions.",
         list:["Apply translations, stretches and reflections to a graph","Move between vertex, factored and standard forms of a quadratic","Use the discriminant to count roots","Expand using the binomial theorem with nCr (n choose r: the number of ways to pick r items from n)"]},
-   eng:["Draft a practice comparative essay plan (Paper 2 style)"],
+   eng:["Individual oral practice: 3–4 minutes out loud on a Hunger Games passage, linked to one of the themes"],
    bus:["1.5 Growth and evolution: internal vs external growth, economies and diseconomies of scale, mergers and takeovers"],
    his:["Answer one short-response question using evidence and a concept"],
    lit:["Presentation or essay on the first work prepared"],
@@ -775,7 +774,7 @@ const SPRINTS = [
 "Exam sat with full working shown",
 "Corrected paper reviewed and every error logged",
 "Every lost-mark question redone without notes"]},
-   eng:["Term exam or task done; teacher feedback copied into the learner portfolio"],
+   eng:["Term exam or task done; teacher feedback copied into the English notebook"],
    bus:["Term exam revised: sections 1.1–1.5 from flashcards and the guide's practice questions",
 "Corrected exam reviewed; the weakest section redone from the guide"],
    his:["Term exam revised with the timeline and cause maps; feedback noted"],
@@ -797,7 +796,7 @@ const SPRINTS = [
 "Sketch exponential and logarithmic functions and describe their key features",
 "Solve equations graphically on the GDC (graphic display calculator)",
 "Choose the right technique in a mixed question set"]},
-   eng:["Learner portfolio: at least five solid entries"],
+   eng:["Vocabulary list: 150+ new words and expressions, reviewed with flashcards"],
    bus:["1.6 Multinational companies (MNCs): impact on host countries",
 "Apply STEEPLE (social, technological, economic, environmental, political, legal, ethical factors) to an MNC entering Spain"],
    his:["Plan one essay with a clear argument and counter-argument"],
@@ -889,7 +888,7 @@ function renderSummary(){
     {k:"Term overall", ids:collect(null), sub:`${pct(dueIds)}% of items due so far ticked · ${onTimeText()}`},
     {k:"Physics HL", ids:collect(phy), sub:"Mechanics block + measurement"},
     {k:"Maths AA SL", ids:collect(mat), sub:"Number & algebra, functions"},
-    {k:"Other subjects + Core", ids:collect(rest), sub:"English HL, Business HL, History, International Literature, TOK, CAS, EE"}
+    {k:"Other subjects + Core", ids:collect(rest), sub:"English B HL, Business HL, History, International Literature, TOK, CAS, EE"}
   ];
   document.getElementById("summary").innerHTML = cards.map(c=>{
     const done = c.ids.filter(i=>state.done[i]).length, p = pct(c.ids);
@@ -919,6 +918,7 @@ function renderSprint(){
     return `<article class="subj lead">
       <div class="subj-h"><h3>${s.name}${s.long?` <span class="exp">(${s.long})</span>`:""}${s.tl?` <span class="lang-tag" title="Language of teaching">${s.tl}</span>`:""}</h3><div class="meta"><span class="tag lead">LEAD</span><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span>${rateHTML(sp,s.id)}</div></div>
       <div class="subj-b">
+        ${s.book?`<details class="tip"><summary>Book and method</summary><div class="tip-body book">${s.book}</div></details>`:""}
         <p class="practice"><b>Practice</b><span>${esc(it.practice)}</span></p>
         ${(PRACTICE_TIPS[sp.id]||{})[s.id] ? `<details class="tip"><summary>Tips for this practice</summary><ul class="tip-body">${PRACTICE_TIPS[sp.id][s.id].map(t=>`<li>${esc(t)}</li>`).join("")}</ul></details>` : ""}
         ${checksHTML(sp, s.id, it.list)}
