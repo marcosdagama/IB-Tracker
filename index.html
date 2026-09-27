@@ -95,6 +95,7 @@ header .lead{color:var(--ink-2);max-width:66ch;margin-top:8px}
 .subj-h .meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .tag{font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;border:1px solid var(--line);color:var(--ink-2);white-space:nowrap}
 .tag.lead{border-color:var(--accent);color:var(--accent)}
+.exp{font-family:var(--body);font-weight:400;font-size:13px;color:var(--ink-2);letter-spacing:0}
 .subj-b{padding:12px 16px 14px;display:flex;flex-direction:column;gap:10px}
 .practice{font-size:13.5px;color:var(--ink-2);display:flex;gap:8px;align-items:flex-start}
 .practice b{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mark);font-weight:600;white-space:nowrap;padding-top:2px}
@@ -149,9 +150,9 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 <div class="wrap">
   <header>
     <div>
-      <div class="eyebrow">IB Diploma · DP1 · Term 1 · 28 Sep – 18 Dec 2026 · Exams May 2028</div>
+      <div class="eyebrow">IB Diploma · DP1 (Diploma Programme, year 1) · Term 1 · 28 Sep – 18 Dec 2026 · Exams May 2028</div>
       <h1>DP1 Term One Tracker</h1>
-      <p class="lead">Six fortnightly sprints. Each one lists what should be <em>acquired</em> (can-do statements), a practice target, and a 1–4 self-check. Physics HL and Maths AA SL lead the plan (technology route); the other subjects and the Core are kept on a steady, lighter track.</p>
+      <p class="lead">Six fortnightly sprints. Each one lists what should be <em>acquired</em> (can-do statements), a practice target, and a 1–4 self-check. Physics HL (Higher Level) and Maths AA SL (Analysis and Approaches, Standard Level) lead the plan (technology route); the other subjects and the Core (Theory of Knowledge, Creativity-Activity-Service and the Extended Essay) are kept on a steady, lighter track.</p>
     </div>
     <div class="sync" id="sync"><span class="dot" id="syncDot"></span><span id="syncTxt">Saved in this browser</span></div>
   </header>
@@ -188,7 +189,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       <div class="panel">
         <h3>Confidence by sprint</h3>
         <div class="heat-wrap"><table class="heat" id="heat" aria-label="Self-check ratings by subject and sprint"></table></div>
-        <p class="note">Blank until rated. Two 2s in a row on a lead subject = ask the teacher or tutor that week.</p>
+        <p class="note">Blank until rated. Two 2s in a row on a lead subject (Physics or Maths) = ask the teacher or tutor that week.</p>
       </div>
 
       <div class="panel">
@@ -216,12 +217,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       <div class="panel">
         <h3>What applies to this cohort</h3>
         <ul class="facts">
-          <li>Starting DP in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
+          <li>Starting the Diploma Programme in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
           <li><strong>Physics</strong> uses the themes A–E syllabus (first exams 2025). Older past papers organised by old topics or options need care.</li>
-          <li><strong>Maths AA</strong> stays on the current guide for this cohort. A new maths guide starts teaching in Aug 2027, after he has begun.</li>
+          <li><strong>Maths AA (Analysis and Approaches)</strong> stays on the current guide for this cohort. A new maths guide starts teaching in Aug 2027, after he has begun.</li>
           <li><strong>History</strong> is on a brand-new guide (first teaching Aug 2026, first exams May 2028). Pre-2026 past papers won't match.</li>
           <li><strong>Extended Essay</strong> follows the 2027 guide: 4,000 words, marked out of 30, subject-focused or interdisciplinary pathway.</li>
-          <li><strong>TOK</strong>: exhibition (one of 35 IA prompts, three objects, 950 words) is usually done by the end of DP1; the essay comes in DP2.</li>
+          <li><strong>TOK (Theory of Knowledge)</strong>: exhibition (one of 35 IA (internal assessment) prompts, three objects, 950 words) is usually done by the end of DP1; the essay comes in DP2.</li>
         </ul>
       </div>
     </aside>
@@ -233,13 +234,13 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 <script>
 (function(){
 const SUBJECTS = [
-  {id:"phy", name:"Physics HL", lead:true},
-  {id:"mat", name:"Maths AA SL", lead:true},
+  {id:"phy", name:"Physics HL", long:"Higher Level", lead:true},
+  {id:"mat", name:"Maths AA SL", long:"Analysis and Approaches, Standard Level", lead:true},
   {id:"eng", name:"English"},
   {id:"bus", name:"Business Management"},
   {id:"his", name:"History"},
   {id:"lit", name:"Literature"},
-  {id:"core", name:"Core · TOK · CAS · EE"},
+  {id:"core", name:"Core", long:"TOK: Theory of Knowledge · CAS: Creativity, Activity, Service · EE: Extended Essay"},
   {id:"hab", name:"Habits"}
 ];
 
@@ -256,9 +257,9 @@ const SPRINTS = [
   focus:"Set the systems up and lock in the maths and measurement skills everything else in Physics depends on.",
   items:{
    phy:{practice:"20 problems on uncertainties and vectors; start the error log.",
-        list:["Use SI units, prefixes and significant figures correctly","Tell random from systematic error and give one way to reduce each","Calculate absolute, fractional and percentage uncertainty","Propagate uncertainty through sums, products and powers","Resolve a vector into components and add two vectors"]},
+        list:["Use SI units (Système International: metre, kilogram, second…), prefixes and significant figures correctly","Tell random from systematic error and give one way to reduce each","Calculate absolute, fractional and percentage uncertainty","Propagate uncertainty through sums, products and powers","Resolve a vector into components and add two vectors"]},
    mat:{practice:"Revision Village: Sequences & Series, easy and medium questions (about 15).",
-        list:["Write numbers in scientific notation and round to the required accuracy","Find the nth term and sum of an arithmetic sequence","Find the nth term, sum and sum to infinity of a geometric sequence","Solve a compound interest / depreciation problem with the GDC","Use the GDC sequence and table functions confidently"]},
+        list:["Write numbers in scientific notation and round to the required accuracy","Find the nth term and sum of an arithmetic sequence","Find the nth term, sum and sum to infinity of a geometric sequence","Solve a compound interest / depreciation problem with the GDC (graphic display calculator)","Use the GDC sequence and table functions confidently"]},
    eng:["Set up the learner portfolio and make the first annotated entry"],
    bus:["Explain the four sectors and the main types of business organisation","Start a key-terms flashcard deck"],
    his:["Explain the four history concepts: causation, continuity and change, perspectives, significance"],
@@ -270,9 +271,9 @@ const SPRINTS = [
   focus:"Kinematics in Physics, exponents and logarithms in Maths. First lab write-up with proper uncertainty treatment.",
   items:{
    phy:{practice:"25 kinematics problems, including 5 graph questions; one short lab with error bars.",
-        list:["Distinguish distance/displacement and speed/velocity","Read gradient and area from displacement-time and velocity-time graphs","Choose and rearrange the right suvat equation, stating when they apply","Linearise data and read a physical quantity from the gradient","Plot error bars and draw best-fit and worst-fit lines"]},
+        list:["Distinguish distance/displacement and speed/velocity","Read gradient and area from displacement-time and velocity-time graphs","Choose and rearrange the right suvat equation (constant-acceleration equations linking s displacement, u initial velocity, v final velocity, a acceleration, t time), stating when they apply","Linearise data and read a physical quantity from the gradient","Plot error bars and draw best-fit and worst-fit lines"]},
    mat:{practice:"Revision Village: Exponents & Logarithms, about 15 questions, mixed with 3 sequence questions.",
-        list:["Apply the laws of exponents, including negative and fractional powers","Convert between exponential and logarithmic form","Use the laws of logarithms and change of base","Solve exponential equations using logarithms","Write a simple deductive proof (LHS = RHS)"]},
+        list:["Apply the laws of exponents, including negative and fractional powers","Convert between exponential and logarithmic form","Use the laws of logarithms and change of base","Solve exponential equations using logarithms","Write a simple deductive proof (show LHS = RHS: left-hand side equals right-hand side)"]},
    eng:["Analyse one non-literary or literary extract using authorial choices, not plot summary"],
    bus:["Explain internal and external stakeholders and a conflict between them"],
    his:["Evaluate a source for origin, purpose and value/limitations in one paragraph"],
@@ -298,14 +299,14 @@ const SPRINTS = [
   focus:"Newton's laws and momentum in Physics; transformations, quadratics and the binomial theorem in Maths.",
   items:{
    phy:{practice:"25 problems on forces and momentum; 5 free-body diagram drills.",
-        list:["Draw correct free-body diagrams","Apply Newton's three laws to connected and inclined systems","Use static and dynamic friction (μ) correctly","Find impulse from the area under a force-time graph","Apply conservation of momentum to collisions and explosions"]},
+        list:["Draw correct free-body diagrams","Apply Newton's three laws to connected and inclined systems","Use static and dynamic friction correctly (μ = coefficient of friction)","Find impulse from the area under a force-time graph","Apply conservation of momentum to collisions and explosions"]},
    mat:{practice:"Revision Village: Transformations and Quadratics, about 15 questions; 3 binomial questions.",
-        list:["Apply translations, stretches and reflections to a graph","Move between vertex, factored and standard forms of a quadratic","Use the discriminant to count roots","Expand using the binomial theorem with nCr"]},
+        list:["Apply translations, stretches and reflections to a graph","Move between vertex, factored and standard forms of a quadratic","Use the discriminant to count roots","Expand using the binomial theorem with nCr (n choose r: the number of ways to pick r items from n)"]},
    eng:["Draft a practice comparative essay plan (Paper 2 style)"],
    bus:["Explain organisational structures and one motivation theory with an example"],
    his:["Answer one short-response question using evidence and a concept"],
    lit:["Presentation or essay on the first work prepared"],
-   core:["TOK: read the 35 exhibition IA prompts and shortlist three","EE: talk informally to one possible supervisor"],
+   core:["TOK: read the 35 exhibition IA (internal assessment) prompts and shortlist three","EE: talk informally to one possible supervisor"],
    hab:["Two-week streak on flashcards (at least 4 days a week)"]
   }},
  {id:"s5", n:"Sprint 5", title:"Energy & consolidation", start:"2026-11-23", end:"2026-12-04",
@@ -314,9 +315,9 @@ const SPRINTS = [
    phy:{practice:"Mixed set of 20 problems across uncertainties, kinematics, forces, momentum and energy (interleaved).",
         list:["Calculate work done by a force, including at an angle","Use kinetic and gravitational potential energy with conservation of energy","Calculate power and efficiency, including energy losses","Solve a multi-step problem combining momentum and energy"]},
    mat:{practice:"Revision Village: Rational, Exponential & Log functions, about 12 questions; mixed review of sprints 1–4.",
-        list:["Sketch reciprocal and simple rational functions with asymptotes","Sketch exponential and logarithmic functions and describe their key features","Solve equations graphically on the GDC","Choose the right technique in a mixed question set"]},
+        list:["Sketch reciprocal and simple rational functions with asymptotes","Sketch exponential and logarithmic functions and describe their key features","Solve equations graphically on the GDC (graphic display calculator)","Choose the right technique in a mixed question set"]},
    eng:["Learner portfolio: at least five solid entries"],
-   bus:["First Business Management Toolkit tool (e.g. SWOT or STEEPLE) applied to a real company"],
+   bus:["First Business Management Toolkit tool (e.g. SWOT: strengths, weaknesses, opportunities, threats; or STEEPLE: social, technological, economic, environmental, political, legal, ethical factors) applied to a real company"],
    his:["Plan one essay with a clear argument and counter-argument"],
    lit:["Revision notes for end-of-term assessment"],
    core:["EE: two possible research areas written down with one source each","CAS: reflections up to date for every experience"],
@@ -328,7 +329,7 @@ const SPRINTS = [
    phy:{practice:"Two timed practice sections (multiple choice + structured questions) on the mechanics block.",
         list:["Complete a timed multiple-choice set with 70%+ correct","Complete structured questions showing units, working and significant figures","Every error-log entry from the term revisited and re-attempted"]},
    mat:{practice:"One timed no-calculator and one calculator section on topics 1–2.",
-        list:["Complete a no-calculator section with full working","Complete a calculator section using the GDC efficiently","Re-attempt every question that was wrong in sprints 1–5"]},
+        list:["Complete a no-calculator section with full working","Complete a calculator section using the GDC (graphic display calculator) efficiently","Re-attempt every question that was wrong in sprints 1–5"]},
    eng:["Timed Paper 1 practice with teacher feedback"],
    bus:["Key-terms deck reviewed; one data-response answer practised"],
    his:["Timed source-analysis practice"],
@@ -402,7 +403,7 @@ function renderSummary(){
     {k:"Term overall", ids:collect(null), sub:`${pct(dueIds)}% of items due so far are ticked`},
     {k:"Physics HL", ids:collect(phy), sub:"Mechanics block + measurement"},
     {k:"Maths AA SL", ids:collect(mat), sub:"Number & algebra, functions"},
-    {k:"Other subjects + Core", ids:collect(rest), sub:"Steady track"}
+    {k:"Other subjects + Core", ids:collect(rest), sub:"History, Business, English, Literature, TOK, CAS, EE"}
   ];
   document.getElementById("summary").innerHTML = cards.map(c=>{
     const done = c.ids.filter(i=>state.done[i]).length, p = pct(c.ids);
@@ -430,7 +431,7 @@ function renderSprint(){
   const leadCards = SUBJECTS.filter(s=>s.lead).map(s=>{
     const it = sp.items[s.id]; const ids = itemIds(sp,s.id);
     return `<article class="subj lead">
-      <div class="subj-h"><h3>${s.name}</h3><div class="meta"><span class="tag lead">LEAD</span><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span>${rateHTML(sp,s.id)}</div></div>
+      <div class="subj-h"><h3>${s.name}${s.long?` <span class="exp">(${s.long})</span>`:""}</h3><div class="meta"><span class="tag lead">LEAD</span><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span>${rateHTML(sp,s.id)}</div></div>
       <div class="subj-b">
         <p class="practice"><b>Practice</b><span>${esc(it.practice)}</span></p>
         ${checksHTML(sp, s.id, it.list)}
@@ -439,7 +440,7 @@ function renderSprint(){
   const minor = SUBJECTS.filter(s=>!s.lead && s.id!=="hab").map(s=>{
     const list = sp.items[s.id]||[]; const ids = itemIds(sp,s.id);
     return `<article class="subj">
-      <div class="subj-h"><h3>${s.name}</h3><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span></div>
+      <div class="subj-h"><h3>${s.name}${s.long?` <span class="exp">(${s.long})</span>`:""}</h3><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span></div>
       <div class="subj-b">${checksHTML(sp, s.id, list)}</div></article>`;
   }).join("");
   const habList = HABITS.map((t,i)=>{ const id = sp.id+".hbase."+i; return `<li><label><input type="checkbox" id="c-${id}" data-id="${id}" ${state.done[id]?"checked":""}><span>${esc(t)}</span></label></li>`; }).join("");
