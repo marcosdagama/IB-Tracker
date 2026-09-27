@@ -22,7 +22,9 @@ Browsers can clear saved site data (Safari does after a period without visits, a
 
 ## Using it on a Mac with Safari
 
-- Open the live page and bookmark it (⌘D), or in Safari choose **File → Add to Dock** to open it like an app. If you do, keep using that same one: the Dock app and the Safari tab keep separate saved progress.
+- **Add it to the Dock (recommended):** open the live page in Safari → **File → Add to Dock…** → keep the name *IB Tracker* → **Add**. It gets its own teal "IB" icon, opens in its own window without Safari's toolbar, and appears in Launchpad and Spotlight (⌘Space, "IB Tracker").
+- Use only the Dock app from then on. The Dock app and a Safari tab keep **separate** saved progress. If ticks were already made in a Safari tab, download a backup file there and use *Restore from file* in the Dock app.
+- To remove it: right-click the icon → Options → Remove from Dock (the app itself is in `~/Applications`).
 - Always use the same Mac, the same browser and the same address, or the ticks won't be there.
 - Backup files download to the Downloads folder. Move them into one folder (for example `Documents/IB Tracker backups`) or upload them to `backups/` here.
 
