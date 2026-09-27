@@ -219,6 +219,7 @@ details.tip.block summary::before{color:var(--accent)}
 .sprint-btn .sd{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
 .offdays{font-size:13px;color:var(--ink-2);background:var(--mark-soft);border-radius:5px;padding:6px 10px}
 .offdays b{color:var(--ink)}
+.lang-tag{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;color:var(--ink-2);border:1px solid var(--line);background:var(--surface);border-radius:3px;padding:1px 5px;vertical-align:2px;white-space:nowrap}
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
@@ -245,7 +246,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   <section class="summary" id="summary" aria-label="Term progress"></section>
 
   <details class="needs" id="needs">
-    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 10 questions for Leo and his school</summary>
+    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 9 questions for Leo and his school</summary>
     <div class="needs-body">
       <p>The plan uses sensible defaults where these answers are missing. Each answer makes the checklists more accurate.</p>
       <div class="needs-grid">
@@ -257,9 +258,8 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
           <li>English: which course (Language and Literature, Literature, or Language B), and the texts after <em>The Hunger Games</em>.</li>
           <li>International Literature (in Catalan): is it the IB course <em>Catalan A: Literature</em> or the Batxillerat subject <em>Literatura Universal</em>? And which works are on the reading list?</li>
           <li>History: which case studies and themes the school has chosen under the new 2026 guide.</li>
-          <li>Which language each subject is taught in. Known so far: English in English, International Literature in Catalan.</li>
         </ol></div>
-        <div><h4>Teaching and resources</h4><ol start="7">
+        <div><h4>Teaching and resources</h4><ol start="6">
           <li>The teaching order (scheme of work) for Physics and Maths this term.</li>
           <li>The Physics and Maths textbooks, and the school platform (ManageBac, Kognity, Toddle…).</li>
           <li>Tutor sessions: which subjects, and how often.</li>
@@ -342,7 +342,8 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         <ul class="facts">
           <li>Starting the Diploma Programme in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
           <li><strong>Calendar</strong>: dates follow the official Catalan school calendar 2026–27 (classes from 8 Sept, Christmas break 22 Dec – 7 Jan, public holidays 12 Oct and 8 Dec). Free days of 30 Oct and 7 Dec are Barcelona's proposal; each school sets its own.</li>
-          <li><strong>Levels</strong>: Higher Level (HL) in Physics, English and Business Management; Standard Level (SL) in Maths AA, History and International Literature (taught in Catalan).</li>
+          <li><strong>Levels</strong>: Higher Level (HL) in Physics, English and Business Management; Standard Level (SL) in Maths AA, History and International Literature .</li>
+          <li><strong>Languages of teaching</strong>: English for Physics, Business Management and English (tag EN); Spanish for Maths and History (ES); Catalan for International Literature and TOK (CA). Use the vocabulary of the teaching language in notes and flashcards.</li>
           <li><strong>Physics</strong> uses the themes A–E syllabus (first exams 2025). Older past papers organised by old topics or options need care.</li>
           <li><strong>Maths AA (Analysis and Approaches)</strong> stays on the current guide for his year group. A new maths guide starts teaching in Aug 2027, after he has begun.</li>
           <li><strong>Business Management HL</strong> adds an HL-only Paper 3 to the SL exams.</li>
@@ -667,13 +668,13 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 <script>
 (function(){
 const SUBJECTS = [
-  {id:"phy", name:"Physics HL", long:"Higher Level", lead:true},
-  {id:"mat", name:"Maths AA SL", long:"Analysis and Approaches, Standard Level", lead:true},
-  {id:"eng", name:"English HL", book:"Current text: Suzanne Collins, <em>The Hunger Games</em> (2008). You read it in August, so the re-read is about <em>how</em> it is written, not what happens.<br><br><strong>How to summarise a chapter for IB English</strong><br>1. Re-read with a pencil and mark 3–4 key moments per chapter.<br>2. For each chapter, write 3–5 sentences: what happens, who is involved, and where.<br>3. Add one or two lines on how the writer shapes it: the narrative voice (who tells the story, and in which tense), the setting and how power is shown, and how characters are introduced.<br>4. Quote one short phrase per chapter that supports a point.<br>5. Keep to your own words and to the teacher's length. Summarise; don't retell every event.<br>6. File the summaries in the learner portfolio."},
-  {id:"bus", name:"Business Management HL", book:"Book: Paul Hoang, <em>Business Management for the IB Diploma: Prepare for Success</em> (Hodder, 2023). For each section: read it, close the book, write the key points from memory, then do its practice questions and mark them."},
-  {id:"his", name:"History SL"},
-  {id:"lit", name:"International Literature SL", long:"in Catalan"},
-  {id:"core", name:"Core", long:"TOK: Theory of Knowledge · CAS: Creativity, Activity, Service · EE: Extended Essay"},
+  {id:"phy", tl:"EN", name:"Physics HL", long:"Higher Level", lead:true},
+  {id:"mat", tl:"ES", name:"Maths AA SL", long:"Analysis and Approaches, Standard Level", lead:true},
+  {id:"eng", tl:"EN", name:"English HL", book:"Current text: Suzanne Collins, <em>The Hunger Games</em> (2008). You read it in August, so the re-read is about <em>how</em> it is written, not what happens.<br><br><strong>How to summarise a chapter for IB English</strong><br>1. Re-read with a pencil and mark 3–4 key moments per chapter.<br>2. For each chapter, write 3–5 sentences: what happens, who is involved, and where.<br>3. Add one or two lines on how the writer shapes it: the narrative voice (who tells the story, and in which tense), the setting and how power is shown, and how characters are introduced.<br>4. Quote one short phrase per chapter that supports a point.<br>5. Keep to your own words and to the teacher's length. Summarise; don't retell every event.<br>6. File the summaries in the learner portfolio."},
+  {id:"bus", tl:"EN", name:"Business Management HL", book:"Book: Paul Hoang, <em>Business Management for the IB Diploma: Prepare for Success</em> (Hodder, 2023). For each section: read it, close the book, write the key points from memory, then do its practice questions and mark them."},
+  {id:"his", tl:"ES", name:"History SL"},
+  {id:"lit", tl:"CA", name:"International Literature SL"},
+  {id:"core", tl:"TOK: CA", name:"Core", long:"TOK: Theory of Knowledge · CAS: Creativity, Activity, Service · EE: Extended Essay"},
   {id:"hab", name:"Habits"}
 ];
 
@@ -876,7 +877,7 @@ function renderSprint(){
   const leadCards = SUBJECTS.filter(s=>s.lead).map(s=>{
     const it = sp.items[s.id]; const ids = itemIds(sp,s.id);
     return `<article class="subj lead">
-      <div class="subj-h"><h3>${s.name}${s.long?` <span class="exp">(${s.long})</span>`:""}</h3><div class="meta"><span class="tag lead">LEAD</span><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span>${rateHTML(sp,s.id)}</div></div>
+      <div class="subj-h"><h3>${s.name}${s.long?` <span class="exp">(${s.long})</span>`:""}${s.tl?` <span class="lang-tag" title="Language of teaching">${s.tl}</span>`:""}</h3><div class="meta"><span class="tag lead">LEAD</span><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span>${rateHTML(sp,s.id)}</div></div>
       <div class="subj-b">
         <p class="practice"><b>Practice</b><span>${esc(it.practice)}</span></p>
         ${(PRACTICE_TIPS[sp.id]||{})[s.id] ? `<details class="tip"><summary>Tips for this practice</summary><ul class="tip-body">${PRACTICE_TIPS[sp.id][s.id].map(t=>`<li>${esc(t)}</li>`).join("")}</ul></details>` : ""}
@@ -886,7 +887,7 @@ function renderSprint(){
   const minor = SUBJECTS.filter(s=>!s.lead && s.id!=="hab").map(s=>{
     const list = sp.items[s.id]||[]; const ids = itemIds(sp,s.id);
     return `<article class="subj">
-      <div class="subj-h"><h3>${s.name}${s.long?` <span class="exp">(${s.long})</span>`:""}</h3><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span></div>
+      <div class="subj-h"><h3>${s.name}${s.long?` <span class="exp">(${s.long})</span>`:""}${s.tl?` <span class="lang-tag" title="Language of teaching">${s.tl}</span>`:""}</h3><span class="tag mono">${ids.filter(i=>state.done[i]).length}/${ids.length}</span></div>
       <div class="subj-b">${s.book?`<details class="tip"><summary>Book and method</summary><div class="tip-body book">${s.book}</div></details>`:""}${checksHTML(sp, s.id, list)}</div></article>`;
   }).join("");
   const habList = HABITS.map((h,i)=>{ const id = sp.id+".hbase."+i; return `<li><label><input type="checkbox" id="c-${id}" data-id="${id}" ${state.done[id]?"checked":""}><span>${esc(h.t)}</span></label><details class="tip inline"><summary>How</summary><p class="tip-body">${esc(h.tip)}</p></details></li>`; }).join("");
