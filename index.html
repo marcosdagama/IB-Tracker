@@ -238,6 +238,37 @@ table.tt-grid{border-collapse:separate;border-spacing:3px;width:100%;min-width:5
 .tt-grid tr.brk td{background:transparent;color:var(--muted);font-size:11.5px;padding:2px;text-align:left}
 .tt-foot{display:flex;flex-direction:column;gap:6px}
 .tonight{font-size:14px;background:var(--accent-soft);border-radius:6px;padding:8px 12px}
+
+.termcal summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.termcal summary::-webkit-details-marker{display:none}
+.termcal .cal-toggle{margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:2px 8px}
+.termcal .cal-toggle::before{content:"Show"}
+.termcal[open] .cal-toggle::before{content:"Hide"}
+.cal-wrap{overflow-x:auto}
+table.cal{border-collapse:separate;border-spacing:3px;width:100%;min-width:720px;font-size:13px}
+.cal thead th{font-family:var(--mono);font-weight:400;font-size:11.5px;color:var(--muted);text-align:center;padding:2px}
+.cal thead th.c-note{text-align:left;padding-left:8px}
+.cal th.c-sp{width:130px;text-align:left;vertical-align:top;padding:6px 8px;background:var(--surface-2);border-radius:5px;cursor:pointer}
+.cal thead th.c-sp{background:none}
+.cal th.c-sp .n{display:block;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.cal th.c-sp .t{display:block;font-family:var(--display);font-size:15px;font-weight:600;color:var(--ink);line-height:1.15}
+.cal tr.sel th.c-sp{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.cal td.d{width:52px;height:30px;text-align:center;font-family:var(--mono);font-variant-numeric:tabular-nums;background:var(--surface-2);border-radius:4px;color:var(--ink);cursor:pointer}
+.cal td.d.out{opacity:.35}
+.cal td.d.exam{background:var(--r1);color:var(--crit);font-weight:600}
+.cal td.d.off{background:repeating-linear-gradient(135deg,var(--surface-2) 0 4px,var(--line) 4px 7px);color:var(--muted);text-decoration:line-through}
+.cal td.d.event{background:var(--mark-soft)}
+.cal td.d.today{outline:2px solid var(--accent);outline-offset:-2px;font-weight:700}
+.cal td.c-note{font-size:12.5px;color:var(--ink-2);padding:4px 8px;vertical-align:middle;cursor:pointer}
+.cal td.c-note .f{display:block;color:var(--ink)}
+.cal td.c-note .k{display:block;color:var(--muted)}
+.cal tbody tr:hover td.d:not(.out){filter:brightness(.97)}
+.cal-legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12.5px;color:var(--ink-2)}
+.cal-legend .lg{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.lg.exam{background:var(--r1);border:1px solid var(--crit)}
+.lg.off{background:repeating-linear-gradient(135deg,var(--surface-2) 0 3px,var(--line) 3px 5px)}
+.lg.event{background:var(--mark-soft);border:1px solid var(--mark)}
+.lg.today{background:var(--surface);outline:2px solid var(--accent);outline-offset:-2px}
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
@@ -260,6 +291,14 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 
   <div id="view-tracker" class="view" role="tabpanel" aria-labelledby="tab-tracker">
   <nav class="timeline" id="timeline" aria-label="Fortnightly sprints"></nav>
+
+  <details class="panel termcal" id="termCal">
+    <summary><h3>Term calendar</h3><span class="note" id="calName"></span><span class="cal-toggle"></span></summary>
+    <div class="cal-wrap"><table class="cal" id="calGrid" aria-label="Term calendar by week"></table></div>
+    <div class="cal-legend">
+      <span><i class="lg exam"></i>Exams</span><span><i class="lg off"></i>No school</span><span><i class="lg event"></i>School date</span><span><i class="lg today"></i>Today</span><span class="note">Click a sprint to open it.</span>
+    </div>
+  </details>
 
   <section class="summary" id="summary" aria-label="Term progress"></section>
 
@@ -701,6 +740,20 @@ const PRACTICE_TIPS = {"s1": {"phy": ["Do the first 5 with a worked example open
 
 const HABITS = [{"t": "Two short retrieval sessions per week for each lead subject (questions first, notes after)", "tip": "20–30 minutes each: 5 minutes writing down what you remember, 15–20 minutes of questions, 5 minutes checking. Put them in the calendar like a class."}, {"t": "Error log updated: every wrong answer written down with the reason and the fix", "tip": "Columns: date · question · what I did · why it was wrong (concept, misread, arithmetic) · the correct idea. Redo logged questions a week later without looking."}, {"t": "One spaced review of the previous sprint's topics (10–15 mixed questions)", "tip": "Pick 10–15 questions from last sprint, mixed, and do them cold. Anything wrong goes into the error log."}, {"t": "Flashcards reviewed at least 4 days out of 7", "tip": "10–15 minutes a day beats an hour on Sunday. One fact per card, written as a question. Anki schedules the reviews for you."}, {"t": "Homework and deadlines logged the day they are set", "tip": "Use one place only (the school platform or one planner). Write the task, the due date and how long you think it will take."}];
 
+/* Term-level dates for the calendar. For the next term, copy this file,
+   change TERM and SPRINTS, and give it a new LS_KEY. */
+const TERM = {
+  name: "Term 1 · 2026–27",
+  ranges: [
+    {from:"2026-10-05", to:"2026-10-23", type:"exam",  t:"Partial exams"},
+    {from:"2026-11-02", to:"2026-11-06", type:"event", t:"Interim report week"},
+    {from:"2026-11-05", to:"2026-11-07", type:"event", t:"MUN Lisbon (if taking part)"},
+    {from:"2026-11-20", to:"2026-11-26", type:"exam",  t:"Term exams"},
+    {from:"2026-11-30", to:"2026-12-04", type:"event", t:"First-term evaluation week"},
+    {from:"2026-12-10", to:"2026-12-10", type:"event", t:"Human Rights day"}
+  ]
+};
+
 const SPRINTS = [
  {id:"s1", n:"Sprint 1", title:"Foundations", start:"2026-09-28", end:"2026-10-09",
   events:[{d:"2026-10-05",t:"Partial exams (exàmens parcials) run 5–23 Oct"}],
@@ -965,14 +1018,14 @@ function renderHeat(){
   document.getElementById("heat").innerHTML = h + "</tbody>";
 }
 
-function renderAll(){ renderTimeline(); renderSummary(); renderSprint(); renderHeat(); }
+function renderAll(){ renderTimeline(); renderSummary(); renderSprint(); renderHeat(); if(typeof renderCalendar==="function") renderCalendar(); }
 renderAll();
 
 /* ---------- events ---------- */
 document.getElementById("timeline").addEventListener("click", e=>{
   const b = e.target.closest("[data-s]"); if(!b) return;
   active = b.dataset.s; try{ localStorage.setItem(LS_KEY+".tab", active); }catch(err){}
-  renderTimeline(); renderSprint();
+  renderTimeline(); renderSprint(); renderCalendar();
 });
 document.addEventListener("change", e=>{
   const id = e.target.dataset && e.target.dataset.id; if(!id) return;
@@ -993,6 +1046,58 @@ document.addEventListener("input", e=>{
 });
 
 
+
+
+/* ---------- term calendar ---------- */
+function isoOf(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function rangesOn(iso){ return (TERM.ranges||[]).filter(r=> iso>=r.from && iso<=r.to); }
+function renderCalendar(){
+  const el = document.getElementById("calGrid"); if(!el) return;
+  document.getElementById("calName").textContent = TERM.name || "";
+  const today = todayISO();
+  const offMap = {}; SPRINTS.forEach(sp=> (sp.off||[]).forEach(o=> offMap[o.d]=o.t));
+  const evMap = {}; SPRINTS.forEach(sp=> (sp.events||[]).forEach(o=> { if(!/until|continue|run /i.test(o.t)) evMap[o.d]=o.t; }));
+  let h = `<thead><tr><th class="c-sp">Sprint</th>${["Mon","Tue","Wed","Thu","Fri"].map(d=>`<th>${d}</th>`).join("")}<th class="c-note">Focus and key dates</th></tr></thead><tbody>`;
+  SPRINTS.forEach(sp=>{
+    // weeks (Mondays) covered by this sprint
+    const weeks = []; const d = new Date(sp.start+"T12:00:00"); d.setDate(d.getDate()-((d.getDay()+6)%7));
+    for(; isoOf(d) <= sp.end; d.setDate(d.getDate()+7)) weeks.push(new Date(d));
+    weeks.forEach((mon,wi)=>{
+      const cls = sp.id===active ? "sel" : "";
+      h += `<tr class="${cls}" data-cal-s="${sp.id}">`;
+      if(wi===0) h += `<th class="c-sp" rowspan="${weeks.length}"><span class="n">${sp.n}</span><span class="t">${esc(sp.title)}</span></th>`;
+      const notes = [];
+      for(let k=0;k<5;k++){
+        const day = new Date(mon); day.setDate(mon.getDate()+k); const iso = isoOf(day);
+        const inSprint = iso>=sp.start && iso<=sp.end;
+        const rs = rangesOn(iso); const off = offMap[iso]; const ev = evMap[iso];
+        let c = ["d"]; if(!inSprint) c.push("out");
+        if(off) c.push("off"); else if(rs.some(r=>r.type==="exam")) c.push("exam"); else if(rs.length || ev) c.push("event");
+        if(iso===today) c.push("today");
+        const label = (day.getDate()===1 || (wi===0 && k===0 && sp.id===SPRINTS[0].id)) ? day.toLocaleDateString("en-GB",{day:"numeric",month:"short"}) : day.getDate();
+        const tip = [off?"No school: "+off:"", ...rs.map(r=>r.t), ev||""].filter(Boolean).join(" · ");
+        h += `<td class="${c.join(" ")}" ${tip?`title="${esc(tip)}"`:""}>${label}</td>`;
+        if(inSprint){ if(off) notes.push(`${day.getDate()} ${day.toLocaleDateString("en-GB",{month:"short"})}: no school`); rs.forEach(r=>{ if(r.from===iso) notes.push(`${r.t}${r.to!==r.from?" ("+fmt(r.from)+" – "+fmt(r.to)+")":` (${fmt(r.from)})`}`); }); }
+      }
+      const focus = wi===0 ? `<span class="f">${esc(sp.focus.split(". ")[0].replace(/\.$/,""))}.</span>` : "";
+      h += `<td class="c-note">${focus}${notes.length?`<span class="k">${notes.map(esc).join(" · ")}</span>`:""}</td></tr>`;
+    });
+  });
+  el.innerHTML = h + "</tbody>";
+}
+document.addEventListener("click", e=>{
+  const r = e.target.closest("[data-cal-s]"); if(!r) return;
+  active = r.dataset.calS; try{ localStorage.setItem(LS_KEY+".tab", active); }catch(err){}
+  renderTimeline(); renderSprint(); renderCalendar();
+  document.getElementById("sprintCol").scrollIntoView({behavior:"smooth", block:"start"});
+});
+(function(){
+  const det = document.getElementById("termCal"); if(!det) return;
+  let open = true; try{ const v = localStorage.getItem(LS_KEY+".cal"); if(v!==null) open = v==="1"; }catch(e){}
+  det.open = open;
+  det.addEventListener("toggle", ()=>{ try{ localStorage.setItem(LS_KEY+".cal", det.open?"1":"0"); }catch(e){} });
+})();
+renderCalendar();
 
 /* ---------- tabs ---------- */
 function showView(v){

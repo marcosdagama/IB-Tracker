@@ -53,6 +53,6 @@ Code changes never delete saved progress, but moving items changes what a saved 
 - **Do not reorder or delete** items in a sprint that already has ticks. To retire one, reword it to start with "(Dropped)".
 - **Do not change** `LS_KEY` (`dp1-term1-v1`) or the sprint/subject ids (`s1`–`s6`, `phy`, `mat`, `eng`, `bus`, `his`, `lit`, `core`, `hab`).
 - **Download a backup file before any edit**, then open the page and check the ticks still look right.
-- For Term 2, copy `index.html` to a new file and give it a new `LS_KEY` (e.g. `dp1-term2-v1`), so each term keeps its own record.
+- For Term 2, copy `index.html` to a new file and give it a new `LS_KEY` (e.g. `dp1-term2-v1`), so each term keeps its own record. Then update `TERM` (name and school date ranges such as exams) and `SPRINTS` (dates, days off, items). The term calendar, timeline and school-day counts are drawn from those two lists automatically.
 
 Edit on GitHub: open `index.html` → pencil icon → change → *Commit changes*. The live page updates in 1–2 minutes.
