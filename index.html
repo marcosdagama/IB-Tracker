@@ -55,20 +55,20 @@ a:focus-visible,button:focus-visible,textarea:focus-visible,input:focus-visible{
 header{display:grid;grid-template-columns:1fr minmax(260px,340px);gap:18px 28px;align-items:start}
 .hdr-side{display:flex;flex-direction:column;gap:8px;align-items:stretch}
 .hdr-side .sync{justify-content:flex-end}
-.whatsnew{position:relative;z-index:20;background:var(--surface);border:1.5px solid var(--accent);border-radius:8px;box-shadow:0 2px 10px rgba(15,110,106,.10)}
+.whatsnew{position:relative;z-index:20;background:var(--r1);border:1.5px solid var(--crit);border-radius:8px;box-shadow:0 2px 10px rgba(179,55,43,.12)}
 .whatsnew[open]{border-bottom-left-radius:0;border-bottom-right-radius:0}
 .whatsnew summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:9px 12px;flex-wrap:wrap}
 .whatsnew summary::-webkit-details-marker{display:none}
-.whatsnew summary::after{content:"+";margin-left:auto;font-family:var(--mono);font-weight:600;color:var(--accent)}
+.whatsnew summary::after{content:"+";margin-left:auto;font-family:var(--mono);font-weight:600;color:var(--crit)}
 .whatsnew[open] summary::after{content:"−"}
 .wn-title{font-family:var(--display);font-weight:600;font-size:15px;color:var(--ink)}
-.wn-ver{font-family:var(--mono);font-size:11px;color:var(--muted)}
-.wn-badge{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--mark);color:#fff;border-radius:3px;padding:1px 6px}
-.wn-body{position:absolute;left:-1.5px;right:-1.5px;top:100%;background:var(--surface);border:1.5px solid var(--accent);border-top:0;border-radius:0 0 8px 8px;box-shadow:0 10px 24px rgba(15,110,106,.18);padding:4px 12px 12px;font-size:13px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px;max-height:360px;overflow:auto}
+.wn-ver{font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.wn-badge{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--crit);color:#fff;border-radius:3px;padding:1px 6px}
+.wn-body{position:absolute;left:-1.5px;right:-1.5px;top:100%;background:var(--r1);border:1.5px solid var(--crit);border-top:0;border-radius:0 0 8px 8px;box-shadow:0 10px 24px rgba(179,55,43,.18);padding:4px 12px 12px;font-size:13px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px;max-height:360px;overflow:auto}
 .wn-body ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
 .wn-body .wn-date{font-family:var(--mono);font-size:11px;color:var(--muted)}
-.wn-body details summary{padding:0;font-size:12.5px;color:var(--accent);font-weight:600}
-.wn-body details summary::after{content:none}
+.wn-body details summary{padding:0;font-size:12.5px;color:var(--crit);font-weight:600}
+.whatsnew .wn-body details summary::after{content:none!important}
 .wn-body details ul{margin-top:6px}
 .wn-body details .wn-old{margin-top:8px}
 header .lead{color:var(--ink-2);max-width:66ch;margin-top:8px}
@@ -1172,6 +1172,8 @@ renderCalendar();
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.5", date:"27 Sep 2026", items:[
+    "\"What's new\" box highlighted in red, the same colour as rating 1 on the self-check scale"]},
   {v:"1.4", date:"27 Sep 2026", items:[
     "\"What's new\" box (this one): lists the changes in each version",
     "Maths follows the school's plan: U2 Sequences to 18 Oct, U3 Functions to 15 Nov, then U4 Models",
