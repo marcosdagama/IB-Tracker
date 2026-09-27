@@ -20,6 +20,12 @@ Live page: https://marcosdagama.github.io/IB-Tracker/
 Browsers can clear saved site data (Safari does after a period without visits, and "Clear history" does too).
 **Download a backup file every Friday** from the *Backup & restore* panel.
 
+## Using it on a Mac with Safari
+
+- Open the live page and bookmark it (⌘D), or in Safari choose **File → Add to Dock** to open it like an app. If you do, keep using that same one: the Dock app and the Safari tab keep separate saved progress.
+- Always use the same Mac, the same browser and the same address, or the ticks won't be there.
+- Backup files download to the Downloads folder. Move them into one folder (for example `Documents/IB Tracker backups`) or upload them to `backups/` here.
+
 ## Backing up and restoring
 
 1. *Backup & restore* → **Download backup file**. You get `ib-tracker-backup-YYYY-MM-DD.json`.
