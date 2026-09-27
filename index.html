@@ -196,8 +196,9 @@ details.tip.block summary::before{color:var(--accent)}
 .tabbar button:hover{background:color-mix(in srgb, var(--c) 30%, #ffffff)}
 .tabbar button[aria-selected="true"]{background:var(--c);color:#fff;box-shadow:none;margin-top:0;padding-top:13px;padding-bottom:10px}
 .tabbar button:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+.tabbar .lbl-short{display:none}
 #tab-tracker{--c:var(--t1)} #tab-cal{--c:var(--t2)} #tab-guide{--c:var(--t3)}
-@media (max-width:520px){.tabbar{gap:4px;padding:0 2px}.tabbar button small{display:none}.tabbar button{font-size:14px;padding:8px 8px 7px}}
+@media (max-width:520px){.tabbar .lbl-long{display:none}.tabbar .lbl-short{display:inline}.tabbar{gap:4px;padding:0 2px}.tabbar button small{display:none}.tabbar button{font-size:14px;padding:8px 8px 7px}}
 .view{display:flex;flex-direction:column;gap:22px}
 .view[hidden],[hidden]{display:none!important}
 .guide-intro{color:var(--ink-2);max-width:70ch}
@@ -293,7 +294,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 
   <div class="tabbar" role="tablist" aria-label="Sections">
     <button type="button" role="tab" id="tab-tracker" data-view="tracker" aria-selected="true" aria-controls="view-tracker">Tracker<small>Sprints and checklists</small></button>
-    <button type="button" role="tab" id="tab-cal" data-view="cal" aria-selected="false" aria-controls="view-cal">Calendar<small>Term dates and timetable</small></button>
+    <button type="button" role="tab" id="tab-cal" data-view="cal" aria-selected="false" aria-controls="view-cal"><span class="lbl-long">Calendar and timetable</span><span class="lbl-short">Calendar</span><small>Term dates and weekly classes</small></button>
     <button type="button" role="tab" id="tab-guide" data-view="guide" aria-selected="false" aria-controls="view-guide">Study guide<small>How to study</small></button>
   </div>
 
