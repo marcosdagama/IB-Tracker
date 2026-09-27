@@ -220,6 +220,24 @@ details.tip.block summary::before{color:var(--accent)}
 .offdays{font-size:13px;color:var(--ink-2);background:var(--mark-soft);border-radius:5px;padding:6px 10px}
 .offdays b{color:var(--ink)}
 .lang-tag{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;color:var(--ink-2);border:1px solid var(--line);background:var(--surface);border-radius:3px;padding:1px 5px;vertical-align:2px;white-space:nowrap}
+.sprint-btn .sd .ex{color:var(--crit);font-weight:600}
+
+.tt summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.tt summary::-webkit-details-marker{display:none}
+.tt summary h3::before{content:"+ ";color:var(--accent);font-family:var(--mono)}
+.tt[open] summary h3::before{content:"− "}
+.tt-wrap{overflow-x:auto}
+table.tt-grid{border-collapse:separate;border-spacing:3px;width:100%;min-width:560px;font-size:13px}
+.tt-grid th{font-family:var(--mono);font-weight:400;color:var(--muted);font-size:11.5px;padding:3px 6px;text-align:left;white-space:nowrap}
+.tt-grid thead th{text-align:center}
+.tt-grid td{background:var(--surface-2);border-radius:4px;padding:6px 8px;text-align:center;color:var(--ink)}
+.tt-grid td.lead{background:var(--accent-soft);font-weight:600}
+.tt-grid td.hl{background:var(--mark-soft)}
+.tt-grid .is-today{outline:2px solid var(--accent);outline-offset:-2px}
+.tt-grid thead th.is-today{color:var(--accent);font-weight:600;outline:0}
+.tt-grid tr.brk td{background:transparent;color:var(--muted);font-size:11.5px;padding:2px;text-align:left}
+.tt-foot{display:flex;flex-direction:column;gap:6px}
+.tonight{font-size:14px;background:var(--accent-soft);border-radius:6px;padding:8px 12px}
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
@@ -246,13 +264,13 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   <section class="summary" id="summary" aria-label="Term progress"></section>
 
   <details class="needs" id="needs">
-    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 9 questions for Leo and his school</summary>
+    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 9 questions for the student and the school</summary>
     <div class="needs-body">
       <p>The plan uses sensible defaults where these answers are missing. Each answer makes the checklists more accurate.</p>
       <div class="needs-grid">
         <div><h4>Calendar and deadlines</h4><ol>
-          <li>The school calendar. <em>For now the official Catalan calendar is used;</em> still needed: the school's own free days (dies de lliure disposició) and the December test week.</li>
-          <li>Internal deadlines set by the school for the IAs (internal assessments), the TOK exhibition, the Extended Essay and CAS.</li>
+          <li>Which subject is examined on which day in the partial exams (5–23 Oct) and the term exams (20–26 Nov).</li>
+          <li>Deadlines set by the school for the TOK exhibition, the Extended Essay and CAS (the IA period is known: 4–18 June).</li>
         </ol></div>
         <div><h4>Subjects and levels</h4><ol start="3">
           <li>English: which course (Language and Literature, Literature, or Language B), and the texts after <em>The Hunger Games</em>.</li>
@@ -261,13 +279,14 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         </ol></div>
         <div><h4>Teaching and resources</h4><ol start="6">
           <li>The teaching order (scheme of work) for Physics and Maths this term.</li>
-          <li>The Physics and Maths textbooks, and the school platform (ManageBac, Kognity, Toddle…).</li>
+          <li>The Physics and Maths textbooks, and which subjects use Kognity.</li>
           <li>Tutor sessions: which subjects, and how often.</li>
           <li>First test results or target grades, to set a baseline for the self-check ratings.</li>
         </ol></div>
       </div>
     </div>
   </details>
+
 
   <div class="main">
     <div class="col" id="sprintCol"></div>
@@ -333,7 +352,8 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
           <li><a href="https://phet.colorado.edu/" target="_blank" rel="noopener">PhET simulations</a> Free physics sims (projectile motion, forces, energy skate park) to build intuition before problems.</li>
           <li><a href="https://apps.ankiweb.net/" target="_blank" rel="noopener">Anki</a> Spaced-repetition flashcards for definitions, formulas and Business/History key terms.</li>
           <li><a href="https://www.khanacademy.org/math/algebra2" target="_blank" rel="noopener">Khan Academy</a> Quick repair of algebra gaps (logs, rearranging, quadratics) when a rating is 1.</li>
-          <li><strong>School platform + data booklet</strong> Whatever the school uses (often Kognity or ManageBac) and the official Physics data booklet and Maths formula booklet, used from week one.</li>
+          <li><a href="https://app.kognity.com/" target="_blank" rel="noopener">Kognity</a> The school's online textbook. Do its end-of-subtopic questions and quizzes as practice testing, not just the reading.</li>
+          <li><strong>Data booklet and formula booklet</strong> The official Physics data booklet and Maths formula booklet, used from week one so they are familiar by the exams.</li>
         </ul>
       </div>
 
@@ -341,7 +361,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         <h3>What applies to his year group</h3>
         <ul class="facts">
           <li>Starting the Diploma Programme in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
-          <li><strong>Calendar</strong>: dates follow the official Catalan school calendar 2026–27 (classes from 8 Sept, Christmas break 22 Dec – 7 Jan, public holidays 12 Oct and 8 Dec). Free days of 30 Oct and 7 Dec are Barcelona's proposal; each school sets its own.</li>
+          <li><strong>School year 2026–27</strong>: partial exams 5–23 Oct, 11–29 Jan and 19 Apr – 2 May; term exams 20–26 Nov and 1–5 Mar; mock final exams 26 May – 3 Jun; intensive internal assessment (IA) period 4–18 Jun. Holidays: 12 Oct, 7–8 Dec, 22 Dec – 7 Jan, 8 Feb, 20–29 Mar.</li>
           <li><strong>Levels</strong>: Higher Level (HL) in Physics, English and Business Management; Standard Level (SL) in Maths AA, History and International Literature .</li>
           <li><strong>Languages of teaching</strong>: English for Physics, Business Management and English (tag EN); Spanish for Maths and History (ES); Catalan for International Literature and TOK (CA). Use the vocabulary of the teaching language in notes and flashcards.</li>
           <li><strong>Physics</strong> uses the themes A–E syllabus (first exams 2025). Older past papers organised by old topics or options need care.</li>
@@ -678,13 +698,14 @@ const SUBJECTS = [
   {id:"hab", name:"Habits"}
 ];
 
-const PRACTICE_TIPS = {"s1": {"phy": ["Do the first 5 with a worked example open, the other 15 closed-book.", "Before each uncertainty calculation, write the rule you are using: add absolute uncertainties for sums, add percentages for products, multiply the percentage by the power for powers.", "Sketch every vector. A drawing catches sign errors that algebra hides.", "Start the error log now: date, question, what went wrong, the correct idea."], "mat": ["Work easy to medium in order. After two wrong in a row, stop and review the method.", "Write down u₁ (first term), d or r (difference or ratio) and n before choosing a formula.", "A sum to infinity only exists when |r| < 1. Write that condition in your answer; it earns marks.", "Do half the set by hand and half with the calculator to learn when each is faster."]}, "s2": {"phy": ["List the known quantities (s, u, v, a, t) and the one you need, then pick the equation that leaves out the one you don't need.", "For graphs, say what the gradient and the area mean before calculating anything.", "In the lab, put the uncertainty in the table header and keep decimal places consistent in each column.", "Use a PhET motion simulation to check what the graph shapes should look like."], "mat": ["Make one flashcard per log law and review them daily this sprint.", "Try to write both sides with the same base first; use logarithms only if that fails.", "Check every answer by substituting it back into the original equation.", "In proofs, work from one side only, one justified step per line."]}, "s3": {"phy": ["Split each projectile into a horizontal row (constant velocity) and a vertical row (constant acceleration).", "Time links the two rows, so find it first.", "In the timed multiple-choice set, allow about 1.5 minutes per question. Skip hard ones and come back.", "Afterwards, label each wrong answer: concept, misreading the question, or arithmetic."], "mat": ["Sketch the function before answering; domain and range are easier to read from a picture.", "For composite functions, work from the inside out and write the middle step.", "For inverses, swap x and y, then solve for y. Check that f(f⁻¹(x)) = x.", "Do the self-test with no notes and a timer, then mark it honestly against the markscheme."]}, "s4": {"phy": ["Draw the free-body diagram before writing any equation, and label each force with its cause.", "Choose a positive direction and keep it for the whole problem.", "For collisions, make the first line: total momentum before = total momentum after.", "Mix in 5 kinematics questions from Sprint 2 (interleaving)."], "mat": ["Describe each transformation in words (for example 'vertical stretch, factor 2') before sketching.", "Complete the square by hand at least three times until the vertex form feels automatic.", "Use the discriminant as a check: its sign must match the number of roots on your sketch.", "Check binomial coefficients with the calculator's nCr function."]}, "s5": {"phy": ["Start each problem by naming the energy stores at the beginning and at the end.", "In W = Fs cos θ, θ is the angle between the force and the displacement.", "Mixed sets feel harder than topic sets. That difficulty is what makes them work, so don't sort them.", "Mark any question that took over 5 minutes and redo it in Sprint 6."], "mat": ["For rational functions, find the asymptotes first, then plot two points on each side.", "Draw eˣ and ln x on one sketch; they are reflections in y = x.", "In the mixed review, cover the topic label and choose the method yourself.", "Log every error with the exact step that went wrong."]}, "s6": {"phy": ["Simulate the exam: clear desk, phone in another room, timer on, data booklet only.", "Mark with the markscheme and note where method marks were lost.", "Spend more time redoing wrong questions than doing new ones.", "A full night's sleep before a test helps more than an extra late hour of revision."], "mat": ["Do the no-calculator section first while you are fresh.", "Show working even when the answer seems obvious; method marks add up.", "Redo error-log questions without looking at the old solution.", "Finish with a list of three topics to revisit in January."]}};
+const PRACTICE_TIPS = {"s1": {"phy": ["Do the first 5 with a worked example open, the other 15 closed-book.", "Before each uncertainty calculation, write the rule you are using: add absolute uncertainties for sums, add percentages for products, multiply the percentage by the power for powers.", "Sketch every vector. A drawing catches sign errors that algebra hides.", "Start the error log now: date, question, what went wrong, the correct idea."], "mat": ["Work easy to medium in order. After two wrong in a row, stop and review the method.", "Write down u₁ (first term), d or r (difference or ratio) and n before choosing a formula.", "A sum to infinity only exists when |r| < 1. Write that condition in your answer; it earns marks.", "Do half the set by hand and half with the calculator to learn when each is faster."]}, "s2": {"phy": ["List the known quantities (s, u, v, a, t) and the one you need, then pick the equation that leaves out the one you don't need.", "For graphs, say what the gradient and the area mean before calculating anything.", "In the lab, put the uncertainty in the table header and keep decimal places consistent in each column.", "Use a PhET motion simulation to check what the graph shapes should look like."], "mat": ["Make one flashcard per log law and review them daily this sprint.", "Try to write both sides with the same base first; use logarithms only if that fails.", "Check every answer by substituting it back into the original equation.", "In proofs, work from one side only, one justified step per line."]}, "s3": {"phy": ["Split each projectile into a horizontal row (constant velocity) and a vertical row (constant acceleration).", "Time links the two rows, so find it first.", "In the timed multiple-choice set, allow about 1.5 minutes per question. Skip hard ones and come back.", "Afterwards, label each wrong answer: concept, misreading the question, or arithmetic."], "mat": ["Sketch the function before answering; domain and range are easier to read from a picture.", "For composite functions, work from the inside out and write the middle step.", "For inverses, swap x and y, then solve for y. Check that f(f⁻¹(x)) = x.", "Do the self-test with no notes and a timer, then mark it honestly against the markscheme."]}, "s4": {"phy": ["Draw the free-body diagram before writing any equation, and label each force with its cause.", "Choose a positive direction and keep it for the whole problem.", "For collisions, make the first line: total momentum before = total momentum after.", "Mix in 5 kinematics questions from Sprint 2 (interleaving)."], "mat": ["Describe each transformation in words (for example 'vertical stretch, factor 2') before sketching.", "Complete the square by hand at least three times until the vertex form feels automatic.", "Use the discriminant as a check: its sign must match the number of roots on your sketch.", "Check binomial coefficients with the calculator's nCr function."]}, "s5": {"phy": ["Revise from the error log and the Cornell cue columns, not by re-reading notes.", "Do one timed section with the data booklet only, then mark it with the markscheme.", "In the exam, answer the questions you are surest of first; mark the rest and come back.", "After the results, sort every lost mark: concept, misread or arithmetic."], "mat": ["Do the no-calculator practice first, while fresh; show every step.", "Redo error-log questions without looking at the old solution.", "In the exam, write working even when the answer seems obvious: method marks add up.", "After the results, redo every lost-mark question within a week."]}, "s6": {"phy": ["Start each problem by naming the energy stores at the beginning and at the end.", "In W = Fs cos θ, θ is the angle between the force and the displacement.", "Mixed sets feel harder than topic sets. That difficulty is what makes them work, so don't sort them.", "Mark any question that took over 5 minutes and redo it before the holidays."], "mat": ["For rational functions, find the asymptotes first, then plot two points on each side.", "Draw eˣ and ln x on one sketch; they are reflections in y = x.", "In the mixed review, cover the topic label and choose the method yourself.", "Log every error with the exact step that went wrong."]}};
 
 const HABITS = [{"t": "Two short retrieval sessions per week for each lead subject (questions first, notes after)", "tip": "20–30 minutes each: 5 minutes writing down what you remember, 15–20 minutes of questions, 5 minutes checking. Put them in the calendar like a class."}, {"t": "Error log updated: every wrong answer written down with the reason and the fix", "tip": "Columns: date · question · what I did · why it was wrong (concept, misread, arithmetic) · the correct idea. Redo logged questions a week later without looking."}, {"t": "One spaced review of the previous sprint's topics (10–15 mixed questions)", "tip": "Pick 10–15 questions from last sprint, mixed, and do them cold. Anything wrong goes into the error log."}, {"t": "Flashcards reviewed at least 4 days out of 7", "tip": "10–15 minutes a day beats an hour on Sunday. One fact per card, written as a question. Anki schedules the reviews for you."}, {"t": "Homework and deadlines logged the day they are set", "tip": "Use one place only (the school platform or one planner). Write the task, the due date and how long you think it will take."}];
 
 const SPRINTS = [
  {id:"s1", n:"Sprint 1", title:"Foundations", start:"2026-09-28", end:"2026-10-09",
-  focus:"Set the systems up and lock in the maths and measurement skills everything else in Physics depends on.",
+  events:[{d:"2026-10-05",t:"Partial exams (exàmens parcials) run 5–23 Oct"}],
+  focus:"Set the systems up and lock in the maths and measurement skills everything else in Physics depends on. Partial exams start on 5 October: find out now which subject is tested when.",
   items:{
    phy:{practice:"20 problems on uncertainties and vectors; start the error log.",
         list:["Use SI units (Système International: metre, kilogram, second…), prefixes and significant figures correctly","Tell random from systematic error and give one way to reduce each","Calculate absolute, fractional and percentage uncertainty","Propagate uncertainty through sums, products and powers","Resolve a vector into components and add two vectors"]},
@@ -695,10 +716,11 @@ const SPRINTS = [
    his:["Explain the four history concepts: causation, continuity and change, perspectives, significance"],
    lit:["Reading schedule for the first work agreed and started"],
    core:["CAS: meet the coordinator and plan one experience for each strand","TOK: start a weekly knowledge journal (one real-world example per week)","EE: list three subjects that could host an Extended Essay"],
-   hab:["Weekly study timetable written, with fixed slots for Physics and Maths"]
+   hab:["Weekly study timetable written, with fixed slots for Physics and Maths","Partial exam dates (5–23 Oct) for every subject written in the planner"]
   }},
  {id:"s2", n:"Sprint 2", title:"Motion", start:"2026-10-12", end:"2026-10-23", off:[{d:"2026-10-12",t:"public holiday (Fiesta Nacional de España)"}],
-  focus:"Kinematics in Physics, exponents and logarithms in Maths. First lab write-up with proper uncertainty treatment.",
+  events:[{d:"2026-10-12",t:"Partial exams continue until 23 Oct"}],
+  focus:"Kinematics in Physics, exponents and logarithms in Maths, alongside the partial exams (until 23 Oct). First lab write-up with proper uncertainty treatment.",
   items:{
    phy:{practice:"25 kinematics problems, including 5 graph questions; one short lab with error bars.",
         list:["Distinguish distance/displacement and speed/velocity","Read gradient and area from displacement-time and velocity-time graphs","Choose and rearrange the right suvat equation (constant-acceleration equations linking s displacement, u initial velocity, v final velocity, a acceleration, t time), stating when they apply","Linearise data and read a physical quantity from the gradient","Plot error bars and draw best-fit and worst-fit lines"]},
@@ -711,8 +733,8 @@ const SPRINTS = [
    core:["CAS: first experience logged with a reflection naming a learning outcome","EE: read a short summary of the 2027 EE guide (pathways and criteria)"],
    hab:["First error-log review: top three recurring mistakes identified"]
   }},
- {id:"s3", n:"Sprint 3", title:"Projectiles & functions", start:"2026-10-26", end:"2026-11-06", off:[{d:"2026-10-30",t:"free day for Castanyada and All Saints (Barcelona's proposal; the school sets its own)"}],
-  focus:"Projectile motion and the language of functions. Mid-term checkpoint: first timed self-test in both lead subjects.",
+ {id:"s3", n:"Sprint 3", title:"Projectiles & functions", start:"2026-10-26", end:"2026-11-06", events:[{d:"2026-10-30",t:"Incidències day"},{d:"2026-11-02",t:"Interim report week (avaluació orientativa), 2–6 Nov"},{d:"2026-11-05",t:"MUN Lisbon trip, 5–7 Nov (if taking part)"}],
+  focus:"Projectile motion and the language of functions. The interim report arrives this sprint: use it with the first timed self-test in both lead subjects.",
   items:{
    phy:{practice:"15 projectile problems + a timed 15-question multiple-choice set (about 30 min).",
         list:["Treat horizontal and vertical motion independently in a projectile","Find time of flight, range and maximum height","Describe qualitatively how air resistance changes the path","Explain terminal velocity with a force argument"]},
@@ -723,10 +745,10 @@ const SPRINTS = [
    his:["Build a timeline and cause map for the first case study"],
    lit:["Short comparative note linking the first work to a second text"],
    core:["TOK: link one journal example to an Area of Knowledge","CAS: two strands now under way"],
-   hab:["Mid-term check-in with a parent: ratings, workload, sleep"]
+   hab:["Interim report (avaluació orientativa) discussed with a parent: ratings, workload, sleep"]
   }},
- {id:"s4", n:"Sprint 4", title:"Forces & momentum", start:"2026-11-09", end:"2026-11-20",
-  focus:"Newton's laws and momentum in Physics; transformations, quadratics and the binomial theorem in Maths.",
+ {id:"s4", n:"Sprint 4", title:"Forces & momentum", start:"2026-11-09", end:"2026-11-20", events:[{d:"2026-11-20",t:"Term exams (exàmens trimestrals) start, 20–26 Nov"}],
+  focus:"Newton's laws and momentum in Physics; transformations, quadratics and the binomial theorem in Maths. Term exams start on Friday 20 Nov, so the second week is also revision.",
   items:{
    phy:{practice:"25 problems on forces and momentum; 5 free-body diagram drills.",
         list:["Draw correct free-body diagrams","Apply Newton's three laws to connected and inclined systems","Use static and dynamic friction correctly (μ = coefficient of friction)","Find impulse from the area under a force-time graph","Apply conservation of momentum to collisions and explosions"]},
@@ -737,34 +759,52 @@ const SPRINTS = [
    his:["Answer one short-response question using evidence and a concept"],
    lit:["Presentation or essay on the first work prepared"],
    core:["TOK: read the 35 exhibition IA (internal assessment) prompts and shortlist three","EE: talk informally to one possible supervisor"],
-   hab:["Two-week streak on flashcards (at least 4 days a week)"]
+   hab:["Revision timetable for the term exams (20–26 Nov) written and followed"]
   }},
- {id:"s5", n:"Sprint 5", title:"Energy & consolidation", start:"2026-11-23", end:"2026-12-04",
-  focus:"Work, energy and power close the mechanics block. Maths finishes the core function families. Start mixed revision for December tests.",
+ {id:"s5", n:"Sprint 5", title:"Term exams & review", start:"2026-11-23", end:"2026-12-04",
+  events:[{d:"2026-11-23",t:"Term exams continue until 26 Nov"},{d:"2026-11-27",t:"Cinema day"},{d:"2026-11-30",t:"First-term evaluation week (avaluació 1r trimestre), 30 Nov – 4 Dec"}],
+  focus:"Term exams run 20–26 November. Sit them rested, then use the corrected papers: every lost mark goes into the error log before the evaluation week (30 Nov – 4 Dec).",
   items:{
-   phy:{practice:"Mixed set of 20 problems across uncertainties, kinematics, forces, momentum and energy (interleaved).",
-        list:["Calculate work done by a force, including at an angle","Use kinetic and gravitational potential energy with conservation of energy","Calculate power and efficiency, including energy losses","Solve a multi-step problem combining momentum and energy"]},
-   mat:{practice:"Revision Village: Rational, Exponential & Log functions, about 12 questions; mixed review of sprints 1–4.",
-        list:["Sketch reciprocal and simple rational functions with asymptotes","Sketch exponential and logarithmic functions and describe their key features","Solve equations graphically on the GDC (graphic display calculator)","Choose the right technique in a mixed question set"]},
+   phy:{practice:"Before the exam: one timed section on uncertainties, kinematics, projectiles and forces. After: redo every question that lost marks.",
+        list:["Exam-ready: uncertainties, kinematics, projectiles, forces and momentum (self-checks at 3 or above)",
+"Exam sat with units, working and significant figures on every answer",
+"Corrected paper reviewed: each lost mark labelled concept, misread or arithmetic",
+"Every lost-mark question redone without notes"]},
+   mat:{practice:"Before the exam: one timed no-calculator and one calculator section on sprints 1–4. After: redo every question that lost marks.",
+        list:["Exam-ready: sequences, exponents and logarithms, functions, transformations, quadratics",
+"Exam sat with full working shown",
+"Corrected paper reviewed and every error logged",
+"Every lost-mark question redone without notes"]},
+   eng:["Term exam or task done; teacher feedback copied into the learner portfolio"],
+   bus:["Term exam revised: sections 1.1–1.5 from flashcards and the guide's practice questions",
+"Corrected exam reviewed; the weakest section redone from the guide"],
+   his:["Term exam revised with the timeline and cause maps; feedback noted"],
+   lit:["Term exam or assessment done; feedback noted"],
+   core:["CAS: reflections up to date for every experience",
+"EE: two possible research areas written down with one source each"],
+   hab:["8+ hours of sleep every night of exam week"]
+  }},
+ {id:"s6", n:"Sprint 6", title:"Energy & term review", start:"2026-12-07", end:"2026-12-21", off:[{d:"2026-12-07",t:"no school (long weekend)"},{d:"2026-12-08",t:"public holiday (Immaculate Conception)"}], events:[{d:"2026-12-10",t:"Human Rights day"},{d:"2026-12-22",t:"Christmas break until 7 Jan"}],
+  focus:"After the evaluation, start work, energy and power in Physics and finish the function families in Maths. Close the term with an honest review and targets for January (the next partial exams run 11–29 Jan).",
+  items:{
+   phy:{practice:"20 problems on work, energy and power, plus 5 mixed questions from earlier topics (interleaved).",
+        list:["Calculate work done by a force, including at an angle",
+"Use kinetic and gravitational potential energy with conservation of energy",
+"Calculate power and efficiency, including energy losses",
+"Solve a multi-step problem combining momentum and energy"]},
+   mat:{practice:"Revision Village: Rational, Exponential & Log functions, about 12 questions; mixed review of the term.",
+        list:["Sketch reciprocal and simple rational functions with asymptotes",
+"Sketch exponential and logarithmic functions and describe their key features",
+"Solve equations graphically on the GDC (graphic display calculator)",
+"Choose the right technique in a mixed question set"]},
    eng:["Learner portfolio: at least five solid entries"],
-   bus:["1.6 Multinational companies (MNCs): impact on host countries","Apply STEEPLE (social, technological, economic, environmental, political, legal, ethical factors) to an MNC entering Spain"],
+   bus:["1.6 Multinational companies (MNCs): impact on host countries",
+"Apply STEEPLE (social, technological, economic, environmental, political, legal, ethical factors) to an MNC entering Spain"],
    his:["Plan one essay with a clear argument and counter-argument"],
-   lit:["Revision notes for end-of-term assessment"],
-   core:["EE: two possible research areas written down with one source each","CAS: reflections up to date for every experience"],
-   hab:["Revision timetable for December tests written"]
-  }},
- {id:"s6", n:"Sprint 6", title:"Tests & term review", start:"2026-12-07", end:"2026-12-21", off:[{d:"2026-12-07",t:"free day (Barcelona's proposal; the school sets its own)"},{d:"2026-12-08",t:"public holiday (Immaculate Conception)"}],
-  focus:"Timed practice under exam conditions, then an honest term review that sets the targets for January.",
-  items:{
-   phy:{practice:"Two timed practice sections (multiple choice + structured questions) on the mechanics block.",
-        list:["Complete a timed multiple-choice set with 70%+ correct","Complete structured questions showing units, working and significant figures","Every error-log entry from the term revisited and re-attempted"]},
-   mat:{practice:"One timed no-calculator and one calculator section on topics 1–2.",
-        list:["Complete a no-calculator section with full working","Complete a calculator section using the GDC (graphic display calculator) efficiently","Re-attempt every question that was wrong in sprints 1–5"]},
-   eng:["Timed Paper 1 practice with teacher feedback"],
-   bus:["Unit 1 review: all key terms recalled from flashcards","Timed practice: one data-response question from the guide, marked against its model answer"],
-   his:["Timed source-analysis practice"],
-   lit:["End-of-term assessment completed"],
-   core:["TOK: choose the exhibition prompt direction for term 2","CAS: CAS project idea sketched","EE: preferred subject chosen"],
+   lit:["Reading for January started; notes on context and themes"],
+   core:["TOK: choose the exhibition prompt direction for term 2",
+"CAS: CAS project idea sketched",
+"EE: preferred subject chosen"],
    hab:["Term review: three things that worked, three to change, targets for January"]
   }}
 ];
@@ -829,7 +869,7 @@ function renderTimeline(){
       <span class="n">${s.n.toUpperCase()}</span>
       <span class="t">${esc(s.title)}</span>
       <span class="d">${fmt(s.start)} – ${fmt(s.end)}</span>
-      <span class="sd">${schoolDays(s)} school days${(s.off||[]).length?` · ${s.off.length} off`:""}</span>
+      <span class="sd">${schoolDays(s)} school days${(s.off||[]).length?` · ${s.off.length} off`:""}${(s.events||[]).some(e=>/exam/i.test(e.t))?` · <b class="ex">exams</b>`:""}</span>
       <span class="bar" aria-hidden="true"><i style="width:${p}%"></i></span>
     </button>`;
   }).join("");
@@ -899,7 +939,7 @@ function renderSprint(){
         <span class="phase">${sp.id===nowId ? "Current sprint" : (sp.end < new Date().toISOString().slice(0,10) ? "Past sprint" : "Coming up")}</span>
       </div>
       <p class="focus">${esc(sp.focus)}</p>
-      <p class="offdays"><b>${schoolDays(sp)} school days</b>${(sp.off||[]).length ? " · No school: " + sp.off.map(o=>`${fmt(o.d)} – ${esc(o.t)}`).join("; ") : " · No holidays in this sprint"}. Based on the official Catalan school calendar 2026–27.</p>
+      <p class="offdays"><b>${schoolDays(sp)} school days</b>${(sp.off||[]).length ? " · No school: " + sp.off.map(o=>`${fmt(o.d)} – ${esc(o.t)}`).join("; ") : " · No holidays in this sprint"}.${(sp.events||[]).length ? `<br><b>School dates:</b> ` + sp.events.map(o=>`${fmt(o.d)} – ${esc(o.t)}`).join("; ") + "." : ""}</p>
     </section>
     ${leadCards}
     <div class="minor-grid">${minor}
@@ -1073,6 +1113,7 @@ renderBackup();
 })();
 })();
 </script>
+
 
 </body>
 </html>

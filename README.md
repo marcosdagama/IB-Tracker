@@ -1,6 +1,6 @@
 # IB Tracker
 
-Fortnightly tracker for the first term of the IB Diploma (DP1, 28 Sep – 21 Dec 2026; dates follow the official Catalan school calendar 2026–27).
+Fortnightly tracker for the first term of the IB Diploma (DP1, 28 Sep – 21 Dec 2026; dates follow the school's 2026–27 calendar: partial exams 5–23 Oct, term exams 20–26 Nov).
 Live page: https://marcosdagama.github.io/IB-Tracker/
 
 ## What it measures
@@ -37,6 +37,11 @@ Browsers can clear saved site data (Safari does after a period without visits, a
    The progress being replaced is kept as a snapshot first, so a restore can itself be undone.
 
 A backup file can move progress between the two versions (download from one, restore into the other).
+
+## Public and private versions
+
+This public page leaves out personal details (timetable, teachers, school). The private version on claude.ai has them.
+The source keeps private parts between `<!--PRIVATE-->` and `<!--/PRIVATE-->` markers, which are removed before publishing here.
 
 ## Changing the tracker without losing progress
 
