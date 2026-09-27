@@ -40,7 +40,7 @@ A backup file can move progress between the two versions (download from one, res
 
 ## Public and private versions
 
-This public page leaves out personal details (timetable, teachers, school). The private version on claude.ai has them.
+This public page leaves out personal details (student's name, school, teachers' names). The private version on claude.ai also shows the teachers.
 The source keeps private parts between `<!--PRIVATE-->` and `<!--/PRIVATE-->` markers, which are removed before publishing here.
 
 ## Changing the tracker without losing progress

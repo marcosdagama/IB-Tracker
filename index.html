@@ -195,6 +195,7 @@ details.tip.block summary::before{color:var(--accent)}
 .tabbar button:hover{background:rgba(255,255,255,.14)}
 .tabbar button[aria-selected="true"]{background:var(--surface);color:var(--accent)}
 .view{display:flex;flex-direction:column;gap:22px}
+.view[hidden],[hidden]{display:none!important}
 .guide-intro{color:var(--ink-2);max-width:70ch}
 .guide-grid.two{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
 .guide-grid > details.tip.block:has(.cornell){grid-column:auto}
@@ -288,6 +289,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 
   <div class="tabbar" role="tablist" aria-label="Sections">
     <button type="button" role="tab" id="tab-tracker" data-view="tracker" aria-selected="true" aria-controls="view-tracker">Tracker</button>
+    <button type="button" role="tab" id="tab-cal" data-view="cal" aria-selected="false" aria-controls="view-cal">Calendar</button>
     <button type="button" role="tab" id="tab-guide" data-view="guide" aria-selected="false" aria-controls="view-guide">Study guide</button>
   </div>
 
@@ -317,16 +319,8 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
     </div>
   </details>
 
-  <details class="panel termcal" id="termCal">
-    <summary><h3>Term calendar</h3><span class="note" id="calName"></span><span class="cal-toggle"></span></summary>
-    <div class="cal-wrap"><table class="cal" id="calGrid" aria-label="Term calendar by week"></table></div>
-    <div class="cal-legend">
-      <span><i class="lg exam"></i>Exams</span><span><i class="lg off"></i>No school</span><span><i class="lg event"></i>School date</span><span><i class="lg today"></i>Today</span><span class="note">Click a sprint to open it.</span>
-    </div>
-  </details>
 
   <section class="summary" id="summary" aria-label="Term progress"></section>
-
 
 
   <div class="main">
@@ -415,6 +409,25 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       </div>
     </aside>
   </div>
+  </div>
+
+  <div id="view-cal" class="view" role="tabpanel" aria-labelledby="tab-cal" hidden>
+  <details class="panel termcal" id="termCal" open>
+    <summary><h3>Term calendar</h3><span class="note" id="calName"></span><span class="cal-toggle"></span></summary>
+    <div class="cal-wrap"><table class="cal" id="calGrid" aria-label="Term calendar by week"></table></div>
+    <div class="cal-legend">
+      <span><i class="lg exam"></i>Exams</span><span><i class="lg off"></i>No school</span><span><i class="lg event"></i>School date</span><span><i class="lg today"></i>Today</span><span class="note">Click a week to open that sprint in the Tracker tab.</span>
+    </div>
+  </details>
+  <details class="panel tt" id="timetable">
+    <summary><h3>Weekly timetable</h3><span class="note" id="ttToday"></span><span class="cal-toggle"></span></summary>
+    <div class="tt-wrap"><table class="tt-grid" id="ttGrid" aria-label="Weekly class timetable"></table></div>
+    <div class="tt-foot">
+      <p id="ttTonight" class="tonight"></p>
+      <p class="note" id="ttCounts"></p>
+      <p class="note" id="ttTeachers"></p>
+    </div>
+  </details>
   </div>
 
   <div id="view-guide" class="view" role="tabpanel" aria-labelledby="tab-guide" hidden>
@@ -1092,6 +1105,7 @@ document.addEventListener("click", e=>{
   const r = e.target.closest("[data-cal-s]"); if(!r) return;
   active = r.dataset.calS; try{ localStorage.setItem(LS_KEY+".tab", active); }catch(err){}
   renderTimeline(); renderSprint(); renderCalendar();
+  showView("tracker");
   document.getElementById("sprintCol").scrollIntoView({behavior:"smooth", block:"start"});
 });
 (function(){
@@ -1105,13 +1119,12 @@ renderCalendar();
 /* ---------- tabs ---------- */
 function showView(v){
   document.querySelectorAll(".tabbar [role=tab]").forEach(b=> b.setAttribute("aria-selected", String(b.dataset.view===v)));
-  document.getElementById("view-tracker").hidden = v!=="tracker";
-  document.getElementById("view-guide").hidden = v!=="guide";
+  ["tracker","cal","guide"].forEach(x=> document.getElementById("view-"+x).hidden = v!==x);
   try{ localStorage.setItem(LS_KEY+".view", v); }catch(e){}
 }
 document.querySelector(".tabbar").addEventListener("click", e=>{ const b = e.target.closest("[data-view]"); if(!b) return; showView(b.dataset.view); window.scrollTo({top:0}); });
-document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const cur = document.querySelector(".tabbar [aria-selected=true]").dataset.view; const next = cur==="tracker"?"guide":"tracker"; showView(next); document.getElementById("tab-"+next).focus(); });
-(function(){ let v = (location.hash||"").replace("#",""); if(v==="guia") v = "guide"; if(v!=="guide" && v!=="tracker"){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(v==="guide"?"guide":"tracker"); })();
+document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const order = ["tracker","cal","guide"]; const cur = order.indexOf(document.querySelector(".tabbar [aria-selected=true]").dataset.view); const next = order[(cur + (e.key==="ArrowRight"?1:2)) % 3]; showView(next); document.getElementById("tab-"+next).focus(); });
+(function(){ let v = (location.hash||"").replace("#",""); if(v==="guia") v = "guide"; if(v==="calendar") v = "cal"; if(!["guide","tracker","cal"].includes(v)){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(["guide","cal"].includes(v) ? v : "tracker"); })();
 
 
 /* ---------- study guide language ---------- */
@@ -1219,6 +1232,51 @@ renderBackup();
     }, ()=> setSync("Saved on this device only", false));
   }catch(e){}
 })();
+})();
+</script>
+
+<script>
+(function(){
+  const SLOTS = ["8:00","9:00","10:00","11:30","12:30","13:30"];
+  const DAYS = ["Mon","Tue","Wed","Thu","Fri"];
+  // one entry per slot; "" = same class continues from the slot above
+  const TT = {
+    Mon:["Business","Maths","English","Physics","Literature","Tutorial"],
+    Tue:["English","Maths","History","PE","","TOK"],
+    Wed:["Maths","","Business","English","History","Physics"],
+    Thu:["Business","History","English","Physics","CAS / EE","Literature"],
+    Fri:["Business","History","Physics","Literature","Maths","TOK"]
+  };
+  const TEACH = window.TT_TEACH || null;
+  const REVIEW = ["Physics","Maths","English","Business","History","Literature","TOK"];
+  const grid = document.getElementById("ttGrid"); if(!grid) return;
+  const det = document.getElementById("timetable");
+  let open = true; try{ const v = localStorage.getItem("dp1-term1-v1.tt"); if(v!==null) open = v==="1"; }catch(e){}
+  det.open = open;
+  det.addEventListener("toggle", ()=>{ try{ localStorage.setItem("dp1-term1-v1.tt", det.open?"1":"0"); }catch(e){} });
+  const now = new Date(); const wd = now.getDay(); const today = wd>=1 && wd<=5 ? DAYS[wd-1] : null;
+  let h = "<thead><tr><th></th>" + DAYS.map(d=>`<th class="${d===today?"is-today":""}">${d}</th>`).join("") + "</tr></thead><tbody>";
+  SLOTS.forEach((t,i)=>{
+    if(i===3) h += `<tr class="brk"><th>11:00</th><td colspan="5">Break</td></tr>`;
+    h += `<tr><th>${t}</th>`;
+    DAYS.forEach(d=>{
+      const v = TT[d][i];
+      if(v==="") return;
+      const span = (TT[d][i+1]==="") ? 2 : 1;
+      const cls = ["Physics","Maths"].includes(v) ? "lead" : (["Business","English"].includes(v) ? "hl" : "");
+      h += `<td rowspan="${span}" class="${cls} ${d===today?"is-today":""}">${v}</td>`;
+    });
+    h += "</tr>";
+  });
+  grid.innerHTML = h + "</tbody>";
+  const counts = {}; DAYS.forEach(d=> TT[d].forEach((v,i)=>{ if(!v) { const prev = TT[d][i-1]; counts[prev]=(counts[prev]||0)+1; } else counts[v]=(counts[v]||0)+1; }));
+  document.getElementById("ttCounts").textContent = "Class hours per week: " + Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k} ${v}`).join(" · ") + ". School ends at 14:30 every day.";
+  const tEl = document.getElementById("ttTeachers"); if(TEACH) tEl.textContent = "Teachers: " + Object.entries(TEACH).map(([k,v])=>`${k} – ${v}`).join(" · ") + "."; else tEl.hidden = true;
+  const tonight = today ? [...new Set(TT[today].filter(v=>REVIEW.includes(v)))] : [];
+  document.getElementById("ttToday").textContent = today ? "Today is highlighted" : "Weekend";
+  document.getElementById("ttTonight").innerHTML = today
+    ? `<b>Tonight, 10 minutes per subject:</b> write the Cornell cue questions for today's ${tonight.join(", ")} notes.`
+    : `<b>Weekend:</b> one spaced review of this week's topics, and plan Monday (${[...new Set(TT.Mon.filter(v=>REVIEW.includes(v)))].join(", ")}).`;
 })();
 </script>
 
