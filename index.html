@@ -262,6 +262,9 @@ table.tt-grid{border-collapse:separate;border-spacing:3px;width:100%;min-width:5
 .tt-grid td.hl{background:var(--mark-soft)}
 .tt-grid .is-today{outline:2px solid var(--accent);outline-offset:-2px}
 .tt-grid thead th.is-today{color:var(--accent);font-weight:600;outline:0}
+.tt-grid td.free{background:transparent}
+.tt-grid td.after{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.tt-grid td small{font-weight:400;color:var(--ink-2)}
 .tt-grid tr.brk td{background:transparent;color:var(--muted);font-size:11.5px;padding:2px;text-align:left}
 .tt-foot{display:flex;flex-direction:column;gap:6px}
 .tonight{font-size:14px;background:var(--accent-soft);border-radius:6px;padding:8px 12px}
@@ -302,6 +305,7 @@ table.cal{border-collapse:separate;border-spacing:3px;width:100%;min-width:720px
 .t-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
 .t-list li{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:9px 12px;display:flex;flex-direction:column;gap:2px;background:var(--surface)}
 .t-subj{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.t-list li.t-tutor{border-left-color:var(--mark);background:var(--mark-soft)}
 .t-name{font-family:var(--display);font-size:17px;font-weight:600;color:var(--ink)}
 .t-note{font-size:12.5px;color:var(--ink-2)}
 .note{font-size:12.5px;color:var(--muted)}
@@ -335,7 +339,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   <nav class="timeline" id="timeline" aria-label="Fortnightly sprints"></nav>
 
   <details class="needs" id="needs">
-    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 8 questions for the student and the school</summary>
+    <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 7 questions for the student and the school</summary>
     <div class="needs-body">
       <p>The plan uses sensible defaults where these answers are missing. Each answer makes the checklists more accurate.</p>
       <div class="needs-grid">
@@ -350,7 +354,6 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         </ol></div>
         <div><h4>Teaching and resources</h4><ol start="6">
           <li>The order of topics this term for Physics, Business, English and TOK (Maths is known from the school's plan). It can be checked in each Kognity class; where it differs from the sprints, the tracker should follow it.</li>
-          <li>Tutor sessions: which subjects, and how often.</li>
           <li>First test results or target grades, to set a baseline for the self-check ratings.</li>
         </ol></div>
       </div>
@@ -781,7 +784,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 <script>
 (function(){
 const SUBJECTS = [
-  {id:"phy", tl:"EN", name:"Physics HL", long:"Higher Level", lead:true, book:"Kognity: <em>IB DP Physics SL/HL</em>, class <em>Physics HL 2026–2028</em>. Read the subtopic before class; after class, do its questions and the quiz without notes (practice testing).<br><br><strong>IB final exam (HL)</strong>: Paper 1, 2 h: 1A multiple choice + 1B data-based questions (36%); Paper 2, 2 h 30 min: short and extended answers (44%); internal assessment: one scientific investigation, 24 marks (20%). A clean copy of the Physics data booklet is provided in every exam."},
+  {id:"phy", tl:"EN", name:"Physics HL", long:"Higher Level", lead:true, book:"Kognity: <em>IB DP Physics SL/HL</em>, class <em>Physics HL 2026–2028</em>. Read the subtopic before class; after class, do its questions and the quiz without notes (practice testing).<br><br><strong>Tuesday tutoring, 18:00–19:00</strong>: bring the error log, this week's Kognity subtopic and every item rated 1 or 2. Start with the questions that went wrong, then do 2–3 new exam-style questions together. Afterwards, write one line in the error log about what was cleared up.<br><br><strong>IB final exam (HL)</strong>: Paper 1, 2 h: 1A multiple choice + 1B data-based questions (36%); Paper 2, 2 h 30 min: short and extended answers (44%); internal assessment: one scientific investigation, 24 marks (20%). A clean copy of the Physics data booklet is provided in every exam."},
   {id:"mat", tl:"ES", name:"Maths AA SL", long:"Analysis and Approaches, Standard Level", lead:true, book:"Kognity, in Spanish: <em>Matemáticas: Análisis y enfoques NM</em>, class <em>2026–28</em>. Use it for the Spanish terms used in class and in the exams (sucesión, dominio y recorrido, función inversa…). Revision Village is in English: use it for extra practice questions.<br><br><strong>Weekly Kognity assignment</strong> set by the teacher: do it every week, it is part of the course.<br><br><strong>School exams</strong>: partial exams 45 min, marked out of 40; term exams 90 min, out of 80; mock exam in May (Paper 1 + Paper 2, 90 min each, out of 160). Paper 1-style questions without the GDC, Paper 2-style with it. Exams are written in Spanish.<br><strong>School grade bands (1–7)</strong>: 7 = 85–100%, 6 = 75–84%, 5 = 60–74%, 4 = 50–59%, 3 = 40–49%, 2 = 20–39%, 1 = below 20%.<br><br><strong>IB final exam (SL)</strong>: Paper 1, no calculator, 90 min, 40%; Paper 2, calculator, 90 min, 40%; internal assessment (mathematical exploration) 20%."},
   {id:"eng", tl:"EN", name:"English B HL", book:"Kognity: <em>IB English B HL · 1st Term</em>. Language B is organised around five themes; the exams are a writing paper (Paper 1) and a reading and listening paper (Paper 2), and at HL the individual oral is based on a passage from one of the literary works studied.<br><br>Current text: Suzanne Collins, <em>The Hunger Games</em> (2008). You read it in August, so the re-read is about <em>how</em> it is written, not what happens.<br><br><strong>How to summarise a chapter</strong><br>1. Re-read with a pencil and mark 3–4 key moments per chapter.<br>2. For each chapter, write 3–5 sentences: what happens, who is involved, and where.<br>3. Add one or two lines on how the writer shapes it: the narrative voice (who tells the story, and in which tense), the setting and how power is shown, and how characters are introduced.<br>4. Quote one short phrase per chapter that supports a point.<br>5. Keep to your own words and to the teacher's length. Summarise; don't retell every event.<br>6. File the summaries in the English notebook."},
   {id:"bus", tl:"EN", name:"Business Management HL", book:"Kognity: <em>Business Management HL · 1st Term</em>.<br><strong>IB final exam (HL)</strong>: Paper 1, case study with a pre-released statement, 90 min (25%); Paper 2, quantitative, 1 h 45 min (30%); Paper 3, social enterprise, 1 h 15 min (25%); internal assessment: business research project, max. 1,800 words (20%).<br><br>Book: Paul Hoang, <em>Business Management for the IB Diploma: Prepare for Success</em> (Hodder, 2023). For each section: read it, close the book, write the key points from memory, then do its practice questions and mark them."},
@@ -815,7 +818,8 @@ const SPRINTS = [
   focus:"Set the systems up and lock in the maths and measurement skills everything else in Physics depends on. The partial assessment window opens on 5 October: find out now which day each subject is tested.",
   items:{
    phy:{practice:"20 problems on uncertainties and vectors; start the error log.",
-        list:["Use SI units (Système International: metre, kilogram, second…), prefixes and significant figures correctly","Tell random from systematic error and give one way to reduce each","Calculate absolute, fractional and percentage uncertainty","Propagate uncertainty through sums, products and powers","Resolve a vector into components and add two vectors"]},
+        list:["Use SI units (Système International: metre, kilogram, second…), prefixes and significant figures correctly","Tell random from systematic error and give one way to reduce each","Calculate absolute, fractional and percentage uncertainty","Propagate uncertainty through sums, products and powers","Resolve a vector into components and add two vectors",
+"Tuesday tutoring, both weeks: error log and items rated 1–2 brought to the session"]},
    mat:{practice:"School plan: U2 Sequences and series. Weekly Kognity assignment, plus Revision Village Sequences & Series, easy and medium questions (about 15).",
         list:["Write numbers in scientific notation and round to the required accuracy","Find the nth term and sum of an arithmetic sequence","Find the nth term, sum and sum to infinity of a geometric sequence","Solve a compound interest / depreciation problem with the GDC (graphic display calculator)","Use the GDC sequence and table functions confidently"]},
    eng:["Set up the English notebook: a vocabulary list and one section per theme (Identities, Experiences, Human ingenuity, Social organization, Sharing the planet)","The Hunger Games: re-read chapters 1–3 and hand in the summary (set in mid-September, so check the due date now)"],
@@ -830,7 +834,8 @@ const SPRINTS = [
   focus:"Kinematics in Physics, exponents and logarithms in Maths, alongside the partial assessments (window until 23 Oct). First lab write-up with proper uncertainty treatment.",
   items:{
    phy:{practice:"25 kinematics problems, including 5 graph questions; one short lab with error bars.",
-        list:["Distinguish distance/displacement and speed/velocity","Read gradient and area from displacement-time and velocity-time graphs","Choose and rearrange the right suvat equation (constant-acceleration equations linking s displacement, u initial velocity, v final velocity, a acceleration, t time), stating when they apply","Linearise data and read a physical quantity from the gradient","Plot error bars and draw best-fit and worst-fit lines"]},
+        list:["Distinguish distance/displacement and speed/velocity","Read gradient and area from displacement-time and velocity-time graphs","Choose and rearrange the right suvat equation (constant-acceleration equations linking s displacement, u initial velocity, v final velocity, a acceleration, t time), stating when they apply","Linearise data and read a physical quantity from the gradient","Plot error bars and draw best-fit and worst-fit lines",
+"Tuesday tutoring, both weeks: error log and items rated 1–2 brought to the session"]},
    mat:{practice:"School plan: U2 ends 18 Oct, U3 Functions starts 19 Oct. Weekly Kognity assignment, plus Revision Village Sequences & Series (hard questions).",
         list:["Use sigma notation to write and evaluate series",
 "Decide when a geometric series converges and find its sum to infinity",
@@ -848,7 +853,8 @@ const SPRINTS = [
   focus:"Projectile motion and the language of functions. The interim report arrives this sprint: use it with the first timed self-test in both lead subjects.",
   items:{
    phy:{practice:"15 projectile problems + a timed 15-question multiple-choice set (about 30 min).",
-        list:["Treat horizontal and vertical motion independently in a projectile","Find time of flight, range and maximum height","Describe qualitatively how air resistance changes the path","Explain terminal velocity with a force argument"]},
+        list:["Treat horizontal and vertical motion independently in a projectile","Find time of flight, range and maximum height","Describe qualitatively how air resistance changes the path","Explain terminal velocity with a force argument",
+"Tuesday tutoring, both weeks: error log and items rated 1–2 brought to the session"]},
    mat:{practice:"School plan: U3 Functions. Weekly Kognity assignment, plus Revision Village Functions, about 15 questions; 20-minute no-calculator self-test on sprints 1–3.",
         list:["Sketch functions on the GDC and read their key features (intercepts, maximum and minimum points, asymptotes)","Work with gradient forms of a line, including parallel and perpendicular lines","Form and evaluate composite functions","Find an inverse function and sketch it as a reflection in y = x"]},
    eng:["One reading and one listening practice (Paper 2 style), answers checked against the key"],
@@ -866,7 +872,8 @@ const SPRINTS = [
 "Apply Newton's three laws, including identifying third-law force pairs",
 "Use contact forces: normal, friction (static μs and dynamic μd), tension, Hooke's law (F = −kx), drag and buoyancy",
 "Use momentum, impulse (J = FΔt, area under a force-time graph) and F = Δp/Δt",
-"Apply conservation of momentum to collisions and explosions (HL: also in two dimensions)"]},
+"Apply conservation of momentum to collisions and explosions (HL: also in two dimensions)",
+"Tuesday tutoring, both weeks: error log and items rated 1–2 brought to the session"]},
    mat:{practice:"School plan: U3 until 15 Nov, U4 Models from 16 Nov; term exams from 20 Nov. Weekly Kognity assignment, plus one timed Paper 1-style (no GDC) and one Paper 2-style (GDC) set.",
         list:["Apply translations, stretches and reflections to a graph",
 "Move between vertex, factored and standard forms of a quadratic",
@@ -887,7 +894,8 @@ const SPRINTS = [
         list:["Exam-ready: uncertainties, kinematics, projectiles, forces and momentum (self-checks at 3 or above)",
 "Exam sat with units, working and significant figures on every answer",
 "Corrected paper reviewed: each lost mark labelled concept, misread or arithmetic",
-"Every lost-mark question redone without notes"]},
+"Every lost-mark question redone without notes",
+"Tuesday tutoring, both weeks: error log and items rated 1–2 brought to the session"]},
    mat:{practice:"Before the exam: one timed no-calculator and one calculator section on sprints 1–4. After: redo every question that lost marks.",
         list:["Exam-ready: real numbers (U1), sequences and series (U2) and functions (U3)",
 "Exam sat with full working shown",
@@ -910,7 +918,8 @@ const SPRINTS = [
 "Calculate work done by a force, including at an angle",
 "Use kinetic and gravitational potential energy with conservation of energy",
 "Calculate power and efficiency, including energy losses",
-"Solve a multi-step problem combining momentum and energy"]},
+"Solve a multi-step problem combining momentum and energy",
+"Tuesday tutoring, both weeks: error log and items rated 1–2 brought to the session"]},
    mat:{practice:"School plan: U4 Models (functional models). Weekly Kognity assignment, plus Revision Village Exponential & Log functions, about 12 questions.",
         list:["Model situations with linear and quadratic functions",
 "Model growth and decay with exponential functions",
@@ -1172,6 +1181,11 @@ renderCalendar();
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.6", date:"27 Sep 2026", items:[
+    "Weekly Physics tutoring, Tuesdays 18:00–19:00, added to the timetable",
+    "Physics: a tutoring item in every sprint and a routine for the session in Book and method",
+    "Tuesday reminder in the timetable: what to bring to tutoring",
+    "Missing-information box down to 7 questions"]},
   {v:"1.5", date:"27 Sep 2026", items:[
     "\"What's new\" box highlighted in red, the same colour as rating 1 on the self-check scale"]},
   {v:"1.4", date:"27 Sep 2026", items:[
@@ -1370,6 +1384,7 @@ renderBackup();
     });
     h += "</tr>";
   });
+  h += `<tr class="brk"><th>14:30</th><td colspan="5">School ends</td></tr><tr><th>18:00</th>${DAYS.map(d=> d==="Tue" ? `<td class="lead after ${d===today?"is-today":""}">Physics tutoring<br><small>18:00–19:00</small></td>` : `<td class="free"></td>`).join("")}</tr>`;
   grid.innerHTML = h + "</tbody>";
   const counts = {}; DAYS.forEach(d=> TT[d].forEach((v,i)=>{ if(!v) { const prev = TT[d][i-1]; counts[prev]=(counts[prev]||0)+1; } else counts[v]=(counts[v]||0)+1; }));
   document.getElementById("ttCounts").textContent = "Class hours per week: " + Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k} ${v}`).join(" · ") + ". School ends at 14:30 every day.";
@@ -1377,7 +1392,7 @@ renderBackup();
   const tonight = today ? [...new Set(TT[today].filter(v=>REVIEW.includes(v)))] : [];
   document.getElementById("ttToday").textContent = today ? "Today is highlighted" : "Weekend";
   document.getElementById("ttTonight").innerHTML = today
-    ? `<b>Tonight, 10 minutes per subject:</b> write the Cornell cue questions for today's ${tonight.join(", ")} notes.`
+    ? `<b>Tonight, 10 minutes per subject:</b> write the Cornell cue questions for today's ${tonight.join(", ")} notes.` + (today==="Tue" ? ` <b>Physics tutoring 18:00–19:00:</b> bring the error log, this week's Kognity subtopic and any item rated 1 or 2.` : "")
     : `<b>Weekend:</b> one spaced review of this week's topics, and plan Monday (${[...new Set(TT.Mon.filter(v=>REVIEW.includes(v)))].join(", ")}).`;
 })();
 </script>
