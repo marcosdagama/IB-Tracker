@@ -181,6 +181,16 @@ details.tip.block summary::before{color:var(--accent)}
 .c-sum{grid-column:1 / -1;border-top:1.5px solid var(--ink-2);color:var(--ink)}
 .guide-grid > details.tip.block:has(.cornell){grid-column:span 2}
 @media (max-width:820px){.guide-grid > details.tip.block:has(.cornell){grid-column:auto}}
+
+.tabbar{display:flex;gap:4px;background:var(--accent);padding:5px;border-radius:8px;width:100%}
+.tabbar button{appearance:none;flex:1 1 0;font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:.01em;padding:9px 14px;border:0;border-radius:5px;background:transparent;color:var(--accent-ink);cursor:pointer}
+.tabbar button:hover{background:rgba(255,255,255,.14)}
+.tabbar button[aria-selected="true"]{background:var(--surface);color:var(--accent)}
+.view{display:flex;flex-direction:column;gap:22px}
+.guide-intro{color:var(--ink-2);max-width:70ch}
+.guide-grid.two{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
+.guide-grid > details.tip.block:has(.cornell){grid-column:auto}
+@media (max-width:820px){.guide-grid.two{grid-template-columns:1fr}}
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
@@ -196,6 +206,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
     <div class="sync" id="sync"><span class="dot" id="syncDot"></span><span id="syncTxt">Saved in this browser</span></div>
   </header>
 
+  <div class="tabbar" role="tablist" aria-label="Sections">
+    <button type="button" role="tab" id="tab-tracker" data-view="tracker" aria-selected="true" aria-controls="view-tracker">Tracker</button>
+    <button type="button" role="tab" id="tab-guide" data-view="guide" aria-selected="false" aria-controls="view-guide">Study guide</button>
+  </div>
+
+  <div id="view-tracker" class="view" role="tabpanel" aria-labelledby="tab-tracker">
   <nav class="timeline" id="timeline" aria-label="Fortnightly sprints"></nav>
 
   <section class="summary" id="summary" aria-label="Term progress"></section>
@@ -256,17 +272,6 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         <p class="note">Blank until rated. Two 2s in a row on a lead subject (Physics or Maths) = ask the teacher or tutor that week.</p>
       </div>
 
-      <div class="panel">
-        <h3>Study methods that work</h3>
-        <p class="note">From Dunlosky et al. (2013), a review of 10 study techniques.</p>
-        <div class="stack">
-          <details class="tip"><summary>Practice testing (high utility)</summary><p class="tip-body">Close the book and write down everything you remember, then check. Do questions before re-reading the chapter, and try each worked example yourself before reading the solution. Flashcards count.</p></details>
-          <details class="tip"><summary>Distributed practice (high utility)</summary><p class="tip-body">Three 40-minute sessions across a week beat one 2-hour session. Revisit a topic after about a day, a week, and three weeks. Anki does this scheduling automatically.</p></details>
-          <details class="tip"><summary>Interleaving (moderate)</summary><p class="tip-body">Mix 3–4 topics in one problem set and hide the topic labels, so you have to choose the method yourself. It feels harder and works better, especially in maths and physics.</p></details>
-          <details class="tip"><summary>Self-explanation (moderate)</summary><p class="tip-body">After each step of a solution, ask "why does this step work?" and answer in one sentence. Explaining to someone else is the strongest version.</p></details>
-          <details class="tip"><summary>Re-reading and highlighting (low utility)</summary><p class="tip-body">They feel productive but do little. Turn highlights into questions on flashcards, and after reading a page, close it and recall the main points.</p></details>
-        </div>
-      </div>
 
       <div class="panel">
         <h3>Tools</h3>
@@ -292,7 +297,10 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       </div>
     </aside>
   </div>
+  </div>
 
+  <div id="view-guide" class="view" role="tabpanel" aria-labelledby="tab-guide" hidden>
+  <p class="guide-intro">How to study, not what to study. Open any panel; nothing here needs ticking.</p>
   <section class="panel guide" aria-labelledby="guideH">
     <div><div class="eyebrow">Every study session</div><h2 id="guideH">Before, while and after you study</h2></div>
     <div class="guide-grid">
@@ -317,37 +325,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         <li>Tick the tracker; seeing progress keeps the habit going.</li>
         <li>Screens off 30–60 minutes before bed.</li>
       </ul></details>
-      <details class="tip block" open><summary>Filing paper work</summary><ul class="tip-body">
-        <li><strong>Two-level system:</strong> one thin "current" folder carried to school, plus one A4 ring binder per subject kept at home as the archive.</li>
-        <li><strong>One colour per subject</strong> across binder, notebook, dividers and flashcards (e.g. Physics blue, Maths green).</li>
-        <li><strong>Dividers by syllabus code:</strong> Physics A.1, A.2…; Maths 1.x, 2.x. Everything then maps straight to the exam topics and to this tracker.</li>
-        <li><strong>Header on every sheet:</strong> date · subject · topic code · page number.</li>
-        <li><strong>Order inside each topic:</strong> class notes → worked examples → practice with corrections in a different colour → marked tests.</li>
-        <li><strong>Cornell layout</strong> for class notes (see the Cornell panel): a narrow left column for questions or cue words, notes on the right, a 2–3 line summary at the bottom. Cover the right side to test yourself.</li>
-        <li><strong>Error log and syllabus checklist</strong> at the front of each binder.</li>
-        <li><strong>Physics lab section</strong> with raw data and dates. It becomes valuable when choosing the internal assessment.</li>
-        <li><strong>Flashcards on paper:</strong> A7 index cards in a box with 5 compartments (Leitner system). Right answers move back one compartment, wrong answers return to the first; box 1 daily, later boxes less often.</li>
-        <li><strong>Core folder</strong> for the TOK journal, CAS evidence and EE research notes.</li>
-        <li><strong>Friday 10-minute filing:</strong> empty the plastic "inbox" wallet of loose sheets into the binders.</li>
-        <li><strong>Keep everything.</strong> Final exams in May 2028 cover both years. Scan or photograph pages weekly as a backup.</li>
-      </ul></details>
-      <details class="tip block" open><summary>Cornell notes: how to lay out a page</summary><div class="tip-body">
-        <p>A note-taking layout from Cornell University that turns every page of class notes into a self-test.</p>
-        <div class="cornell" aria-label="Example Cornell page for Physics">
-          <div class="c-head"><span>Physics HL · A.1 Kinematics</span><span class="mono">12 Oct 2026 · p.4</span></div>
-          <div class="c-cue"><b>Cues</b><span>When can I use suvat?</span><span>What does the area under a v–t graph give?</span><span>Distance vs displacement?</span></div>
-          <div class="c-notes"><b>Notes</b><span>suvat only for constant acceleration.</span><span>v = u + at, s = ut + ½at², v² = u² + 2as, s = ½(u + v)t</span><span>Area under v–t graph = displacement. Gradient = acceleration.</span><span>Displacement is a vector (has direction); distance is not.</span></div>
-          <div class="c-sum"><b>Summary</b><span>For constant acceleration, choose the suvat equation without the quantity I don't need. Graph gradients and areas give a and s.</span></div>
-        </div>
-        <ol>
-          <li><strong>Set up the page:</strong> a margin of about 5 cm on the left for cues, the wide right side for notes, and 5–6 lines at the bottom for the summary. Header: subject, topic code, date, page number.</li>
-          <li><strong>In class:</strong> write notes on the right only. Short phrases, formulas, diagrams, worked examples. Leave space between ideas.</li>
-          <li><strong>Same day, 10 minutes:</strong> in the left column, write a question next to each block of notes. Questions work better than keywords.</li>
-          <li><strong>Summary:</strong> without looking at the notes, write 2–3 sentences at the bottom in your own words.</li>
-          <li><strong>To revise:</strong> fold or cover the right side, answer each cue question out loud, then uncover and check. Put a small ✓ or ✗ next to each cue; the ✗ ones go to the flashcards or the error log.</li>
-        </ol>
-        <p><strong>Where it works best:</strong> History, Business, English and Literature notes, and the theory parts of Physics and Maths. For long calculations, use the practice pages instead.</p>
-      </div></details>
+      
       <details class="tip block"><summary>Asking for help</summary><ul class="tip-body">
         <li>Ask the teacher within 48 hours of getting stuck, before the next topic builds on it.</li>
         <li>Bring specific questions ("step 3 of question 4"), not "I don't get it".</li>
@@ -369,7 +347,53 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       </ul></details>
     </div>
   </section>
-
+  <section class="panel guide" aria-labelledby="notesH">
+    <div><div class="eyebrow">Paper and notes</div><h2 id="notesH">Note-taking and filing</h2></div>
+    <div class="guide-grid two">
+      <details class="tip block" open><summary>Cornell notes: how to lay out a page</summary><div class="tip-body">
+        <p>A note-taking layout from Cornell University that turns every page of class notes into a self-test.</p>
+        <div class="cornell" aria-label="Example Cornell page for Physics">
+          <div class="c-head"><span>Physics HL · A.1 Kinematics</span><span class="mono">12 Oct 2026 · p.4</span></div>
+          <div class="c-cue"><b>Cues</b><span>When can I use suvat?</span><span>What does the area under a v–t graph give?</span><span>Distance vs displacement?</span></div>
+          <div class="c-notes"><b>Notes</b><span>suvat only for constant acceleration.</span><span>v = u + at, s = ut + ½at², v² = u² + 2as, s = ½(u + v)t</span><span>Area under v–t graph = displacement. Gradient = acceleration.</span><span>Displacement is a vector (has direction); distance is not.</span></div>
+          <div class="c-sum"><b>Summary</b><span>For constant acceleration, choose the suvat equation without the quantity I don't need. Graph gradients and areas give a and s.</span></div>
+        </div>
+        <ol>
+          <li><strong>Set up the page:</strong> a margin of about 5 cm on the left for cues, the wide right side for notes, and 5–6 lines at the bottom for the summary. Header: subject, topic code, date, page number.</li>
+          <li><strong>In class:</strong> write notes on the right only. Short phrases, formulas, diagrams, worked examples. Leave space between ideas.</li>
+          <li><strong>Same day, 10 minutes:</strong> in the left column, write a question next to each block of notes. Questions work better than keywords.</li>
+          <li><strong>Summary:</strong> without looking at the notes, write 2–3 sentences at the bottom in your own words.</li>
+          <li><strong>To revise:</strong> fold or cover the right side, answer each cue question out loud, then uncover and check. Put a small ✓ or ✗ next to each cue; the ✗ ones go to the flashcards or the error log.</li>
+        </ol>
+        <p><strong>Where it works best:</strong> History, Business, English and Literature notes, and the theory parts of Physics and Maths. For long calculations, use the practice pages instead.</p>
+      </div></details>
+      <details class="tip block" open><summary>Filing paper work</summary><ul class="tip-body">
+        <li><strong>Two-level system:</strong> one thin "current" folder carried to school, plus one A4 ring binder per subject kept at home as the archive.</li>
+        <li><strong>One colour per subject</strong> across binder, notebook, dividers and flashcards (e.g. Physics blue, Maths green).</li>
+        <li><strong>Dividers by syllabus code:</strong> Physics A.1, A.2…; Maths 1.x, 2.x. Everything then maps straight to the exam topics and to this tracker.</li>
+        <li><strong>Header on every sheet:</strong> date · subject · topic code · page number.</li>
+        <li><strong>Order inside each topic:</strong> class notes → worked examples → practice with corrections in a different colour → marked tests.</li>
+        <li><strong>Cornell layout</strong> for class notes (see the Cornell panel next to this one): a narrow left column for questions or cue words, notes on the right, a 2–3 line summary at the bottom. Cover the right side to test yourself.</li>
+        <li><strong>Error log and syllabus checklist</strong> at the front of each binder.</li>
+        <li><strong>Physics lab section</strong> with raw data and dates. It becomes valuable when choosing the internal assessment.</li>
+        <li><strong>Flashcards on paper:</strong> A7 index cards in a box with 5 compartments (Leitner system). Right answers move back one compartment, wrong answers return to the first; box 1 daily, later boxes less often.</li>
+        <li><strong>Core folder</strong> for the TOK journal, CAS evidence and EE research notes.</li>
+        <li><strong>Friday 10-minute filing:</strong> empty the plastic "inbox" wallet of loose sheets into the binders.</li>
+        <li><strong>Keep everything.</strong> Final exams in May 2028 cover both years. Scan or photograph pages weekly as a backup.</li>
+      </ul></details>
+    </div>
+  </section>
+  <section class="panel guide" aria-labelledby="methH">
+    <div><div class="eyebrow">What the research says</div><h2 id="methH">Study methods that work</h2>
+    <p class="note">From Dunlosky et al. (2013), a review of 10 common study techniques rated by how much they improve results.</p></div>
+    <div class="stack">
+          <details class="tip"><summary>Practice testing (high utility)</summary><p class="tip-body">Close the book and write down everything you remember, then check. Do questions before re-reading the chapter, and try each worked example yourself before reading the solution. Flashcards count.</p></details>
+          <details class="tip"><summary>Distributed practice (high utility)</summary><p class="tip-body">Three 40-minute sessions across a week beat one 2-hour session. Revisit a topic after about a day, a week, and three weeks. Anki does this scheduling automatically.</p></details>
+          <details class="tip"><summary>Interleaving (moderate)</summary><p class="tip-body">Mix 3–4 topics in one problem set and hide the topic labels, so you have to choose the method yourself. It feels harder and works better, especially in maths and physics.</p></details>
+          <details class="tip"><summary>Self-explanation (moderate)</summary><p class="tip-body">After each step of a solution, ask "why does this step work?" and answer in one sentence. Explaining to someone else is the strongest version.</p></details>
+          <details class="tip"><summary>Re-reading and highlighting (low utility)</summary><p class="tip-body">They feel productive but do little. Turn highlights into questions on flashcards, and after reading a page, close it and recall the main points.</p></details>
+        </div>
+  </section>
   <section class="panel guide" aria-labelledby="coreH">
     <div><div class="eyebrow">Core · finding good topics early, with less effort</div><h2 id="coreH">Ideas for CAS, TOK and the Extended Essay</h2>
     <p class="note">Methods, not rules. His school's CAS coordinator, TOK teacher and EE supervisor have the final say.</p></div>
@@ -423,6 +447,9 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       </div></details>
     </div>
   </section>
+  </div>
+
+
 
   <footer>Teaching order differs by school. Line each sprint up against his teachers' schemes of work and move items between sprints as needed; the can-do lists matter more than the dates. Progress saves automatically in this browser, on this device. Download a backup file every week: browsers can clear saved site data.</footer>
 </div>
@@ -704,6 +731,18 @@ document.addEventListener("input", e=>{
   state.notes[n] = e.target.value; persist();
 });
 
+
+
+/* ---------- tabs ---------- */
+function showView(v){
+  document.querySelectorAll(".tabbar [role=tab]").forEach(b=> b.setAttribute("aria-selected", String(b.dataset.view===v)));
+  document.getElementById("view-tracker").hidden = v!=="tracker";
+  document.getElementById("view-guide").hidden = v!=="guide";
+  try{ localStorage.setItem(LS_KEY+".view", v); }catch(e){}
+}
+document.querySelector(".tabbar").addEventListener("click", e=>{ const b = e.target.closest("[data-view]"); if(!b) return; showView(b.dataset.view); window.scrollTo({top:0}); });
+document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const cur = document.querySelector(".tabbar [aria-selected=true]").dataset.view; const next = cur==="tracker"?"guide":"tracker"; showView(next); document.getElementById("tab-"+next).focus(); });
+(function(){ let v = (location.hash||"").replace("#",""); if(v!=="guide" && v!=="tracker"){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(v==="guide"?"guide":"tracker"); })();
 
 /* ---------- backup & restore ---------- */
 const APP_ID = "ib-tracker-dp1-term1";
