@@ -227,6 +227,7 @@ details.tip.block summary::before{color:var(--accent)}
 .offdays b{color:var(--ink)}
 .lang-tag{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;color:var(--ink-2);border:1px solid var(--line);background:var(--surface);border-radius:3px;padding:1px 5px;vertical-align:2px;white-space:nowrap}
 .sprint-btn .sd .ex{color:var(--crit);font-weight:600}
+.sprint-btn .sd .exw{color:var(--warn);font-weight:600}
 
 .tt summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 .tt summary::-webkit-details-marker{display:none}
@@ -266,6 +267,7 @@ table.cal{border-collapse:separate;border-spacing:3px;width:100%;min-width:720px
 .cal td.d.exam{background:var(--r1);color:var(--crit);font-weight:600}
 .cal td.d.off{background:repeating-linear-gradient(135deg,var(--surface-2) 0 4px,var(--line) 4px 7px);color:var(--muted);text-decoration:line-through}
 .cal td.d.event{background:var(--mark-soft)}
+.cal td.d.win{background:color-mix(in srgb, var(--r1) 45%, #ffffff);outline:1.5px dashed var(--crit);outline-offset:-2px;color:var(--ink)}
 .cal td.d.today{outline:2px solid var(--accent);outline-offset:-2px;font-weight:700}
 .cal td.c-note{font-size:12.5px;color:var(--ink-2);padding:4px 8px;vertical-align:middle;cursor:pointer}
 .cal td.c-note .f{display:block;color:var(--ink)}
@@ -274,6 +276,7 @@ table.cal{border-collapse:separate;border-spacing:3px;width:100%;min-width:720px
 .cal-legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12.5px;color:var(--ink-2)}
 .cal-legend .lg{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px}
 .lg.exam{background:var(--r1);border:1px solid var(--crit)}
+.lg.win{background:color-mix(in srgb, var(--r1) 45%, #ffffff);outline:1.5px dashed var(--crit);outline-offset:-2px}
 .lg.off{background:repeating-linear-gradient(135deg,var(--surface-2) 0 3px,var(--line) 3px 5px)}
 .lg.event{background:var(--mark-soft);border:1px solid var(--mark)}
 .lg.today{background:var(--surface);outline:2px solid var(--accent);outline-offset:-2px}
@@ -313,7 +316,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       <p>The plan uses sensible defaults where these answers are missing. Each answer makes the checklists more accurate.</p>
       <div class="needs-grid">
         <div><h4>Calendar and deadlines</h4><ol>
-          <li>Which subject is examined on which day in the partial exams (5–23 Oct) and the term exams (20–26 Nov).</li>
+          <li>On which day each subject has its partial assessment (window 5–23 Oct), and the day of each term exam (20–26 Nov).</li>
           <li>Deadlines set by the school for the TOK exhibition, the Extended Essay and CAS (the IA period is known: 4–18 June).</li>
         </ol></div>
         <div><h4>Subjects and levels</h4><ol start="3">
@@ -407,7 +410,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         <h3>What applies to his year group</h3>
         <ul class="facts">
           <li>Starting the Diploma Programme in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
-          <li><strong>School year 2026–27</strong>: partial exams 5–23 Oct, 11–29 Jan and 19 Apr – 2 May; term exams 20–26 Nov and 1–5 Mar; mock final exams 26 May – 3 Jun; intensive internal assessment (IA) period 4–18 Jun. Holidays: 12 Oct, 7–8 Dec, 22 Dec – 7 Jan, 8 Feb, 20–29 Mar.</li>
+          <li><strong>School year 2026–27</strong>: partial assessment windows (exàmens parcials) 5–23 Oct, 11–29 Jan and 19 Apr – 2 May, with each subject tested on one day within the window; term exams 20–26 Nov and 1–5 Mar; mock final exams 26 May – 3 Jun; intensive internal assessment (IA) period 4–18 Jun. Holidays: 12 Oct, 7–8 Dec, 22 Dec – 7 Jan, 8 Feb, 20–29 Mar.</li>
           <li><strong>Levels</strong>: Higher Level (HL) in Physics, English B and Business Management; Standard Level (SL) in Maths AA, History and International Literature.</li>
           <li><strong>Languages of teaching</strong>: English for Physics, Business Management and English B (tag EN); Spanish for Maths and History (ES); Catalan for International Literature and TOK (CA). Use the vocabulary of the teaching language in notes and flashcards.</li>
           <li><strong>Physics</strong> uses the themes A–E syllabus (first exams 2025). Older past papers organised by old topics or options need care.</li>
@@ -427,7 +430,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
     <summary><h3>Term calendar</h3><span class="note" id="calName"></span><span class="cal-toggle"></span></summary>
     <div class="cal-wrap"><table class="cal" id="calGrid" aria-label="Term calendar by week"></table></div>
     <div class="cal-legend">
-      <span><i class="lg exam"></i>Exams</span><span><i class="lg off"></i>No school</span><span><i class="lg event"></i>School date</span><span><i class="lg today"></i>Today</span><span class="note">Click a week to open that sprint in the Tracker tab.</span>
+      <span><i class="lg exam"></i>Exams</span><span><i class="lg win"></i>Partial assessment window (one test per subject, day to confirm)</span><span><i class="lg off"></i>No school</span><span><i class="lg event"></i>School date</span><span><i class="lg today"></i>Today</span><span class="note">Click a week to open that sprint in the Tracker tab.</span>
     </div>
   </details>
   <details class="panel tt" id="timetable">
@@ -773,7 +776,7 @@ const HABITS = [{"t": "Two short retrieval sessions per week for each lead subje
 const TERM = {
   name: "Term 1 · 2026–27",
   ranges: [
-    {from:"2026-10-05", to:"2026-10-23", type:"exam",  t:"Partial exams"},
+    {from:"2026-10-05", to:"2026-10-23", type:"window", t:"Partial assessment window (exàmens parcials)"},
     {from:"2026-11-02", to:"2026-11-06", type:"event", t:"Interim report week"},
     {from:"2026-11-05", to:"2026-11-07", type:"event", t:"MUN Lisbon (if taking part)"},
     {from:"2026-11-20", to:"2026-11-26", type:"exam",  t:"Term exams"},
@@ -784,8 +787,8 @@ const TERM = {
 
 const SPRINTS = [
  {id:"s1", n:"Sprint 1", title:"Foundations", start:"2026-09-28", end:"2026-10-09",
-  events:[{d:"2026-10-05",t:"Partial exams (exàmens parcials) run 5–23 Oct"}],
-  focus:"Set the systems up and lock in the maths and measurement skills everything else in Physics depends on. Partial exams start on 5 October: find out now which subject is tested when.",
+  events:[{d:"2026-10-05",t:"Partial assessment window (exàmens parcials) opens; it runs until 23 Oct"}],
+  focus:"Set the systems up and lock in the maths and measurement skills everything else in Physics depends on. The partial assessment window opens on 5 October: find out now which day each subject is tested.",
   items:{
    phy:{practice:"20 problems on uncertainties and vectors; start the error log.",
         list:["Use SI units (Système International: metre, kilogram, second…), prefixes and significant figures correctly","Tell random from systematic error and give one way to reduce each","Calculate absolute, fractional and percentage uncertainty","Propagate uncertainty through sums, products and powers","Resolve a vector into components and add two vectors"]},
@@ -796,11 +799,11 @@ const SPRINTS = [
    his:["Explain the four history concepts: causation, continuity and change, perspectives, significance"],
    lit:["Reading schedule for the first work agreed and started (see the reading list under Book and method)"],
    core:["CAS: meet the coordinator and plan one experience for each strand","TOK: start a weekly knowledge journal (one real-world example per week)","EE: list three subjects that could host an Extended Essay"],
-   hab:["Weekly study timetable written, with fixed slots for Physics and Maths","Partial exam dates (5–23 Oct) for every subject written in the planner"]
+   hab:["Weekly study timetable written, with fixed slots for Physics and Maths","Partial assessment dates (window 5–23 Oct) for every subject written in the planner"]
   }},
  {id:"s2", n:"Sprint 2", title:"Motion", start:"2026-10-12", end:"2026-10-23", off:[{d:"2026-10-12",t:"public holiday (Fiesta Nacional de España)"}],
-  events:[{d:"2026-10-12",t:"Partial exams continue until 23 Oct"}],
-  focus:"Kinematics in Physics, exponents and logarithms in Maths, alongside the partial exams (until 23 Oct). First lab write-up with proper uncertainty treatment.",
+  events:[{d:"2026-10-12",t:"Partial assessment window continues until 23 Oct"}],
+  focus:"Kinematics in Physics, exponents and logarithms in Maths, alongside the partial assessments (window until 23 Oct). First lab write-up with proper uncertainty treatment.",
   items:{
    phy:{practice:"25 kinematics problems, including 5 graph questions; one short lab with error bars.",
         list:["Distinguish distance/displacement and speed/velocity","Read gradient and area from displacement-time and velocity-time graphs","Choose and rearrange the right suvat equation (constant-acceleration equations linking s displacement, u initial velocity, v final velocity, a acceleration, t time), stating when they apply","Linearise data and read a physical quantity from the gradient","Plot error bars and draw best-fit and worst-fit lines"]},
@@ -865,7 +868,7 @@ const SPRINTS = [
    hab:["8+ hours of sleep every night of exam week"]
   }},
  {id:"s6", n:"Sprint 6", title:"Energy & term review", start:"2026-12-07", end:"2026-12-21", off:[{d:"2026-12-07",t:"no school (long weekend)"},{d:"2026-12-08",t:"public holiday (Immaculate Conception)"}], events:[{d:"2026-12-10",t:"Human Rights day"},{d:"2026-12-22",t:"Christmas break until 7 Jan"}],
-  focus:"After the evaluation, start work, energy and power in Physics and finish the function families in Maths. Close the term with an honest review and targets for January (the next partial exams run 11–29 Jan).",
+  focus:"After the evaluation, start work, energy and power in Physics and finish the function families in Maths. Close the term with an honest review and targets for January (the next partial assessment window is 11–29 Jan).",
   items:{
    phy:{practice:"20 problems on work, energy and power, plus 5 mixed questions from earlier topics (interleaved).",
         list:["Calculate work done by a force, including at an angle",
@@ -949,7 +952,7 @@ function renderTimeline(){
       <span class="n">${s.n.toUpperCase()}</span>
       <span class="t">${esc(s.title)}</span>
       <span class="d">${fmt(s.start)} – ${fmt(s.end)}</span>
-      <span class="sd">${schoolDays(s)} school days${(s.off||[]).length?` · ${s.off.length} off`:""}${(s.events||[]).some(e=>/exam/i.test(e.t))?` · <b class="ex">exams</b>`:""}</span>
+      <span class="sd">${schoolDays(s)} school days${(s.off||[]).length?` · ${s.off.length} off`:""}${(s.events||[]).some(e=>/term exam/i.test(e.t))?` · <b class="ex">exams</b>`:((s.events||[]).some(e=>/partial assessment/i.test(e.t))?` · <b class="exw">partials</b>`:"")}</span>
       <span class="bar" aria-hidden="true"><i style="width:${p}%"></i></span>
     </button>`;
   }).join("");
@@ -1100,7 +1103,7 @@ function renderCalendar(){
         const inSprint = iso>=sp.start && iso<=sp.end;
         const rs = rangesOn(iso); const off = offMap[iso]; const ev = evMap[iso];
         let c = ["d"]; if(!inSprint) c.push("out");
-        if(off) c.push("off"); else if(rs.some(r=>r.type==="exam")) c.push("exam"); else if(rs.length || ev) c.push("event");
+        if(off) c.push("off"); else if(rs.some(r=>r.type==="exam")) c.push("exam"); else if(rs.some(r=>r.type==="window")) c.push("win"); else if(rs.length || ev) c.push("event");
         if(iso===today) c.push("today");
         const label = (day.getDate()===1 || (wi===0 && k===0 && sp.id===SPRINTS[0].id)) ? day.toLocaleDateString("en-GB",{day:"numeric",month:"short"}) : day.getDate();
         const tip = [off?"No school: "+off:"", ...rs.map(r=>r.t), ev||""].filter(Boolean).join(" · ");
