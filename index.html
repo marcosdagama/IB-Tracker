@@ -191,6 +191,10 @@ details.tip.block summary::before{color:var(--accent)}
 .guide-grid.two{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
 .guide-grid > details.tip.block:has(.cornell){grid-column:auto}
 @media (max-width:820px){.guide-grid.two{grid-template-columns:1fr}}
+
+.lang-switch{display:inline-flex;align-self:flex-end;border:1.5px solid var(--accent);border-radius:6px;overflow:hidden;margin-bottom:-8px}
+.lang-switch button{appearance:none;font:inherit;font-size:13.5px;font-weight:600;padding:6px 14px;border:0;background:var(--surface);color:var(--accent);cursor:pointer}
+.lang-switch button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
@@ -221,7 +225,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 
     <aside class="col aside">
       <div class="panel">
-        <h3>The fortnight cycle</h3>
+        <h3>Every two weeks: plan, do, reflect</h3>
         <p class="note">Based on Zimmerman's self-regulated learning model (plan → perform → reflect).</p>
         <ul class="cycle">
           <li><span class="k">P</span><p><strong>Plan, Monday wk 1 (15 min).</strong> Read the sprint's can-do list, block study slots in the calendar, flag anything already shaky.</p></li>
@@ -285,11 +289,11 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       </div>
 
       <div class="panel">
-        <h3>What applies to this cohort</h3>
+        <h3>What applies to his year group</h3>
         <ul class="facts">
           <li>Starting the Diploma Programme in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
           <li><strong>Physics</strong> uses the themes A–E syllabus (first exams 2025). Older past papers organised by old topics or options need care.</li>
-          <li><strong>Maths AA (Analysis and Approaches)</strong> stays on the current guide for this cohort. A new maths guide starts teaching in Aug 2027, after he has begun.</li>
+          <li><strong>Maths AA (Analysis and Approaches)</strong> stays on the current guide for his year group. A new maths guide starts teaching in Aug 2027, after he has begun.</li>
           <li><strong>History</strong> is on a brand-new guide (first teaching Aug 2026, first exams May 2028). Pre-2026 past papers won't match.</li>
           <li><strong>Extended Essay</strong> follows the 2027 guide: 4,000 words, marked out of 30, subject-focused or interdisciplinary pathway.</li>
           <li><strong>TOK (Theory of Knowledge)</strong>: exhibition (one of 35 IA (internal assessment) prompts, three objects, 950 words) is usually done by the end of DP1; the essay comes in DP2.</li>
@@ -300,6 +304,11 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   </div>
 
   <div id="view-guide" class="view" role="tabpanel" aria-labelledby="tab-guide" hidden>
+  <div class="lang-switch" role="group" aria-label="Study guide language">
+    <button type="button" data-lang="en" aria-pressed="true">English</button>
+    <button type="button" data-lang="es" aria-pressed="false">Español</button>
+  </div>
+  <div id="guide-en" lang="en" class="view">
   <p class="guide-intro">How to study, not what to study. Open any panel; nothing here needs ticking.</p>
   <section class="panel guide" aria-labelledby="guideH">
     <div><div class="eyebrow">Every study session</div><h2 id="guideH">Before, while and after you study</h2></div>
@@ -396,7 +405,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   </section>
   <section class="panel guide" aria-labelledby="coreH">
     <div><div class="eyebrow">Core · finding good topics early, with less effort</div><h2 id="coreH">Ideas for CAS, TOK and the Extended Essay</h2>
-    <p class="note">Methods, not rules. His school's CAS coordinator, TOK teacher and EE supervisor have the final say.</p></div>
+    <p class="note">Methods, not rules. Your school's CAS coordinator, TOK teacher and EE supervisor have the final say.</p></div>
     <div class="guide-grid">
       <details class="tip block" open><summary>CAS (Creativity, Activity, Service)</summary><div class="tip-body">
         <p><strong>Finding ideas</strong></p>
@@ -447,6 +456,155 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       </div></details>
     </div>
   </section>
+  </div>
+  <div id="guide-es" lang="es" class="view" hidden>
+  <p class="guide-intro">Cómo estudiar, no qué estudiar. Abre cualquier panel; aquí no hay nada que marcar.</p>
+  <section class="panel guide" aria-labelledby="guideH-es">
+    <div><div class="eyebrow">Cada sesión de estudio</div><h2 id="guideH-es">Antes, durante y después de estudiar</h2></div>
+    <div class="guide-grid">
+      <details class="tip block" open><summary>Antes</summary><ul class="tip-body">
+        <li><strong>Mesa despejada:</strong> solo el libro, los apuntes, la calculadora y el cuadernillo de datos de esta sesión.</li>
+        <li><strong>El móvil, en otra habitación.</strong> Incluso en silencio sobre la mesa, distrae.</li>
+        <li><strong>Espacio tranquilo:</strong> silencio o un ruido de fondo constante; nada de música con letra ni tele.</li>
+        <li><strong>Un objetivo claro</strong> por escrito, p. ej. «10 ejercicios de suvat, 80 % bien».</li>
+        <li>Agua a mano, buena luz, silla y pantalla a una altura cómoda.</li>
+      </ul></details>
+      <details class="tip block" open><summary>Durante</summary><ul class="tip-body">
+        <li><strong>Bloques de 25–45 minutos</strong> con descansos de 5–10 minutos lejos de pantallas.</li>
+        <li><strong>Primero preguntas, después apuntes.</strong> Inténtalo antes de mirar.</li>
+        <li><strong>¿Atascado 10 minutos?</strong> Márcalo, sigue adelante y llévalo al profesor o al tutor.</li>
+        <li>La asignatura más difícil primero, cuando tienes más energía.</li>
+        <li>En los descansos, levántate, estírate o camina.</li>
+      </ul></details>
+      <details class="tip block" open><summary>Después</summary><ul class="tip-body">
+        <li><strong>Corrige</strong> con el solucionario (markscheme) y actualiza el registro de errores.</li>
+        <li><strong>Repaso de dos minutos:</strong> escribe de memoria las tres ideas principales de la sesión.</li>
+        <li><strong>Planifica la siguiente sesión</strong> para que mañana sea fácil empezar.</li>
+        <li>Marca el tracker: ver el progreso ayuda a mantener el hábito.</li>
+        <li>Pantallas apagadas 30–60 minutos antes de dormir.</li>
+      </ul></details>
+      <details class="tip block"><summary>Pedir ayuda</summary><ul class="tip-body">
+        <li>Pregunta al profesor en las 48 horas siguientes a atascarte, antes de que el tema siguiente se construya encima.</li>
+        <li>Lleva preguntas concretas («el paso 3 de la pregunta 4»), no «no lo entiendo».</li>
+        <li>Usa el tiempo con el tutor para los puntos valorados con 1 o 2, con el registro de errores abierto.</li>
+        <li>Estudia con un compañero y turnaos para explicar las soluciones.</li>
+      </ul></details>
+      <details class="tip block"><summary>Salud</summary><ul class="tip-body">
+        <li><strong>Duerme 8–10 horas</strong>, lo que recomiendan los especialistas del sueño para adolescentes. La memoria se consolida mientras duermes.</li>
+        <li>Muévete cada día: deporte, caminar, bici. También cuenta para CAS.</li>
+        <li>Comidas regulares y agua a lo largo del día.</li>
+        <li>Si el estrés sigue alto más de un par de semanas, habla con tus padres, el tutor o el orientador del colegio.</li>
+      </ul></details>
+      <details class="tip block"><summary>Motivación</summary><ul class="tip-body">
+        <li>Empieza poco a poco: «solo 10 minutos» suele bastar para seguir.</li>
+        <li>Compárate con tu yo anterior (las valoraciones del sprint pasado), no con tus compañeros.</li>
+        <li>Relaciona el trabajo con tu meta: la carrera, la profesión, la universidad.</li>
+        <li>Planifica una recompensa después de terminar un bloque, no antes.</li>
+        <li>Busca constancia, no perfección. Fallar un día no pasa nada; si son dos seguidos, vuelve a empezar.</li>
+      </ul></details>
+    </div>
+  </section>
+  <section class="panel guide" aria-labelledby="notesH-es">
+    <div><div class="eyebrow">Papel y apuntes</div><h2 id="notesH-es">Tomar apuntes y archivar</h2></div>
+    <div class="guide-grid two">
+      <details class="tip block" open><summary>Método Cornell: cómo organizar una página</summary><div class="tip-body">
+        <p>Un formato de apuntes de la Universidad de Cornell que convierte cada página de clase en un autoexamen.</p>
+        <div class="cornell" aria-label="Ejemplo de página Cornell de Física">
+          <div class="c-head"><span>Física NS · A.1 Cinemática</span><span class="mono">12 oct 2026 · p.4</span></div>
+          <div class="c-cue"><b>Preguntas</b><span>¿Cuándo puedo usar suvat?</span><span>¿Qué da el área bajo una gráfica v–t?</span><span>¿Distancia o desplazamiento?</span></div>
+          <div class="c-notes"><b>Apuntes</b><span>suvat solo con aceleración constante.</span><span>v = u + at, s = ut + ½at², v² = u² + 2as, s = ½(u + v)t</span><span>Área bajo la gráfica v–t = desplazamiento. Pendiente = aceleración.</span><span>El desplazamiento es un vector (tiene dirección); la distancia no.</span></div>
+          <div class="c-sum"><b>Resumen</b><span>Con aceleración constante, elijo la ecuación suvat que no incluye la magnitud que no necesito. Pendientes y áreas de las gráficas dan a y s.</span></div>
+        </div>
+        <ol>
+          <li><strong>Prepara la página:</strong> un margen de unos 5 cm a la izquierda para las preguntas, la parte ancha a la derecha para los apuntes y 5–6 líneas abajo para el resumen. Encabezado: asignatura, código del tema, fecha y número de página.</li>
+          <li><strong>En clase:</strong> escribe solo en la columna derecha. Frases cortas, fórmulas, esquemas, ejemplos resueltos. Deja espacio entre ideas.</li>
+          <li><strong>El mismo día, 10 minutos:</strong> en la columna izquierda, escribe una pregunta junto a cada bloque de apuntes. Funcionan mejor las preguntas que las palabras clave.</li>
+          <li><strong>Resumen:</strong> sin mirar los apuntes, escribe 2–3 frases abajo con tus palabras.</li>
+          <li><strong>Para repasar:</strong> dobla o tapa la columna derecha, responde en voz alta cada pregunta y luego destapa y comprueba. Pon un ✓ o una ✗ junto a cada pregunta; las ✗ van a las fichas o al registro de errores.</li>
+        </ol>
+        <p><strong>Dónde funciona mejor:</strong> apuntes de Historia, Empresa, Inglés y Literatura, y la parte teórica de Física y Matemáticas. Para cálculos largos, usa las hojas de práctica.</p>
+      </div></details>
+      <details class="tip block" open><summary>Archivar el trabajo en papel</summary><ul class="tip-body">
+        <li><strong>Sistema de dos niveles:</strong> una carpeta fina «del día» que llevas al colegio y una carpeta de anillas A4 por asignatura en casa como archivo.</li>
+        <li><strong>Un color por asignatura</strong> en carpeta, cuaderno, separadores y fichas (p. ej. Física azul, Matemáticas verde).</li>
+        <li><strong>Separadores por código del temario:</strong> Física A.1, A.2…; Matemáticas 1.x, 2.x. Así todo encaja con los temas del examen y con este tracker.</li>
+        <li><strong>Encabezado en cada hoja:</strong> fecha · asignatura · código del tema · número de página.</li>
+        <li><strong>Orden dentro de cada tema:</strong> apuntes de clase → ejemplos resueltos → ejercicios con correcciones en otro color → exámenes corregidos.</li>
+        <li><strong>Formato Cornell</strong> para los apuntes de clase (ver el panel de al lado): columna estrecha a la izquierda para preguntas, apuntes a la derecha y un resumen de 2–3 líneas abajo. Tapa la derecha para ponerte a prueba.</li>
+        <li><strong>Registro de errores y lista del temario</strong> al principio de cada carpeta.</li>
+        <li><strong>Sección de laboratorio de Física</strong> con datos originales y fechas. Te será útil al elegir la evaluación interna.</li>
+        <li><strong>Fichas en papel:</strong> fichas A7 en una caja con 5 compartimentos (sistema Leitner). Las acertadas avanzan un compartimento y las falladas vuelven al primero; la caja 1 a diario, las demás cada vez con menos frecuencia.</li>
+        <li><strong>Carpeta del Core</strong> para el diario de TOK, las evidencias de CAS y las notas de investigación de la Monografía.</li>
+        <li><strong>Viernes, 10 minutos de archivo:</strong> vacía la funda de plástico de hojas sueltas en las carpetas.</li>
+        <li><strong>Guárdalo todo.</strong> Los exámenes finales de mayo de 2028 cubren los dos años. Escanea o fotografía las hojas cada semana como copia.</li>
+      </ul></details>
+    </div>
+  </section>
+  <section class="panel guide" aria-labelledby="methH-es">
+    <div><div class="eyebrow">Lo que dice la investigación</div><h2 id="methH-es">Métodos de estudio que funcionan</h2>
+    <p class="note">Según Dunlosky et al. (2013), una revisión de 10 técnicas de estudio habituales valoradas según cuánto mejoran los resultados.</p></div>
+    <div class="stack">
+          <details class="tip"><summary>Autoevaluación con preguntas (utilidad alta)</summary><p class="tip-body">Cierra el libro, escribe todo lo que recuerdes y luego comprueba. Haz ejercicios antes de releer el capítulo e intenta cada ejemplo resuelto antes de leer la solución. Las fichas también cuentan.</p></details>
+          <details class="tip"><summary>Práctica espaciada (utilidad alta)</summary><p class="tip-body">Tres sesiones de 40 minutos repartidas en la semana rinden más que una de 2 horas. Repasa un tema al cabo de un día, de una semana y de tres semanas. Anki programa estos repasos automáticamente.</p></details>
+          <details class="tip"><summary>Práctica intercalada (utilidad moderada)</summary><p class="tip-body">Mezcla 3–4 temas en una misma hoja de ejercicios y oculta a qué tema pertenecen, para tener que elegir tú el método. Cuesta más y funciona mejor, sobre todo en Matemáticas y Física.</p></details>
+          <details class="tip"><summary>Autoexplicación (utilidad moderada)</summary><p class="tip-body">Después de cada paso de una solución, pregúntate «¿por qué funciona este paso?» y respóndelo en una frase. Explicárselo a otra persona es la versión más eficaz.</p></details>
+          <details class="tip"><summary>Releer y subrayar (utilidad baja)</summary><p class="tip-body">Dan sensación de productividad pero aportan poco. Convierte lo subrayado en preguntas para fichas y, después de leer una página, ciérrala y recuerda las ideas principales.</p></details>
+        </div>
+  </section>
+  <section class="panel guide" aria-labelledby="coreH-es">
+    <div><div class="eyebrow">Core · encontrar buenos temas pronto y con menos esfuerzo</div><h2 id="coreH-es">Ideas para CAS, TOK y la Monografía</h2>
+    <p class="note">Son métodos, no normas. La última palabra la tienen el coordinador de CAS, el profesor de TOK y el supervisor de la Monografía de tu colegio.</p></div>
+    <div class="guide-grid">
+      <details class="tip block" open><summary>CAS (Creatividad, Actividad, Servicio)</summary><div class="tip-body">
+        <p><strong>Encontrar ideas</strong></p>
+        <ul>
+          <li><strong>Inventario de intereses (15 min):</strong> apunta 10 cosas que ya haces o quieres probar y clasifícalas en Creatividad, Actividad y Servicio. Algo que ya haces puede contar si te pones un reto nuevo.</li>
+          <li><strong>Habilidad × necesidad:</strong> combina una habilidad (matemáticas, física, programación, diseño) con una necesidad real cercana. Ejemplos: clases de matemáticas a alumnos más pequeños, una web para una asociación del barrio, una tarde de experimentos en un colegio de primaria.</li>
+          <li><strong>Resultados que faltan:</strong> revisa los siete resultados de aprendizaje y elige experiencias para los que más suelen faltar: iniciar y planificar algo, y mantenerlo en el tiempo.</li>
+        </ul>
+        <p><strong>Ahorrar tiempo</strong></p>
+        <ul>
+          <li>Una experiencia puede cubrir dos áreas (p. ej. diseñar carteles para una carrera solidaria = Creatividad + Servicio).</li>
+          <li>Registra la evidencia en 24 horas: una foto y una reflexión de tres líneas (qué hice, qué me costó, qué aprendí).</li>
+          <li>Un hueco fijo de 10 minutos cada domingo para tener el portafolio al día.</li>
+        </ul>
+      </div></details>
+      <details class="tip block" open><summary>TOK (Teoría del Conocimiento)</summary><div class="tip-body">
+        <p><strong>Encontrar ideas</strong></p>
+        <ul>
+          <li><strong>Diario «¿cómo lo sabemos?»:</strong> una vez por semana, anota un momento en que el conocimiento era incierto o discutido: un resultado de laboratorio, dos fuentes históricas que no coinciden, una noticia con versiones enfrentadas.</li>
+          <li><strong>La Física es un regalo para TOK:</strong> la incertidumbre de las medidas, los modelos que son «incorrectos pero útiles» y las teorías sustituidas con el tiempo son muy buen material.</li>
+          <li><strong>Paseo de objetos (exposición):</strong> fotografía 20 cosas concretas en un día, en casa, en el colegio y en la ciudad, y relaciónalas con los 35 enunciados. Lo concreto gana a lo genérico: <em>tu</em> hoja de datos del laboratorio del 14 de octubre, no «una regla».</li>
+        </ul>
+        <p><strong>Ahorrar tiempo</strong></p>
+        <ul>
+          <li>Elige primero el enunciado y después los objetos. Quédate con un enunciado solo si los tres objetos aportan ángulos distintos.</li>
+          <li>Reutiliza material de las asignaturas y de la Monografía como ejemplos de TOK.</li>
+        </ul>
+      </div></details>
+      <details class="tip block" open><summary>Monografía (Extended Essay, EE)</summary><div class="tip-body">
+        <p><strong>Encontrar ideas</strong></p>
+        <ul>
+          <li><strong>Semana de la curiosidad:</strong> durante 7 días, apunta cada pregunta del tipo «¿por qué…?» o «¿cómo…?» que te surja en clase, en las noticias o en el día a día. Elige las tres que más se repitan.</li>
+          <li><strong>Embudo:</strong> interés → asignatura → tema → una pregunta lo bastante concreta para responderla en 4.000 palabras. «La energía» es demasiado amplio; «¿Cómo afecta el ángulo de las palas a la potencia de un aerogenerador pequeño?» es viable.</li>
+          <li><strong>Vía interdisciplinaria:</strong> la guía de 2027 permite combinar dos asignaturas, p. ej. Física + Empresa (la rentabilidad de las placas solares en casa).</li>
+        </ul>
+        <p><strong>Prueba de viabilidad antes de decidir</strong></p>
+        <ul>
+          <li>¿Puedo conseguir los datos o las fuentes (laboratorio del colegio, datos públicos, biblioteca)?</li>
+          <li>¿Se puede hacer en unas 40 horas de trabajo?</li>
+          <li>¿Hay margen para evaluar y comparar interpretaciones? «Discusión y evaluación» es el criterio con más peso (8 de 30 puntos).</li>
+        </ul>
+        <p><strong>Ahorrar tiempo</strong></p>
+        <ul>
+          <li>Lee 2–3 buenas monografías anteriores de la asignatura para ver la estructura, no para sacar ideas.</li>
+          <li>Lleva desde el primer día un único documento de «espacio de reflexión del investigador» (fuentes, notas, fechas, decisiones). Te servirá para la reflexión de 500 palabras.</li>
+          <li>Lleva dos preguntas candidatas a la primera reunión con tu supervisor.</li>
+        </ul>
+      </div></details>
+    </div>
+  </section>
+  </div>
   </div>
 
 
@@ -742,7 +900,18 @@ function showView(v){
 }
 document.querySelector(".tabbar").addEventListener("click", e=>{ const b = e.target.closest("[data-view]"); if(!b) return; showView(b.dataset.view); window.scrollTo({top:0}); });
 document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const cur = document.querySelector(".tabbar [aria-selected=true]").dataset.view; const next = cur==="tracker"?"guide":"tracker"; showView(next); document.getElementById("tab-"+next).focus(); });
-(function(){ let v = (location.hash||"").replace("#",""); if(v!=="guide" && v!=="tracker"){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(v==="guide"?"guide":"tracker"); })();
+(function(){ let v = (location.hash||"").replace("#",""); if(v==="guia") v = "guide"; if(v!=="guide" && v!=="tracker"){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(v==="guide"?"guide":"tracker"); })();
+
+
+/* ---------- study guide language ---------- */
+function setLang(l){
+  document.getElementById("guide-en").hidden = l!=="en";
+  document.getElementById("guide-es").hidden = l!=="es";
+  document.querySelectorAll(".lang-switch [data-lang]").forEach(b=> b.setAttribute("aria-pressed", String(b.dataset.lang===l)));
+  try{ localStorage.setItem(LS_KEY+".lang", l); }catch(e){}
+}
+document.querySelector(".lang-switch").addEventListener("click", e=>{ const b = e.target.closest("[data-lang]"); if(b) setLang(b.dataset.lang); });
+(function(){ let l = "en"; try{ l = localStorage.getItem(LS_KEY+".lang") || "en"; }catch(e){} if((location.hash||"")==="#guia"){ l = "es"; } setLang(l==="es"?"es":"en"); })();
 
 /* ---------- backup & restore ---------- */
 const APP_ID = "ib-tracker-dp1-term1";
