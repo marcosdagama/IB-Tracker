@@ -14,7 +14,7 @@
 :root{
   color-scheme:light;
   --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#EEF2EF; --ink:#17212B; --ink-2:#4A5560; --muted:#77828C;
-  --line:#D6DCD6; --grid:rgba(15,110,106,.035);
+  --line:#D6DCD6; --grid:rgba(15,110,106,.07);
   --accent:#0F6E6A; --accent-soft:#D5EAE7; --accent-ink:#FFFFFF;
   --mark:#B7791F; --mark-soft:#F6E7C8;
   --good:#2F7D3B; --warn:#A76A00; --crit:#B3372B;
@@ -27,6 +27,8 @@
 *{box-sizing:border-box}
 body{
   background:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
   color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.5;
   padding-inline:16px; padding-block:20px 48px;
 }
