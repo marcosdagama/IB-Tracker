@@ -224,8 +224,10 @@ details.tip.block summary::before{color:var(--accent)}
 
 .tt summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 .tt summary::-webkit-details-marker{display:none}
-.tt summary h3::before{content:"+ ";color:var(--accent);font-family:var(--mono)}
-.tt[open] summary h3::before{content:"− "}
+.tt .cal-toggle{margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:2px 8px}
+.tt .cal-toggle::before{content:"Show"}
+.tt[open] .cal-toggle::before{content:"Hide"}
+.tt:not([open]) #ttToday{display:none}
 .tt-wrap{overflow-x:auto}
 table.tt-grid{border-collapse:separate;border-spacing:3px;width:100%;min-width:560px;font-size:13px}
 .tt-grid th{font-family:var(--mono);font-weight:400;color:var(--muted);font-size:11.5px;padding:3px 6px;text-align:left;white-space:nowrap}
@@ -292,16 +294,6 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   <div id="view-tracker" class="view" role="tabpanel" aria-labelledby="tab-tracker">
   <nav class="timeline" id="timeline" aria-label="Fortnightly sprints"></nav>
 
-  <details class="panel termcal" id="termCal">
-    <summary><h3>Term calendar</h3><span class="note" id="calName"></span><span class="cal-toggle"></span></summary>
-    <div class="cal-wrap"><table class="cal" id="calGrid" aria-label="Term calendar by week"></table></div>
-    <div class="cal-legend">
-      <span><i class="lg exam"></i>Exams</span><span><i class="lg off"></i>No school</span><span><i class="lg event"></i>School date</span><span><i class="lg today"></i>Today</span><span class="note">Click a sprint to open it.</span>
-    </div>
-  </details>
-
-  <section class="summary" id="summary" aria-label="Term progress"></section>
-
   <details class="needs" id="needs">
     <summary><span class="needs-tag">To improve this tracker</span> Information still missing: 8 questions for the student and the school</summary>
     <div class="needs-body">
@@ -324,6 +316,17 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       </div>
     </div>
   </details>
+
+  <details class="panel termcal" id="termCal">
+    <summary><h3>Term calendar</h3><span class="note" id="calName"></span><span class="cal-toggle"></span></summary>
+    <div class="cal-wrap"><table class="cal" id="calGrid" aria-label="Term calendar by week"></table></div>
+    <div class="cal-legend">
+      <span><i class="lg exam"></i>Exams</span><span><i class="lg off"></i>No school</span><span><i class="lg event"></i>School date</span><span><i class="lg today"></i>Today</span><span class="note">Click a sprint to open it.</span>
+    </div>
+  </details>
+
+  <section class="summary" id="summary" aria-label="Term progress"></section>
+
 
 
   <div class="main">
