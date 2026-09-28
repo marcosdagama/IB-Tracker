@@ -311,6 +311,14 @@ table.cal{border-collapse:separate;border-spacing:3px;width:100%;min-width:720px
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
+.info-tbl{width:100%;border-collapse:collapse;margin:.4rem 0 .6rem;font-size:.92rem}
+.info-tbl th,.info-tbl td{border:1px solid var(--line,#dfe3e6);padding:.35rem .55rem;text-align:left}
+.info-tbl th{background:rgba(15,110,106,.08)}
+.info-body{padding:.2rem .2rem .6rem;font-size:.95rem;line-height:1.5}
+.info-body h4{margin:.9rem 0 .3rem}
+.info-body p{margin:.3rem 0}
+.info-body ul{margin:.3rem 0;padding-left:1.2rem}
+.tt.info > p.note{margin:.2rem 0 .6rem}
 </style>
 
 <div class="wrap">
@@ -344,7 +352,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       <p>The plan uses sensible defaults where these answers are missing. Each answer makes the checklists more accurate.</p>
       <div class="needs-grid">
         <div><h4>Calendar and deadlines</h4><ol>
-          <li>On which day each subject has its partial assessment (window 5–23 Oct), and the day of each term exam (20–26 Nov).</li>
+          <li>The day of each term exam (20–26 Nov), and whether English B and TOK have a partial (they are not on the 15–23 Oct calendar).</li>
           <li>Deadlines set by the school for the TOK exhibition, the Extended Essay and CAS (the IA period is known: 4–18 June).</li>
         </ol></div>
         <div><h4>Subjects and levels</h4><ol start="3">
@@ -457,8 +465,19 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
     <summary><h3>Term calendar</h3><span class="note" id="calName"></span><span class="cal-toggle"></span></summary>
     <div class="cal-wrap"><table class="cal" id="calGrid" aria-label="Term calendar by week"></table></div>
     <div class="cal-legend">
-      <span><i class="lg exam"></i>Exams</span><span><i class="lg win"></i>Partial assessment window (one test per subject, day to confirm)</span><span><i class="lg off"></i>No school</span><span><i class="lg event"></i>School date</span><span><i class="lg today"></i>Today</span><span class="note">Click a week to open that sprint in the Tracker tab.</span>
+      <span><i class="lg exam"></i>Exams</span><span><i class="lg win"></i>Partial exams week (15–23 Oct)</span><span><i class="lg off"></i>No school</span><span><i class="lg event"></i>School date</span><span><i class="lg today"></i>Today</span><span class="note">Click a week to open that sprint in the Tracker tab.</span>
     </div>
+  </details>
+  <details class="panel tt info" id="partialsPanel" open>
+    <summary><h3>Partial exams · 15–23 Oct</h3><span class="note">From the school's partials calendar</span><span class="cal-toggle"></span></summary>
+    <table class="info-tbl"><thead><tr><th>Day</th><th>Subject</th><th>Time</th></tr></thead><tbody>
+      <tr><td>Thu 15 Oct</td><td>International Literature SL</td><td>13:30</td></tr>
+      <tr><td>Fri 16 Oct</td><td>Maths AA SL (Analysis and Approaches)</td><td>12:30</td></tr>
+      <tr><td>Mon 19 Oct</td><td>Physics HL</td><td>11:30–12:30</td></tr>
+      <tr><td>Wed 21 Oct</td><td>History SL</td><td>11:30–12:30</td></tr>
+      <tr><td>Fri 23 Oct</td><td>Business Management HL</td><td>8:00</td></tr>
+    </tbody></table>
+    <p class="note">English B and TOK (Theory of Knowledge) do not appear on the partials calendar: ask the teachers whether they assess in class instead.</p>
   </details>
   <details class="panel tt" id="timetable">
     <summary><h3>Weekly timetable</h3><span class="note" id="ttToday"></span><span class="cal-toggle"></span></summary>
@@ -470,6 +489,23 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
     </div>
   </details>
 
+  <details class="panel tt info" id="uniPanel">
+    <summary><h3>University access: how IB grades count</h3><span class="note">Why every subject matters, not only the HL ones</span><span class="cal-toggle"></span></summary>
+    <div class="info-body">
+      <h4>Spanish public universities: access grade (nota d'accés, out of 10)</h4>
+      <p>UNED (Universidad Nacional de Educación a Distancia) converts the IB grades: it takes the six subject grades, adds 3 points to each, and averages them. A 7 becomes 10, a 6 becomes 9, a 5 becomes 8, a 4 becomes 7. TOK, EE and CAS bonus points do not count here.</p>
+      <p><strong>So History SL and Literature SL weigh exactly as much as Physics HL.</strong> Example: 6, 7, 5, 4, 6, 4 → 9, 10, 8, 7, 9, 7 → access grade 8.33.</p>
+      <h4>Catalan public universities: admission grade (nota d'admissió, up to 14)</h4>
+      <p>Access grade plus up to two subjects from the specific phase of the PAU (university entrance exams), each weighted 0.1 or 0.2 depending on the degree. IB students may sit: Mathematics, Mathematics for Social Sciences, Chemistry, <strong>Physics</strong>, <strong>Business (Empresa)</strong>, Biology. Example: 8.33 + 0.2 × 8 + 0.2 × 9 = 11.73.</p>
+      <p>Physics, Maths and Business are all on that list. Check which two weigh 0.2 for the degrees he is considering.</p>
+      <h4>Rest of Spain, abroad, private universities</h4>
+      <ul>
+        <li><strong>Other Spanish regions:</strong> rules vary by region and even by university; some convert IB subject grades to count as the specific phase. Check each case.</li>
+        <li><strong>Abroad:</strong> usually a minimum of IB points out of 45, sometimes minimum grades in given subjects or a required HL subject. Many also ask for recommendation letters and other documents, with their own deadlines.</li>
+        <li><strong>Private universities:</strong> usually a minimum predicted grade, with a final grade condition for high-demand degrees, because enrolment closes before the IB results.</li>
+      </ul>
+    </div>
+  </details>
   </div>
 
   <div id="view-guide" class="view" role="tabpanel" aria-labelledby="tab-guide" hidden>
@@ -803,7 +839,12 @@ const HABITS = [{"t": "Two short retrieval sessions per week for each lead subje
 const TERM = {
   name: "Term 1 · 2026–27",
   ranges: [
-    {from:"2026-10-05", to:"2026-10-23", type:"window", t:"Partial assessment window (exàmens parcials)"},
+    {from:"2026-10-15", to:"2026-10-23", type:"window", t:"Partial exams week (exàmens parcials)"},
+    {from:"2026-10-15", to:"2026-10-15", type:"exam", t:"Partial exam: International Literature, 13:30"},
+    {from:"2026-10-16", to:"2026-10-16", type:"exam", t:"Partial exam: Maths AA SL, 12:30"},
+    {from:"2026-10-19", to:"2026-10-19", type:"exam", t:"Partial exam: Physics HL, 11:30–12:30"},
+    {from:"2026-10-21", to:"2026-10-21", type:"exam", t:"Partial exam: History SL, 11:30–12:30"},
+    {from:"2026-10-23", to:"2026-10-23", type:"exam", t:"Partial exam: Business Management HL, 8:00"},
     {from:"2026-11-02", to:"2026-11-06", type:"event", t:"Interim report week"},
     {from:"2026-11-05", to:"2026-11-07", type:"event", t:"MUN Lisbon (if taking part)"},
     {from:"2026-11-20", to:"2026-11-26", type:"exam",  t:"Term exams"},
@@ -814,8 +855,8 @@ const TERM = {
 
 const SPRINTS = [
  {id:"s1", n:"Sprint 1", title:"Foundations", start:"2026-09-28", end:"2026-10-09",
-  events:[{d:"2026-10-05",t:"Partial assessment window (exàmens parcials) opens; it runs until 23 Oct"}],
-  focus:"Set the systems up and lock in the maths and measurement skills everything else in Physics depends on. The partial assessment window opens on 5 October: find out now which day each subject is tested.",
+  events:[],
+  focus:"Set the systems up and lock in the maths and measurement skills everything else in Physics depends on. The partial exams start on 15 October (Literature), so this sprint is also when each subject's revision starts.",
   items:{
    phy:{practice:"20 problems on uncertainties and vectors; start the error log.",
         list:["Use SI units (Système International: metre, kilogram, second…), prefixes and significant figures correctly","Tell random from systematic error and give one way to reduce each","Calculate absolute, fractional and percentage uncertainty","Propagate uncertainty through sums, products and powers","Resolve a vector into components and add two vectors",
@@ -827,11 +868,12 @@ const SPRINTS = [
    his:["Explain the four history concepts: causation, continuity and change, perspectives, significance"],
    lit:["Reading schedule for the first work agreed and started (see the reading list under Book and method)"],
    core:["CAS: meet the coordinator and plan one experience for each strand","TOK: start a weekly knowledge journal (one real-world example per week)","EE: list three subjects that could host an Extended Essay"],
-   hab:["Weekly study timetable written, with fixed slots for Physics and Maths","Partial assessment dates (window 5–23 Oct) for every subject written in the planner"]
+   hab:["Weekly study timetable written, with fixed slots for Physics and Maths","Partial exam dates written in the planner: Literature Thu 15, Maths Fri 16, Physics Mon 19, History Wed 21, Business Fri 23 Oct",
+"Assessment policy form (internal and external assessment, promotion from 1st to 2nd year, plagiarism) signed by student and parents and handed in"]
   }},
  {id:"s2", n:"Sprint 2", title:"Motion", start:"2026-10-12", end:"2026-10-23", off:[{d:"2026-10-12",t:"public holiday (Fiesta Nacional de España)"}],
-  events:[{d:"2026-10-12",t:"Partial assessment window continues until 23 Oct"}],
-  focus:"Kinematics in Physics, exponents and logarithms in Maths, alongside the partial assessments (window until 23 Oct). First lab write-up with proper uncertainty treatment.",
+  events:[],
+  focus:"Partial exams sprint: Literature Thu 15, Maths Fri 16, Physics Mon 19, History Wed 21, Business Fri 23 Oct. Keep new topics light (kinematics in Physics, U3 Functions in Maths) and revise sprint 1 content for each exam.",
   items:{
    phy:{practice:"25 kinematics problems, including 5 graph questions; one short lab with error bars.",
         list:["Distinguish distance/displacement and speed/velocity","Read gradient and area from displacement-time and velocity-time graphs","Choose and rearrange the right suvat equation (constant-acceleration equations linking s displacement, u initial velocity, v final velocity, a acceleration, t time), stating when they apply","Linearise data and read a physical quantity from the gradient","Plot error bars and draw best-fit and worst-fit lines",
@@ -847,7 +889,9 @@ const SPRINTS = [
    his:["Source practice (Paper 1): explain a source's message, compare it with a second source, and judge its usefulness and limitations"],
    lit:["First work: notes on context, themes and two key passages"],
    core:["CAS: first experience logged with a reflection naming a learning outcome","EE: read a short summary of the 2027 EE guide (pathways and criteria)"],
-   hab:["First error-log review: top three recurring mistakes identified"]
+   hab:["First error-log review: top three recurring mistakes identified",
+"Revision plan for the partials: one past-style practice test per subject in the 3 days before its exam",
+"After each partial: marks written down and the self-check ratings updated"]
   }},
  {id:"s3", n:"Sprint 3", title:"Projectiles & functions", start:"2026-10-26", end:"2026-11-06", events:[{d:"2026-10-30",t:"Incidències day"},{d:"2026-11-02",t:"Interim report week (avaluació orientativa), 2–6 Nov"},{d:"2026-11-05",t:"MUN Lisbon trip, 5–7 Nov (if taking part)"}],
   focus:"Projectile motion and the language of functions. The interim report arrives this sprint: use it with the first timed self-test in both lead subjects.",
@@ -1181,6 +1225,11 @@ renderCalendar();
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.8", date:"28 Sep 2026", items:[
+    "Partial exam dates from the school: Literature Thu 15, Maths Fri 16, Physics Mon 19, History Wed 21, Business Fri 23 Oct (calendar, sprints 1–2 and a new panel in Calendar and timetable)",
+    "New panel: University access, how IB grades convert to the Spanish access grade and which PAU subjects can add points",
+    "Sprint 1: item to hand in the signed assessment policy form",
+    "Sprint 2: revision plan and after-exam items for the partials"]},
   {v:"1.7", date:"27 Sep 2026", items:[
     "Weekly timetable: the Tuesday 18:00–19:00 slot is now labelled Physics class"]},
   {v:"1.6", date:"27 Sep 2026", items:[
