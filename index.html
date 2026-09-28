@@ -445,7 +445,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
         <h3>What applies to his year group</h3>
         <ul class="facts">
           <li>Starting the Diploma Programme in Sept 2026 means final exams in <strong>May 2028</strong>.</li>
-          <li><strong>School year 2026–27</strong>: partial assessment windows (exàmens parcials) 5–23 Oct, 11–29 Jan and 19 Apr – 2 May, with each subject tested on one day within the window; term exams 20–26 Nov and 1–5 Mar; mock final exams 26 May – 3 Jun; intensive internal assessment (IA) period 4–18 Jun. Holidays: 12 Oct, 7–8 Dec, 22 Dec – 7 Jan, 8 Feb, 20–29 Mar.</li>
+          <li><strong>School year 2026–27</strong>: partial exams (exàmens parcials) 15–23 Oct (one exam per subject, see Calendar and timetable), then windows 11–29 Jan and 19 Apr – 2 May; term exams 20–26 Nov and 1–5 Mar; mock final exams 26 May – 3 Jun; intensive internal assessment (IA) period 4–18 Jun. Holidays: 12 Oct, 7–8 Dec, 22 Dec – 7 Jan, 8 Feb, 20–29 Mar.</li>
           <li><strong>Levels</strong>: Higher Level (HL) in Physics, English B and Business Management; Standard Level (SL) in Maths AA, History and International Literature.</li>
           <li><strong>Languages of teaching</strong>: English for Physics, Business Management and English B (tag EN); Spanish for Maths and History (ES); Catalan for International Literature and TOK (CA). Use the vocabulary of the teaching language in notes and flashcards.</li>
           <li><strong>Physics</strong> uses the themes A–E syllabus (first exams 2025). Older past papers organised by old topics or options need care.</li>
@@ -872,7 +872,7 @@ const SPRINTS = [
 "Assessment policy form (internal and external assessment, promotion from 1st to 2nd year, plagiarism) signed by student and parents and handed in"]
   }},
  {id:"s2", n:"Sprint 2", title:"Motion", start:"2026-10-12", end:"2026-10-23", off:[{d:"2026-10-12",t:"public holiday (Fiesta Nacional de España)"}],
-  events:[],
+  events:[{d:"2026-10-15",t:"Partial exams: Literature Thu 15, Maths Fri 16, Physics Mon 19, History Wed 21, Business Fri 23 Oct"}],
   focus:"Partial exams sprint: Literature Thu 15, Maths Fri 16, Physics Mon 19, History Wed 21, Business Fri 23 Oct. Keep new topics light (kinematics in Physics, U3 Functions in Maths) and revise sprint 1 content for each exam.",
   items:{
    phy:{practice:"25 kinematics problems, including 5 graph questions; one short lab with error bars.",
@@ -1042,7 +1042,7 @@ function renderTimeline(){
       <span class="n">${s.n.toUpperCase()}</span>
       <span class="t">${esc(s.title)}</span>
       <span class="d">${fmt(s.start)} – ${fmt(s.end)}</span>
-      <span class="sd">${schoolDays(s)} school days${(s.off||[]).length?` · ${s.off.length} off`:""}${(s.events||[]).some(e=>/term exam/i.test(e.t))?` · <b class="ex">exams</b>`:((s.events||[]).some(e=>/partial assessment/i.test(e.t))?` · <b class="exw">partials</b>`:"")}</span>
+      <span class="sd">${schoolDays(s)} school days${(s.off||[]).length?` · ${s.off.length} off`:""}${(s.events||[]).some(e=>/term exam/i.test(e.t))?` · <b class="ex">exams</b>`:((s.events||[]).some(e=>/partial/i.test(e.t))?` · <b class="exw">partials</b>`:"")}</span>
       <span class="bar" aria-hidden="true"><i style="width:${p}%"></i></span>
     </button>`;
   }).join("");
