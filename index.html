@@ -340,8 +340,8 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   <div class="tabbar" role="tablist" aria-label="Sections">
     <button type="button" role="tab" id="tab-tracker" data-view="tracker" aria-selected="true" aria-controls="view-tracker">Tracker<small>Sprints and checklists</small></button>
     <button type="button" role="tab" id="tab-cal" data-view="cal" aria-selected="false" aria-controls="view-cal"><span class="lbl-long">Calendar and timetable</span><span class="lbl-short">Calendar</span><small>Term dates and weekly classes</small></button>
-    <button type="button" role="tab" id="tab-exams" data-view="exams" aria-selected="false" aria-controls="view-exams"><span class="lbl-long">Exámenes y básquet</span><span class="lbl-short">Exámenes</span><small>Calendario para el equipo</small></button>
     <button type="button" role="tab" id="tab-guide" data-view="guide" aria-selected="false" aria-controls="view-guide">Study guide<small>How to study</small></button>
+    <button type="button" role="tab" id="tab-exams" data-view="exams" aria-selected="false" aria-controls="view-exams"><span class="lbl-long">Exámenes y básquet</span><span class="lbl-short">Exámenes</span><small>Calendario para el equipo</small></button>
   </div>
 
   <div id="view-tracker" class="view" role="tabpanel" aria-labelledby="tab-tracker">
@@ -1234,6 +1234,8 @@ renderCalendar();
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.13", date:"29 Sep 2026", items:[
+    "Exámenes y básquet moved to the last tab"]},
   {v:"1.12", date:"29 Sep 2026", items:[
     "New tab: Exámenes y básquet — exam calendar with the study plan, basketball trainings and matches, and what to tell the team",
     "Each training or match label can be changed (goes → to be confirmed → does not go) and is saved with the tracker",
@@ -1309,7 +1311,7 @@ function showView(v){
   try{ localStorage.setItem(LS_KEY+".view", v); }catch(e){}
 }
 document.querySelector(".tabbar").addEventListener("click", e=>{ const b = e.target.closest("[data-view]"); if(!b) return; showView(b.dataset.view); window.scrollTo({top:0}); });
-document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const order = ["tracker","cal","exams","guide"]; const cur = order.indexOf(document.querySelector(".tabbar [aria-selected=true]").dataset.view); const next = order[(cur + (e.key==="ArrowRight"?1:3)) % 4]; showView(next); document.getElementById("tab-"+next).focus(); });
+document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const order = ["tracker","cal","guide","exams"]; const cur = order.indexOf(document.querySelector(".tabbar [aria-selected=true]").dataset.view); const next = order[(cur + (e.key==="ArrowRight"?1:3)) % 4]; showView(next); document.getElementById("tab-"+next).focus(); });
 (function(){ let v = (location.hash||"").replace("#",""); if(v==="guia") v = "guide"; if(v==="calendar") v = "cal"; if(v==="examenes") v = "exams"; if(!["guide","tracker","cal","exams"].includes(v)){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(["guide","cal","exams"].includes(v) ? v : "tracker"); })();
 
 
