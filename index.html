@@ -1235,7 +1235,8 @@ renderCalendar();
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
   {v:"1.13", date:"29 Sep 2026", items:[
-    "Exámenes y básquet moved to the last tab"]},
+    "Exámenes y básquet moved to the last tab",
+    "Exámenes y básquet: summary boxes now also count trainings attended (Entrena) and matches played (Juega)"]},
   {v:"1.12", date:"29 Sep 2026", items:[
     "New tab: Exámenes y básquet — exam calendar with the study plan, basketball trainings and matches, and what to tell the team",
     "Each training or match label can be changed (goes → to be confirmed → does not go) and is saved with the tracker",
@@ -1592,7 +1593,9 @@ table.ex .lvl.alto{background:var(--hot)} table.ex .lvl.medio{background:var(--w
 .tabs button[aria-selected="true"]{background:var(--accent);color:#fff;margin-top:0;padding-top:12px}
 .tabs button:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
 .team-sub{color:var(--ink-2);max-width:75ch}
-.summary.t3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.summary.t3{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:1000px){.summary.t3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.card.si{border-color:#9CC98C;background:var(--eng-t)} .card.si .big{color:#2F6B22}
 @media (max-width:640px){.summary.t3{grid-template-columns:1fr}}
 .card.no{border-color:var(--hot);background:var(--hot-t)} .card.no .big{color:var(--hot)}
 .card.dudo{border-color:var(--warm);background:var(--warm-t)} .card.dudo .big{color:#7A5A00}
@@ -2036,7 +2039,7 @@ function decisionFor(s, k){
 }
 function renderTeam(){
   let h = `<div class="hd"></div>` + ["lun","mar","mié","jue","vie","sáb","dom"].map((d,i)=>`<div class="hd ${i>4?"we":""}">${d}</div>`).join("");
-  let ag = "", lastMonth = -1, w = 1; const rows = []; const cnt = {no:0,dudo:0,si:0};
+  let ag = "", lastMonth = -1, w = 1; const rows = []; const cnt = {no:0,dudo:0,si:0,entrena:0,juega:0};
   const d = dt(START);
   while(iso(d) <= END){
     h += monthRow(d);
@@ -2052,7 +2055,7 @@ function renderTeam(){
         dec ? (dec.c==="none" ? `<span class="v none">${esc(dec.t)}<small>${esc(dec.time)}</small></span>` : `<button type="button" class="v ${dec.c}${dec.edited?" edited":""}" data-sport="${s}" data-cur="${dec.c}" data-base="${dec.base}" title="Pulsa para cambiar">${esc(dec.t)}<small>${esc(dec.what)} ${esc(dec.time)}</small></button>`) : ""
       ].join("");
       h += `<div class="${cls.join(" ")}" role="gridcell" aria-label="${fmt(s)}"><div class="num"><span>${d.getDate()}${first?` <span class="mo">${MON[d.getMonth()]}</span>`:""}</span></div>${body}</div>`;
-      if(dec && dec.c!=="none"){ cnt[dec.c]++; if(dec.c!=="si" || dec.what==="Partido" || DECIDED[s] || dec.edited) rows.push(`<tr><td class="n">${fmt(s)}</td><td>${esc(dec.what)} ${esc(dec.time)}</td><td><span class="lg-v v ${dec.c}" style="display:inline-block">${esc(dec.t)}</span></td><td>${esc(dec.short)}</td></tr>`); }
+      if(dec && dec.c!=="none"){ cnt[dec.c]++; if(dec.c==="si") cnt[dec.what==="Partido"?"juega":"entrena"]++; if(dec.c!=="si" || dec.what==="Partido" || DECIDED[s] || dec.edited) rows.push(`<tr><td class="n">${fmt(s)}</td><td>${esc(dec.what)} ${esc(dec.time)}</td><td><span class="lg-v v ${dec.c}" style="display:inline-block">${esc(dec.t)}</span></td><td>${esc(dec.short)}</td></tr>`); }
       if(it.ex.length || it.tri || it.off || dec){
         if(d.getMonth()!==lastMonth){ ag += `<div class="mh">${MONL[d.getMonth()]}</div>`; lastMonth = d.getMonth(); }
         ag += `<div class="ad"><h3>${fmt(s)}</h3>${body}</div>`;
@@ -2068,6 +2071,8 @@ function renderTeam(){
   R.getElementById("teamSum").innerHTML =
     `<div class="card no"><span class="eyebrow">No va</span><span class="big">${cnt.no}</span><span class="note">entrenos o partidos en los que no va</span></div>`+
     `<div class="card dudo"><span class="eyebrow">A confirmar</span><span class="big">${cnt.dudo}</span><span class="note">examen en 2–3 días: se decide esa semana según cómo vaya el estudio</span></div>`+
+    `<div class="card si"><span class="eyebrow">Entrena</span><span class="big">${cnt.entrena}</span><span class="note">entrenos a los que va</span></div>`+
+    `<div class="card si"><span class="eyebrow">Juega</span><span class="big">${cnt.juega}</span><span class="note">partidos que juega</span></div>`+
     `<div class="card"><span class="eyebrow">Días de examen</span><span class="big">${nExam}</span><span class="note">parciales 15–23 oct · trimestrales 20–26 nov</span></div>`;
 }
 R.getElementById("legendT").innerHTML =
@@ -2102,7 +2107,7 @@ function loadJsPDF(){
   return new Promise((res, rej)=>{ const sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"; sc.onload = ()=> res(window.jspdf.jsPDF); sc.onerror = ()=> rej(new Error("load")); document.head.appendChild(sc); });
 }
 function teamModel(){
-  const weeks = []; const d = dt(START); const rows = []; const cnt = {no:0,dudo:0,si:0};
+  const weeks = []; const d = dt(START); const rows = []; const cnt = {no:0,dudo:0,si:0,entrena:0,juega:0};
   while(iso(d) <= END){
     const days = []; let band = null;
     const end = new Date(d); end.setDate(end.getDate()+6);
@@ -2111,7 +2116,7 @@ function teamModel(){
     for(let k=0;k<7;k++){
       const s = iso(d); const it = dayItems(s); const dec = decisionFor(s,k);
       days.push({s, n:d.getDate(), m:d.getMonth(), first:d.getDate()===1, it, dec});
-      if(dec && dec.c!=="none"){ cnt[dec.c]++; if(dec.c!=="si" || dec.what==="Partido" || DECIDED[s] || dec.edited) rows.push({s, dec}); }
+      if(dec && dec.c!=="none"){ cnt[dec.c]++; if(dec.c==="si") cnt[dec.what==="Partido"?"juega":"entrena"]++; if(dec.c!=="si" || dec.what==="Partido" || DECIDED[s] || dec.edited) rows.push({s, dec}); }
       d.setDate(d.getDate()+1);
     }
     weeks.push({band, days});
@@ -2134,7 +2139,7 @@ async function makePdf(pages){
   y += big?9:8;
   T("Rojo: examen al día siguiente, no va.  Amarillo: examen en 2–3 días, a confirmar esa semana.  Verde: va.", M, y+2.5, {s:big?8.5:7.5, c:C.ink2});
   y += big?6:5;
-  T(`No va: ${cnt.no}   ·   A confirmar: ${cnt.dudo}   ·   Días de examen: ${EXAMS.length + TERM.days.length} (parciales 15–23 oct, trimestrales 20–26 nov)`, M, y+2.5, {b:true, s:big?8.5:7.5});
+  T(`No va: ${cnt.no}   ·   A confirmar: ${cnt.dudo}   ·   Entrena: ${cnt.entrena}   ·   Juega: ${cnt.juega}   ·   Días de examen: ${EXAMS.length + TERM.days.length} (parciales 15–23 oct, trimestrales 20–26 nov)`, M, y+2.5, {b:true, s:big?8.5:7.5});
   y += big?6:5;
   // grid
   const wkW = 6, colW = (W - wkW)/7, gap = 0.8;
