@@ -302,6 +302,17 @@ table.cal{border-collapse:separate;border-spacing:3px;width:100%;min-width:720px
 .lg.event{background:var(--mark-soft);border:1px solid var(--mark)}
 .lg.today{background:var(--surface);outline:2px solid var(--accent);outline-offset:-2px}
 
+.countdown{gap:10px}
+.cd-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.cd-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.cd{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;background:var(--surface)}
+.cd .n{font-family:var(--display);font-size:34px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.cd .n small{font-family:var(--body);font-size:13px;font-weight:600;color:var(--ink-2);margin-left:5px}
+.cd .s{font-weight:600;color:var(--ink)}
+.cd .w{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.cd.hot{background:var(--r1);border-color:var(--crit)} .cd.hot .n{color:var(--crit)}
+.cd.warm{background:var(--r2);border-color:var(--warn)} .cd.warm .n{color:var(--warn)}
+.cd-empty{font-size:14px;color:var(--ink-2)}
 .t-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
 .t-list li{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:9px 12px;display:flex;flex-direction:column;gap:2px;background:var(--surface)}
 .t-subj{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
@@ -462,6 +473,10 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   </div>
 
   <div id="view-cal" class="view" role="tabpanel" aria-labelledby="tab-cal" hidden>
+  <section class="panel countdown" id="countdown" aria-labelledby="cdH">
+    <div class="cd-head"><h3 id="cdH">Exam countdown</h3><span class="note">Every exam in the next 20 days</span></div>
+    <div class="cd-row" id="cdRow"></div>
+  </section>
   <details class="panel termcal" id="termCal" open>
     <summary><h3>Term calendar</h3><span class="note" id="calName"></span><span class="cal-toggle"></span></summary>
     <div class="cal-wrap"><table class="cal" id="calGrid" aria-label="Term calendar by week"></table></div>
@@ -1230,10 +1245,32 @@ document.addEventListener("click", e=>{
 })();
 renderCalendar();
 
+/* ---------- exam countdown (Calendar and timetable tab) ---------- */
+function renderCountdown(){
+  const el = document.getElementById("cdRow"); if(!el) return;
+  const t = todayISO();
+  const days = iso => Math.round((new Date(iso+"T12:00:00") - new Date(t+"T12:00:00"))/86400000);
+  const exams = (TERM.ranges||[]).filter(r=> r.type==="exam" && r.to>=t).map(r=>{
+    const m = r.t.match(/^Partial exam: (.+?), (.+)$/);
+    const start = r.from < t ? t : r.from;
+    return {d:start, n:days(start), s: m ? m[1] : r.t, w: m ? "Partial · "+fmt(r.from)+" · "+m[2] : fmt(r.from)+" – "+fmt(r.to)+" · subjects to confirm"};
+  }).sort((a,b)=> a.d.localeCompare(b.d));
+  const soon = exams.filter(e=> e.n<=20);
+  if(!soon.length){
+    const nx = exams[0];
+    el.innerHTML = `<p class="cd-empty">No exams in the next 20 days.${nx ? ` Next: <strong>${esc(nx.s)}</strong> in ${nx.n} days (${esc(nx.w)}).` : ""}</p>`;
+    return;
+  }
+  el.innerHTML = soon.map(e=>`<div class="cd ${e.n<=3?"hot":e.n<=7?"warm":""}"><span class="n">${e.n===0?"Today":e.n}${e.n===0?"":`<small>${e.n===1?"day":"days"}</small>`}</span><span class="s">${esc(e.s)}</span><span class="w">${esc(e.w)}</span></div>`).join("");
+}
+renderCountdown();
+
 
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.15", date:"29 Sep 2026", items:[
+    "Calendar and timetable: exam countdown with the days left for every exam in the next 20 days"]},
   {v:"1.14", date:"29 Sep 2026", items:[
     "Exámenes y básquet: December matches added (13 Dec Martorell 13:15, 20 Dec Molins de Rei 19:00)"]},
   {v:"1.13", date:"29 Sep 2026", items:[
