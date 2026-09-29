@@ -208,14 +208,14 @@ details.tip.block summary::before{color:var(--accent)}
 .guide-grid > details.tip.block:has(.cornell){grid-column:span 2}
 @media (max-width:820px){.guide-grid > details.tip.block:has(.cornell){grid-column:auto}}
 
-.tabbar{--t1:#0E5F5B;--t2:#1E7650;--t3:#3C8540;--tabc:var(--t1);display:flex;gap:6px;align-items:flex-end;width:100%;padding:0 6px;border-bottom:5px solid var(--tabc);transition:border-color .2s ease}
+.tabbar{--t1:#0E5F5B;--t2:#1E7650;--t3:#3C8540;--t4:#2F6E73;--tabc:var(--t1);display:flex;gap:6px;align-items:flex-end;width:100%;padding:0 6px;border-bottom:5px solid var(--tabc);transition:border-color .2s ease}
 .tabbar button{appearance:none;flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:.01em;line-height:1.15;padding:9px 16px 8px;margin-top:8px;border:0;border-radius:10px 10px 0 0;background:color-mix(in srgb, var(--c) 18%, #ffffff);color:var(--c);box-shadow:inset 0 0 0 1.5px color-mix(in srgb, var(--c) 45%, #ffffff);cursor:pointer;white-space:nowrap;transition:background .15s ease,margin .15s ease,padding .15s ease}
 .tabbar button small{font-family:var(--body);font-size:12px;font-weight:400;opacity:.9;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .tabbar button:hover{background:color-mix(in srgb, var(--c) 30%, #ffffff)}
 .tabbar button[aria-selected="true"]{background:var(--c);color:#fff;box-shadow:none;margin-top:0;padding-top:13px;padding-bottom:10px}
 .tabbar button:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
 .tabbar .lbl-short{display:none}
-#tab-tracker{--c:var(--t1)} #tab-cal{--c:var(--t2)} #tab-guide{--c:var(--t3)}
+#tab-tracker{--c:var(--t1)} #tab-cal{--c:var(--t2)} #tab-exams{--c:var(--t4)} #tab-guide{--c:var(--t3)}
 @media (max-width:520px){.tabbar .lbl-long{display:none}.tabbar .lbl-short{display:inline}.tabbar{gap:4px;padding:0 2px}.tabbar button small{display:none}.tabbar button{font-size:14px;padding:8px 8px 7px}}
 .view{display:flex;flex-direction:column;gap:22px}
 .view[hidden],[hidden]{display:none!important}
@@ -340,6 +340,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
   <div class="tabbar" role="tablist" aria-label="Sections">
     <button type="button" role="tab" id="tab-tracker" data-view="tracker" aria-selected="true" aria-controls="view-tracker">Tracker<small>Sprints and checklists</small></button>
     <button type="button" role="tab" id="tab-cal" data-view="cal" aria-selected="false" aria-controls="view-cal"><span class="lbl-long">Calendar and timetable</span><span class="lbl-short">Calendar</span><small>Term dates and weekly classes</small></button>
+    <button type="button" role="tab" id="tab-exams" data-view="exams" aria-selected="false" aria-controls="view-exams"><span class="lbl-long">Exámenes y básquet</span><span class="lbl-short">Exámenes</span><small>Calendario para el equipo</small></button>
     <button type="button" role="tab" id="tab-guide" data-view="guide" aria-selected="false" aria-controls="view-guide">Study guide<small>How to study</small></button>
   </div>
 
@@ -506,6 +507,11 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
       </ul>
     </div>
   </details>
+  </div>
+
+
+  <div id="view-exams" class="view" role="tabpanel" aria-labelledby="tab-exams" hidden>
+    <div id="examsHost"></div>
   </div>
 
   <div id="view-guide" class="view" role="tabpanel" aria-labelledby="tab-guide" hidden>
@@ -985,11 +991,11 @@ const SPRINTS = [
 
 /* ---------- state ---------- */
 const LS_KEY = "dp1-term1-v1";
-let state = {done:{}, rate:{}, notes:{}, meta:{}};
+let state = {done:{}, rate:{}, notes:{}, meta:{}, prep:{}, sport:{}};
 let active = null;
 let db = null, docRef = null, canWrite = true;
 
-function normalize(o){ o = o||{}; return {done:{...(o.done||{})}, rate:{...(o.rate||{})}, notes:{...(o.notes||{})}, meta:{...(o.meta||{})}}; }
+function normalize(o){ o = o||{}; return {done:{...(o.done||{})}, rate:{...(o.rate||{})}, notes:{...(o.notes||{})}, meta:{...(o.meta||{})}, prep:{...(o.prep||{})}, sport:{...(o.sport||{})}}; }
 function loadLocal(){ try{ const s = localStorage.getItem(LS_KEY); if(s){ state = normalize(JSON.parse(s)); } }catch(e){} }
 function saveLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
 loadLocal();
@@ -1001,7 +1007,7 @@ function persist(){
   clearTimeout(saveTimer);
   setSync("Saving…", true);
   saveTimer = setTimeout(async ()=>{
-    try{ const snap = {done:state.done, rate:state.rate, notes:state.notes, meta:state.meta, updated:Date.now()}; await docRef.set(snap); await db.doc("backups/"+todayISO()).set(snap); setSync("Saved · shared", true); renderBackup(); }
+    try{ const snap = {done:state.done, rate:state.rate, notes:state.notes, meta:state.meta, prep:state.prep, sport:state.sport, updated:Date.now()}; await docRef.set(snap); await db.doc("backups/"+todayISO()).set(snap); setSync("Saved · shared", true); renderBackup(); }
     catch(e){ setSync("Saved on this device only", false); }
   }, 700);
 }
@@ -1140,7 +1146,9 @@ function renderHeat(){
   document.getElementById("heat").innerHTML = h + "</tbody>";
 }
 
-function renderAll(){ renderTimeline(); renderSummary(); renderSprint(); renderHeat(); if(typeof renderCalendar==="function") renderCalendar(); }
+function renderAll(){ renderTimeline(); renderSummary(); renderSprint(); renderHeat(); if(typeof renderCalendar==="function") renderCalendar(); if(window.__examRender) window.__examRender(); }
+// Bridge for the Exámenes y básquet tab: it reads and saves its part of the shared record here.
+window.__trk = {state: ()=> state, save: (k, v)=>{ state[k] = v; persist(); }};
 renderAll();
 
 /* ---------- events ---------- */
@@ -1226,6 +1234,10 @@ renderCalendar();
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.12", date:"29 Sep 2026", items:[
+    "New tab: Exámenes y básquet — exam calendar with the study plan, basketball trainings and matches, and what to tell the team",
+    "Each training or match label can be changed (goes → to be confirmed → does not go) and is saved with the tracker",
+    "Download the team calendar as a PDF, on 1 or 2 A4 pages"]},
   {v:"1.11", date:"29 Sep 2026", items:[
     "MUN Lisbon trip (5–7 Nov) removed from the calendar: not taking part"]},
   {v:"1.10", date:"28 Sep 2026", items:[
@@ -1292,13 +1304,13 @@ const CHANGELOG = [
 /* ---------- tabs ---------- */
 function showView(v){
   document.querySelectorAll(".tabbar [role=tab]").forEach(b=> b.setAttribute("aria-selected", String(b.dataset.view===v)));
-  document.querySelector(".tabbar").style.setProperty("--tabc", "var(--t"+({tracker:1,cal:2,guide:3}[v])+")");
-  ["tracker","cal","guide"].forEach(x=> document.getElementById("view-"+x).hidden = v!==x);
+  document.querySelector(".tabbar").style.setProperty("--tabc", "var(--t"+({tracker:1,cal:2,exams:4,guide:3}[v])+")");
+  ["tracker","cal","exams","guide"].forEach(x=> document.getElementById("view-"+x).hidden = v!==x);
   try{ localStorage.setItem(LS_KEY+".view", v); }catch(e){}
 }
 document.querySelector(".tabbar").addEventListener("click", e=>{ const b = e.target.closest("[data-view]"); if(!b) return; showView(b.dataset.view); window.scrollTo({top:0}); });
-document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const order = ["tracker","cal","guide"]; const cur = order.indexOf(document.querySelector(".tabbar [aria-selected=true]").dataset.view); const next = order[(cur + (e.key==="ArrowRight"?1:2)) % 3]; showView(next); document.getElementById("tab-"+next).focus(); });
-(function(){ let v = (location.hash||"").replace("#",""); if(v==="guia") v = "guide"; if(v==="calendar") v = "cal"; if(!["guide","tracker","cal"].includes(v)){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(["guide","cal"].includes(v) ? v : "tracker"); })();
+document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const order = ["tracker","cal","exams","guide"]; const cur = order.indexOf(document.querySelector(".tabbar [aria-selected=true]").dataset.view); const next = order[(cur + (e.key==="ArrowRight"?1:3)) % 4]; showView(next); document.getElementById("tab-"+next).focus(); });
+(function(){ let v = (location.hash||"").replace("#",""); if(v==="guia") v = "guide"; if(v==="calendar") v = "cal"; if(v==="examenes") v = "exams"; if(!["guide","tracker","cal","exams"].includes(v)){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(["guide","cal","exams"].includes(v) ? v : "tracker"); })();
 
 
 /* ---------- study guide language ---------- */
@@ -1313,7 +1325,7 @@ document.querySelector(".lang-switch").addEventListener("click", e=>{ const b = 
 
 /* ---------- backup & restore ---------- */
 const APP_ID = "ib-tracker-dp1-term1";
-function exportData(){ return {app:APP_ID, schema:1, exported:new Date().toISOString(), done:state.done, rate:state.rate, notes:state.notes, meta:state.meta}; }
+function exportData(){ return {app:APP_ID, schema:1, exported:new Date().toISOString(), done:state.done, rate:state.rate, notes:state.notes, meta:state.meta, prep:state.prep, sport:state.sport}; }
 function countTicks(o){ return Object.keys((o&&o.done)||{}).length; }
 function daysSince(iso){ if(!iso) return null; return Math.floor((Date.now()-new Date(iso).getTime())/86400000); }
 function renderBackup(){
@@ -1456,7 +1468,782 @@ renderBackup();
     : `<b>Weekend:</b> one spaced review of this week's topics, and plan Monday (${[...new Set(TT.Mon.filter(v=>REVIEW.includes(v)))].join(", ")}).`;
 })();
 </script>
+<template id="examsTpl"><style>
+/* Layout: a term wall-planner. Summary strip on top, then one row per week (Mon–Sun), exams as solid tiles and preparation sessions as tickable tinted chips. Phone: agenda list. */
+:host{display:block;
+  color-scheme:light;
+  --bg:#FFFFFF; --grid:rgba(15,110,106,.07); --surface:#FFFFFF; --surface-2:#EEF2EF; --line:#D6DCD6;
+  --ink:#17212B; --ink-2:#4A5560; --muted:#77828C; --accent:#0F6E6A; --accent-soft:#D5EAE7;
+  --crit:#B3372B; --crit-soft:#F1D3CE; --event:#F6E7C8; --event-ink:#6B4A0E; --mark:#B7791F; --hot:#C2410C; --hot-t:#FDE1CF; --warm:#B88A00; --warm-t:#FFF1BF;
+  --phy:#0F6E6A; --phy-t:#D5EAE7;
+  --mat:#2F5FA8; --mat-t:#DCE6F5;
+  --bus:#A45F0B; --bus-t:#F6E4C8;
+  --his:#7B3F8C; --his-t:#EDDDF1;
+  --lit:#B03A5B; --lit-t:#F5DAE2;
+  --eng:#3B7A2A; --eng-t:#DDEED5;
+  --gen:#4A5560; --gen-t:#E6EAEC;
+  --display:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,4vw,40px);font-weight:700;line-height:1.05}
+h2{font-size:22px;font-weight:600}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.note{font-size:13px;color:var(--muted)}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;align-items:flex-end}
+header .lead{color:var(--ink-2);max-width:68ch;margin-top:6px}
+.sync{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--accent)}
 
+.summary{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr) minmax(0,2fr);gap:12px}
+@media (max-width:900px){.summary{grid-template-columns:1fr 1fr}.summary .week{grid-column:1 / -1}}
+@media (max-width:480px){.summary{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.big{font-family:var(--display);font-size:40px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.big small{font-family:var(--body);font-size:14px;font-weight:600;color:var(--ink-2);margin-left:6px}
+.card.next{border-color:var(--crit);background:var(--crit-soft)}
+.summary{align-items:start}
+.fold summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.fold summary::-webkit-details-marker{display:none}
+.fold summary::after{content:"Ocultar";margin-left:auto;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:1px 6px}
+.fold:not([open]) summary::after{content:"Mostrar"}
+.fold summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fold[open] .sumline{display:none}
+.sumline{font-size:13px;font-weight:600;color:var(--ink)}
+.fold-b{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.next3{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:13.5px}
+.next3 li{display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:center}
+.next3 .dd{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--crit);text-align:right}
+.card.next .big{color:var(--crit)}
+.track{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.week ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.week li{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:start;font-size:14px}
+.week li .d{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:3px}
+.week li .items{display:flex;flex-wrap:wrap;gap:4px}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:13px;color:var(--ink-2)}
+.legend .sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.cal-scroll{overflow-x:auto}
+.cal{display:grid;grid-template-columns:52px repeat(7,minmax(118px,1fr));gap:4px;min-width:900px}
+.cal .hd{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;padding:2px 0}
+.cal .hd.we{color:var(--accent)}
+.wk{font-family:var(--mono);font-size:10.5px;color:var(--muted);text-align:center;padding-top:6px;line-height:1.3}
+.wk b{display:block;font-size:11px;color:var(--ink-2)}
+.day{min-height:92px;background:var(--surface-2);border-radius:4px;padding:5px 6px 6px;display:flex;flex-direction:column;gap:4px;min-width:0;position:relative}
+.day.we{background:color-mix(in srgb,var(--surface-2) 55%,var(--surface))}
+.day.off{background:repeating-linear-gradient(135deg,var(--surface-2) 0 5px,var(--line) 5px 8px)}
+.day.win{box-shadow:inset 0 0 0 1.5px var(--crit)}
+.day.today{box-shadow:inset 0 0 0 2.5px var(--accent)}
+.day.c-alto{background:var(--hot-t);box-shadow:inset 0 0 0 2px var(--hot)}
+.day.c-medio{background:var(--warm-t);box-shadow:inset 0 0 0 1.5px var(--warm)}
+.day.c-bajo{box-shadow:inset 0 0 0 1.5px var(--warm);background-image:repeating-linear-gradient(135deg,transparent 0 6px,color-mix(in srgb,var(--warm-t) 70%,transparent) 6px 9px)}
+.day.c-alto.today,.day.c-medio.today,.day.c-bajo.today{box-shadow:inset 0 0 0 2.5px var(--accent)}
+.cf{font-size:11px;font-weight:700;line-height:1.2;border-radius:3px;padding:2px 5px;color:#fff}
+.cf.alto{background:var(--hot)} .cf.medio{background:var(--warm)} .cf.bajo{background:var(--surface);color:#7A5A00;border:1px solid var(--warm)}
+.act{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--ink)}
+.act.match{display:block;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:1px 4px;font-family:var(--body);font-size:11px;line-height:1.25}
+.c-alto .act,.c-medio .act{color:var(--hot)}
+.c-medio .act,.c-bajo .act{color:#7A5A00}
+table.ex .lvl{font-weight:700;color:#fff;border-radius:3px;padding:1px 6px;font-size:12px;white-space:nowrap}
+table.ex .lvl.alto{background:var(--hot)} table.ex .lvl.medio{background:var(--warm)} table.ex .lvl.bajo{background:var(--surface);color:#7A5A00;border:1px solid var(--warm)}
+.day.out{opacity:.35}
+.num{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;display:flex;justify-content:space-between;gap:4px}
+.num .mo{color:var(--accent)}
+.tag{font-size:11.5px;line-height:1.25;border-radius:4px;padding:2px 5px}
+.tag.ev{background:var(--event);color:var(--event-ink);border:1px solid color-mix(in srgb,var(--mark) 40%,transparent)}
+.tag.offt{background:var(--surface);color:var(--muted)}
+.tag.cls{color:var(--muted);font-family:var(--mono);font-size:10.5px;padding:0}
+.exam{border-radius:5px;padding:4px 6px 4px 7px;background:var(--crit-soft);border:1.5px solid var(--crit);border-left:5px solid var(--c,var(--crit));color:var(--ink);font-size:12.5px;font-weight:700;line-height:1.2;display:flex;flex-direction:column}
+.exam b{color:var(--crit);font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.exam span{font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--ink-2)}
+.exam.tri{border-style:dashed;border-left-width:1.5px}
+.prep{appearance:none;display:grid;grid-template-columns:14px 1fr;gap:5px;align-items:start;text-align:left;width:100%;border:0;border-left:3px solid var(--c);background:var(--t);color:var(--ink);border-radius:4px;padding:3px 5px;font:inherit;font-size:12px;line-height:1.25;cursor:pointer}
+.prep:hover{filter:brightness(.97)}
+.prep:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.prep .bx{width:13px;height:13px;border:1.5px solid var(--c);border-radius:3px;margin-top:1px;display:grid;place-items:center;font-size:10px;line-height:1;color:var(--surface)}
+.prep[aria-pressed="true"] .bx{background:var(--c)}
+.prep[aria-pressed="true"] .bx::after{content:"✓"}
+.prep[aria-pressed="true"] .tx{text-decoration:line-through;color:var(--muted)}
+.prep .s{font-weight:700;color:var(--c)}
+.prep .short{display:none}
+.mrow{grid-column:1 / -1;display:flex;align-items:center;gap:10px;margin-top:8px;font-family:var(--display);font-size:18px;font-weight:700;color:var(--accent);letter-spacing:.02em;text-transform:uppercase}
+.mrow::after{content:"";flex:1;height:2px;background:var(--accent);opacity:.35}
+.mrow:first-of-type{margin-top:0}
+.day.alt{background:color-mix(in srgb,var(--surface-2) 55%,var(--accent-soft))}
+.day.m1{box-shadow:inset 3px 0 0 var(--accent)}
+.day.m1 .num .mo{background:var(--accent);color:#fff;border-radius:3px;padding:0 4px}
+.print-only{display:none}
+.view{display:flex;flex-direction:column;gap:20px}
+.view[hidden],[hidden]{display:none!important}
+.tabs{display:flex;gap:6px;border-bottom:4px solid var(--accent);padding:0 4px}
+.tabs button{appearance:none;border:0;border-radius:10px 10px 0 0;padding:8px 18px 7px;margin-top:6px;font-family:var(--display);font-size:17px;font-weight:600;text-align:left;display:flex;flex-direction:column;background:var(--accent-soft);color:var(--accent);cursor:pointer}
+.tabs button small{font-family:var(--body);font-size:12px;font-weight:400}
+.tabs button[aria-selected="true"]{background:var(--accent);color:#fff;margin-top:0;padding-top:12px}
+.tabs button:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+.team-sub{color:var(--ink-2);max-width:75ch}
+.summary.t3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:640px){.summary.t3{grid-template-columns:1fr}}
+.card.no{border-color:var(--hot);background:var(--hot-t)} .card.no .big{color:var(--hot)}
+.card.dudo{border-color:var(--warm);background:var(--warm-t)} .card.dudo .big{color:#7A5A00}
+.calT .day{min-height:64px}
+.v{display:block;font-weight:700;font-size:13px;line-height:1.2;border-radius:4px;padding:4px 6px;text-align:center}
+.v small{display:block;font-family:var(--mono);font-size:10px;font-weight:400;opacity:.9;margin-top:1px}
+.v.no{background:var(--hot);color:#fff}
+.v.dudo{background:var(--warm-t);color:#6B4F00;border:1.5px solid var(--warm)}
+.v.si{background:var(--eng-t);color:#2F6B22}
+.v.none{background:var(--surface);color:var(--muted);border:1px dashed var(--line);font-weight:600}
+.calT .exam{font-size:12px}
+.day.study{background:color-mix(in srgb,var(--surface-2) 60%,var(--accent-soft))}
+.lg-v{display:inline-block;font-weight:700;font-size:12px;border-radius:3px;padding:1px 7px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;border-radius:4px;padding:2px 7px;background:var(--t);color:var(--ink);border-left:3px solid var(--c)}
+.chip.x{background:var(--c);color:var(--surface);font-weight:700;border-left:0}
+[data-s="phy"]{--c:var(--phy);--t:var(--phy-t)} [data-s="mat"]{--c:var(--mat);--t:var(--mat-t)} [data-s="bus"]{--c:var(--bus);--t:var(--bus-t)}
+[data-s="his"]{--c:var(--his);--t:var(--his-t)} [data-s="lit"]{--c:var(--lit);--t:var(--lit-t)} [data-s="eng"]{--c:var(--eng);--t:var(--eng-t)} [data-s="gen"]{--c:var(--gen);--t:var(--gen-t)}
+
+.agenda{display:none;flex-direction:column;gap:10px}
+.agenda .ad{display:flex;flex-direction:column;gap:4px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.agenda .ad h3{font-size:15px;font-family:var(--display)}
+.agenda .ad.today h3{color:var(--accent)}
+.agenda .mh{font-family:var(--display);font-size:18px;font-weight:700;color:var(--accent);margin-top:6px}
+@media (max-width:720px){.cal-scroll{display:none}.agenda{display:flex}}
+
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+table.ex{width:100%;border-collapse:collapse;font-size:14px}
+table.ex th,table.ex td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.ex th{font-family:var(--mono);font-size:11.5px;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+@media (max-width:480px){table.ex th,table.ex td{padding:6px 4px}}
+table.ex td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.method ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink-2)}
+.method strong{color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){.track i{transition:width .3s ease}}
+
+
+.wrap{max-width:none;padding:0}
+button.v{appearance:none;border:0;width:100%;font-family:inherit;cursor:pointer}
+button.v:hover{filter:brightness(.96)}
+button.v:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.v.dudo{border:1.5px solid var(--warm)}
+.v.edited{position:relative}
+.v.edited::after{content:"cambiado";position:absolute;top:-6px;right:-3px;font-family:var(--mono);font-size:8.5px;font-weight:600;background:var(--surface);color:var(--ink-2);border:1px solid var(--line);border-radius:3px;padding:0 3px}
+.pdfbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{appearance:none;font:inherit;font-size:13.5px;font-weight:600;padding:7px 12px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer}
+.btn.ghost{background:var(--surface);color:var(--accent)}
+.btn:disabled{opacity:.6;cursor:progress}
+.btn:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+.hint{font-size:13px;color:var(--ink-2)}
+</style>
+<div class="wrap">
+
+  <div class="tabs" role="tablist" aria-label="Vistas">
+    <button type="button" role="tab" id="tabTeam" data-v="team" aria-selected="true">Equipo<small>Entrenos y partidos</small></button>
+    <button type="button" role="tab" id="tabStudy" data-v="study" aria-selected="false">Estudio<small>Plan y sesiones</small></button>
+  </div>
+
+  <div id="viewTeam" class="view">
+    <div class="pdfbar">
+      <button type="button" class="btn" id="pdf1">Descargar PDF · 1 página</button>
+      <button type="button" class="btn ghost" id="pdf2">Descargar PDF · 2 páginas</button>
+      <span class="note" id="pdfMsg"></span>
+    </div>
+    <p class="hint">Pulsa la etiqueta de un entreno o partido para cambiarla: Entrena → A confirmar → No entrena → Entrena. Los cambios se guardan con el resto del tracker y salen en el PDF.</p>
+    <p class="team-sub">Entrenos y partidos del trimestre según los exámenes. Rojo: examen al día siguiente, no va. Amarillo: examen en 2–3 días, a confirmar esa semana. Verde: va.</p>
+    <section class="summary t3" aria-label="Resumen para el equipo" id="teamSum"></section>
+    <div class="legend" id="legendT"></div>
+    <section class="panel" aria-labelledby="calTH">
+      <h2 id="calTH">Trimestre semana a semana</h2>
+      <div class="cal-scroll"><div class="cal calT" id="calT" role="grid" aria-label="Entrenos y partidos del trimestre"></div></div>
+      <div class="agenda" id="agendaT"></div>
+    </section>
+    <section class="panel" aria-labelledby="tTH">
+      <h2 id="tTH">Partidos y días que no va o están por confirmar</h2>
+      <div style="overflow-x:auto"><table class="ex"><thead><tr><th>Día</th><th>Actividad</th><th>Decisión</th><th>Exámenes</th></tr></thead><tbody id="teamBody"></tbody></table></div>
+      <p class="note" id="exLine"></p>
+    </section>
+  </div>
+
+  <div id="viewStudy" class="view" hidden>
+  <section class="summary" aria-label="Resumen">
+    <details class="card fold next" id="foldNext" open>
+      <summary><span class="eyebrow">Próximo examen</span><span class="sumline" id="nextLine"></span></summary>
+      <div class="fold-b" id="nextCard"></div>
+    </details>
+    <details class="card fold" id="foldDone" open>
+      <summary><span class="eyebrow">Preparación hecha</span><span class="sumline" id="doneLine"></span></summary>
+      <div class="fold-b">
+        <span class="big" id="doneBig">0<small>de 0</small></span>
+        <span class="track" aria-hidden="true"><i id="doneBar" style="width:0%"></i></span>
+        <span class="note" id="doneNote"></span>
+      </div>
+    </details>
+    <details class="card fold week" id="foldWeek" open>
+      <summary><span class="eyebrow">Próximos 7 días</span><span class="sumline" id="weekLine"></span></summary>
+      <div class="fold-b"><ul id="weekList"></ul></div>
+    </details>
+  </section>
+
+  <div class="legend" id="legend"></div>
+
+  <section class="panel" aria-labelledby="calH">
+    <div style="display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline"><h2 id="calH">Trimestre semana a semana</h2><span class="note">Borde rojo: semana de parciales. Rayado: no hay clase. Pulsa una sesión para marcarla como hecha.</span></div>
+    <div class="cal-scroll"><div class="cal" id="cal" role="grid" aria-label="Calendario del trimestre"></div></div>
+    <div class="agenda" id="agenda"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="cfH" id="cfPanel">
+    <div style="display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline"><h2 id="cfH">Conflictos con entrenos y partidos</h2><span class="note">El estudio de cada examen empieza unos 10 días antes, se intensifica los 4–5 días previos y la víspera es lo más crítico. El porcentaje combina lo cerca que está el examen (víspera 100, a 2 días 70, a 3 días 55, a 4–5 días 40, a 6–7 días 30, a 8–14 días con sesión de estudio 15) con el tiempo que ocupa la actividad: entreno unas 1,5 h, partido en casa unas 2,5 h, partido fuera 3–5 h con el viaje. Con examen al día siguiente, no juega. <b style="color:var(--hot)">Alto</b> 60 % o más · <b style="color:#7A5A00">Medio</b> 30–59 % · <b style="color:#7A5A00">Bajo</b> 10–29 %.</span></div>
+    <div style="overflow-x:auto"><table class="ex"><thead><tr><th>Día</th><th>Actividad</th><th>Motivo</th><th>Conflicto</th></tr></thead><tbody id="cfBody"></tbody></table></div>
+  </section>
+
+  <div class="two">
+    <section class="panel" aria-labelledby="exH">
+      <h2 id="exH">Exámenes</h2>
+      <div style="overflow-x:auto"><table class="ex" id="exTbl"><thead><tr><th>Día</th><th>Asignatura</th><th>Hora</th><th>Faltan</th></tr></thead><tbody id="exBody"></tbody></table></div>
+      <p class="note">English B y TOK no aparecen en el calendario de parciales. Los días de cada asignatura en los trimestrales (20–26 nov) están por confirmar: cuando se sepan, las sesiones de la semana del 16 nov se ajustan a ese orden.</p>
+    </section>
+    <section class="panel method" aria-labelledby="mH">
+      <h2 id="mH">Cómo está pensada la preparación</h2>
+      <ol>
+        <li><strong>Hoja resumen, una semana antes.</strong> Una asignatura por día: fórmulas, definiciones y conceptos clave en una sola cara, escrita de memoria y completada después con los apuntes.</li>
+        <li><strong>Práctica con preguntas, 2–4 días antes.</strong> Preguntas tipo examen sin apuntes y con tiempo. Es lo que más rinde (práctica de recuperación).</li>
+        <li><strong>Repaso ligero, la víspera.</strong> Registro de errores y hoja resumen, 30–40 minutos. Nada nuevo la noche antes, y a dormir 8 horas.</li>
+        <li><strong>Tardes con entreno</strong> (lunes y viernes 19:00–20:00, miércoles 20:00–21:15): la sesión de preparación va antes del entreno, justo al llegar a casa, y dura 30–40 minutos.</li>
+        <li><strong>Días de partido:</strong> como mucho una sesión, antes de salir o en el viaje. Si el partido cae en sábado, el trabajo fuerte pasa al domingo, y al revés.</li>
+        <li><strong>Repartido, no en bloque.</strong> Cada asignatura aparece en varios días separados (práctica espaciada), y la mayoría de días mezclan dos asignaturas.</li>
+      </ol>
+    </section>
+  </div>
+  </div>
+</div>
+
+</template>
+<script>
+
+(function(){
+const HOST = document.getElementById("examsHost"); if(!HOST) return;
+const R = HOST.attachShadow({mode:"open"});
+R.appendChild(document.getElementById("examsTpl").content.cloneNode(true));
+const SUBJ = {phy:"Física HL", mat:"Mates AA SL", bus:"Business HL", his:"Historia SL", lit:"Literatura SL", eng:"English B HL", gen:"Todas"};
+const SHORT = {phy:"Física", mat:"Mates", bus:"Business", his:"Historia", lit:"Literatura", eng:"English", gen:"Repaso"};
+const START = "2026-09-28", END = "2026-12-20";
+const EXAMS = [
+  {d:"2026-10-15", s:"lit", h:"13:30", k:"Parcial"},
+  {d:"2026-10-16", s:"mat", h:"12:30", k:"Parcial"},
+  {d:"2026-10-19", s:"phy", h:"11:30–12:30", k:"Parcial"},
+  {d:"2026-10-21", s:"his", h:"11:30–12:30", k:"Parcial"},
+  {d:"2026-10-23", s:"bus", h:"8:00", k:"Parcial"}
+];
+const TERM = {from:"2026-11-20", to:"2026-11-26", days:["2026-11-20","2026-11-23","2026-11-24","2026-11-25","2026-11-26"]};
+const WIN = {from:"2026-10-15", to:"2026-10-23"};
+const OFF = {"2026-10-12":"Festivo (Fiesta Nacional)", "2026-12-07":"No hay clase (puente)", "2026-12-08":"Festivo (Inmaculada)"};
+const EVENTS = [
+  {from:"2026-10-30", to:"2026-10-30", t:"Día de incidencias"},
+  {from:"2026-11-02", to:"2026-11-06", t:"Informe orientativo"},
+  {from:"2026-11-27", to:"2026-11-27", t:"Día de cine"},
+  {from:"2026-11-30", to:"2026-12-04", t:"Semana de evaluación"},
+  {from:"2026-12-10", to:"2026-12-10", t:"Día de los Derechos Humanos"}
+];
+// Preparation sessions: [date, subject, task]. Ids are date+subject, so keep one session per subject per day.
+const PREP = [
+  ["2026-10-05","phy","Hoja resumen: unidades SI, incertidumbres y vectores"],
+  ["2026-10-06","mat","Hoja resumen: U1 números reales y U2 sucesiones"],
+  ["2026-10-07","lit","Hoja resumen de la obra: contexto, temas, personajes y 5 citas"],
+  ["2026-10-08","his","Hoja resumen: los cuatro conceptos y la cronología"],
+  ["2026-10-09","bus","Hoja resumen: 1.1–1.3 y términos clave"],
+  ["2026-10-10","lit","Práctica: comentario de un fragmento, 45 min sin apuntes"],
+  ["2026-10-10","mat","Práctica: 10 preguntas de sucesiones y series geométricas (con calculadora)"],
+  ["2026-10-11","phy","Práctica: 15 problemas de incertidumbres y vectores"],
+  ["2026-10-12","lit","Práctica: segundo fragmento y corrección con la hoja resumen"],
+  ["2026-10-12","mat","Simulacro: parcial de 45 min (sobre 40), con tiempo"],
+  ["2026-10-13","lit","Repaso ligero: citas y registro de errores"],
+  ["2026-10-13","phy","Clase de Física: llevar dudas del parcial"],
+  ["2026-10-14","lit","Víspera: hoja resumen, 30 min. A dormir pronto"],
+  ["2026-10-14","mat","Registro de errores de sucesiones"],
+  ["2026-10-15","mat","Víspera: fórmulas y errores, 30 min"],
+  ["2026-10-16","his","Cronología y causas del caso de estudio"],
+  ["2026-10-17","phy","Simulacro: 45 min de preguntas tipo examen, sin apuntes"],
+  ["2026-10-17","his","Práctica: análisis de dos fuentes (estilo Paper 1)"],
+  ["2026-10-18","phy","Víspera: registro de errores y hoja resumen"],
+  ["2026-10-18","bus","Práctica: 10 definiciones de memoria (Define)"],
+  ["2026-10-19","his","Práctica: plan de un ensayo con argumento y juicio"],
+  ["2026-10-20","his","Víspera: hoja resumen y fuentes, 30 min"],
+  ["2026-10-20","bus","Práctica: una respuesta Explain y un plan Discuss"],
+  ["2026-10-21","bus","Práctica: preguntas tipo examen de 1.1–1.3, con tiempo"],
+  ["2026-10-22","bus","Víspera: términos clave y términos de instrucción"],
+  ["2026-11-09","phy","Hoja resumen trimestral: cinemática, proyectiles, fuerzas"],
+  ["2026-11-10","mat","Hoja resumen trimestral: U1–U3"],
+  ["2026-11-10","phy","Clase de Física: dudas para el trimestral"],
+  ["2026-11-11","bus","Hoja resumen trimestral: 1.1–1.5"],
+  ["2026-11-12","his","Hoja resumen trimestral: casos de estudio y fuentes"],
+  ["2026-11-13","lit","Hoja resumen trimestral: obras leídas"],
+  ["2026-11-13","eng","Hoja resumen: tipos de texto y vocabulario"],
+  ["2026-11-14","phy","Simulacro: sección de Física de 60 min"],
+  ["2026-11-14","mat","Simulacro: estilo Paper 1, sin calculadora"],
+  ["2026-11-14","his","Práctica: fuentes y plan de ensayo"],
+  ["2026-11-15","bus","Práctica: una pregunta Discuss/Evaluate completa"],
+  ["2026-11-16","mat","Simulacro: estilo Paper 2, con calculadora"],
+  ["2026-11-16","eng","Práctica: un texto de Paper 1"],
+  ["2026-11-17","phy","Registro de errores de Física"],
+  ["2026-11-17","lit","Práctica: comentario de un fragmento"],
+  ["2026-11-18","his","Práctica: ensayo completo con tiempo"],
+  ["2026-11-18","bus","Práctica: cálculos y términos clave"],
+  ["2026-11-19","gen","Víspera: hojas resumen de los primeros exámenes"],
+  ["2026-11-21","gen","Repaso del examen del lunes (sin partido)"],
+  ["2026-11-22","gen","Víspera: repaso del examen del lunes"],
+  ["2026-11-23","gen","Repaso del examen del día siguiente"],
+  ["2026-11-24","gen","Repaso del examen del día siguiente"],
+  ["2026-11-25","gen","Repaso del examen del día siguiente"]
+];
+// Fixed weekly evening commitments, by weekday index (0 = Monday).
+const WEEKLY = {
+  0:[{t:"Entreno 19:00–20:00", sport:true}],
+  1:[{t:"Clase de Física 18:00–19:00", skip:"Clase de Física"}],
+  2:[{t:"Entreno 20:00–21:15", sport:true}],
+  4:[{t:"Entreno 19:00–20:00", sport:true}]
+};
+// League matches. Block = leave home → back home: arrive 45 min before, ~1 h 45 min of game, plus travel each way.
+const MATCHES = [
+  {d:"2026-10-04", h:"16:00", loc:"Sallent", away:true, travel:75},
+  {d:"2026-10-11", h:"19:00", loc:"Molins de Rei", away:false, travel:0},
+  {d:"2026-10-17", h:"12:00", loc:"Sitges", away:true, travel:60},
+  {d:"2026-10-25", h:"17:00", loc:"Molins de Rei", away:false, travel:0},
+  {d:"2026-11-07", h:"12:15", loc:"Pallejà", away:true, travel:20},
+  {d:"2026-11-15", h:"19:00", loc:"Molins de Rei", away:false, travel:0},
+  {d:"2026-11-21", h:"18:00", loc:"Manresa", away:true, travel:75},
+  {d:"2026-11-29", h:"19:00", loc:"Molins de Rei", away:false, travel:0}
+];
+const hm = m=>{ m=((m%1440)+1440)%1440; return Math.floor(m/60)+":"+String(m%60).padStart(2,"0"); };
+function matchBlock(m){
+  if(!m.h) return {from:null,to:null,mins:150,txt:"hora por confirmar"};
+  const [H,M] = m.h.split(":").map(Number); const st = H*60+M;
+  const a = st-45-m.travel, b = st+105+m.travel;
+  return {from:hm(a), to:hm(b), mins:b-a, txt:hm(a)+"–"+hm(b)};
+}
+function matchLabel(m){ const b = matchBlock(m); return `Partido ${m.h||"(hora por confirmar)"} · ${m.loc}${m.away?"":" (en casa)"}` + (m.h?` · fuera de casa ${b.txt}`:""); }
+const P = PREP.map(([d,s,t])=>({id:d+"."+s, d, s, t}));
+
+// Conflicts: a training or match on a day that clashes with an exam or a heavy day of the study plan.
+const EXAM_DAYS = [...EXAMS.map(e=>e.d), ...TERM.days].sort();
+const examLabel = d=>{ const e = EXAMS.find(x=>x.d===d); return e ? SUBJ[e.s]+" ("+e.k.toLowerCase()+")" : "trimestral"; };
+// Conflict score (0–100 %) = how close the next exam is × how much of the day the activity takes.
+// Closeness: 1 day 100 · 2 days 70 · 3 days 55 · 4–5 days 40 · 6–7 days 30 · 8–14 days 15 (only if the plan has a study session that day).
+// Time taken: training ≈ 1,5 h (with getting there), home match ≈ 2,5 h, away match = the whole block (3–5 h).
+// Weight = 0,6 + 0,4 × hours/5, so a training still counts 72 % of an away match of 5 h.
+const trainingHours = t=>{ const m = t.match(/(\d+):(\d+)–(\d+):(\d+)/); return m ? ((+m[3]*60+ +m[4])-(+m[1]*60+ +m[2]))/60 + 0.5 : 1.5; };
+function proximity(gap, hasStudy){ if(gap===1) return 100; if(gap===2) return 70; if(gap===3) return 55; if(gap<=5) return 40; if(gap<=7) return 30; if(gap<=14 && hasStudy) return 15; return 0; }
+const levelOf = pct=> pct>=60 ? "alto" : pct>=30 ? "medio" : pct>=10 ? "bajo" : null;
+function conflictFor(s, k){
+  const m = MATCHES.find(x=>x.d===s);
+  const tr = NO_TRAIN[s] ? null : (WEEKLY[k]||[]).find(w=>w.sport);
+  if(!m && !tr) return null;
+  const n = EXAM_DAYS.find(x=> x>s); const gap = n ? Math.round((dt(n)-dt(s))/86400000) : 99;
+  const pr = P.filter(p=>p.d===s);
+  const act = m ? matchLabel(m) : tr.t;
+  const hours = m ? matchBlock(m).mins/60 : trainingHours(tr.t);
+  const weight = 0.6 + 0.4*Math.min(hours,5)/5;
+  const mun = EVENTS.find(e=> /MUN/.test(e.t) && s>=e.from && s<=e.to);
+  const plan = pr.length ? "|Plan: "+pr.map(p=>SHORT[p.s]+" ("+p.t.split(":")[0].toLowerCase()+")").join(", ")+"." : "";
+  const isPart = n && EXAMS.some(e=>e.d===n);
+  const exP = !n ? "" : isPart ? "el examen de "+examLabel(n) : "un examen trimestral";
+  const hTxt = (Math.round(hours*10)/10).toString().replace(".",",")+" h";
+  let pct = Math.round(proximity(gap, pr.length>0) * weight);
+  if(pr.length>=2 && pct>0) pct = Math.min(100, pct+10);
+  let why;
+  if(gap===1) why = "Víspera "+exP.replace(/^el /,"del ").replace(/^un /,"de un ")+"."+(m?" Con examen al día siguiente no juega.":"");
+  else if(gap<=3) why = (EXAM_DAYS.includes(s)?"Día de examen; el siguiente es ":"Queda ")+exP+", en "+gap+" días.";
+  else if(gap<=7) why = "Semana de preparación: "+exP+" en "+gap+" días.";
+  else why = "Empieza la preparación: "+exP+" en "+gap+" días.";
+  if(m && mun && pct<35){ pct = 35; why = "Coincide con el viaje del MUN a Lisboa (si participa)."; }
+  const lvl = levelOf(pct); if(!lvl) return null;
+  return {lvl, pct, act, why: why+" Ocupa unas "+hTxt+"."+plan, skip: !!(m && gap===1)};
+}
+
+const pad = n=>String(n).padStart(2,"0");
+const iso = d=> d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const dt = s=> new Date(s+"T12:00:00");
+const today = iso(new Date());
+const esc = s=> String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const DOW = ["dom","lun","mar","mié","jue","vie","sáb"];
+const MON = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MONL = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const fmt = s=>{ const d=dt(s); return DOW[d.getDay()]+" "+d.getDate()+" "+MON[d.getMonth()]; };
+const daysTo = s=> Math.round((dt(s)-dt(today))/86400000);
+
+// Ticks and status changes live in the tracker's shared record (state.prep, state.sport).
+let done = {}, sport = {};
+const TRK = ()=> window.__trk || null;
+function syncFromTracker(){ const st = TRK() ? TRK().state() : null; done = st ? {...(st.prep||{})} : {}; sport = st ? {...(st.sport||{})} : {}; }
+syncFromTracker();
+let docRef = null, canWrite = true;
+
+function dayItems(s){
+  const ex = EXAMS.filter(e=>e.d===s);
+  const tri = s>=TERM.from && s<=TERM.to && TERM.days.includes(s);
+  const ev = EVENTS.filter(e=> s>=e.from && s<=e.to).map(e=>e.t);
+  const pr = P.filter(p=>p.d===s);
+  return {ex, tri, ev, pr, off:OFF[s]};
+}
+function prepBtn(p){
+  const on = !!done[p.id];
+  return `<button type="button" class="prep" data-s="${p.s}" data-id="${p.id}" aria-pressed="${on}" title="${esc(SUBJ[p.s])}: ${esc(p.t)}"><span class="bx" aria-hidden="true"></span><span class="tx"><span class="s">${SHORT[p.s]}</span> · <span class="full">${esc(p.t)}</span><span class="short">${esc(p.t.split(":")[0])}</span></span></button>`;
+}
+function examTile(e){ return `<div class="exam" data-s="${e.s}"><b>Examen ${e.k.toLowerCase()}</b>${SUBJ[e.s]}<span>${e.h}</span></div>`; }
+function triTile(){ return `<div class="exam tri"><b>Exámenes</b>Trimestrales<span>asignaturas por confirmar</span></div>`; }
+
+// Days with no training (club calendar).
+const NO_TRAIN = {"2026-12-07":"Puente de la Inmaculada"};
+// Decisions already taken by the family, which override the rule.
+const DECIDED = {"2026-10-16":{c:"si", t:"Entrena", short:"Día del parcial de Mates; entrena para desconectar (unas 1,5 h con ida y vuelta)"}, "2026-11-21":{c:"no", t:"No juega", short:"Entre dos exámenes trimestrales (vie 20 y lun 23): decidido que no juega"}};
+// A month band before each week that contains the 1st (and before the first week).
+function monthRow(mon){
+  const end = new Date(mon); end.setDate(end.getDate()+6);
+  let label = null;
+  if(iso(mon)===START) label = MONL[mon.getMonth()]+" · "+MONL[end.getMonth()];
+  else if(end.getMonth()!==mon.getMonth() || mon.getDate()===1) label = MONL[end.getMonth()];
+  return label ? `<div class="mrow"><span>${label} 2026</span></div>` : "";
+}
+function renderCal(){
+  let h = `<div class="hd"></div>` + ["lun","mar","mié","jue","vie","sáb","dom"].map((d,i)=>`<div class="hd ${i>4?"we":""}">${d}</div>`).join("");
+  let ag = ""; let lastMonth = -1;
+  const d = dt(START);
+  let w = 1;
+  while(iso(d) <= END){
+    h += monthRow(d);
+    h += `<div class="wk">sem<b>${w}</b></div>`;
+    for(let k=0;k<7;k++){
+      const s = iso(d); const it = dayItems(s); const we = k>4;
+      const cf = conflictFor(s,k);
+      const cls = ["day"]; if(d.getMonth()%2) cls.push("alt"); if(d.getDate()===1) cls.push("m1"); if(we) cls.push("we"); if(cf) cls.push("c-"+cf.lvl); if(it.off) cls.push("off"); if(s>=WIN.from && s<=WIN.to && !we) cls.push("win"); if(s===today) cls.push("today");
+      const first = d.getDate()===1 || s===START;
+      const body = [
+        cf ? `<span class="cf ${cf.lvl}">Conflicto ${cf.lvl} · ${cf.pct} %${cf.skip?" · no juega":""}</span>` : "",
+        ...it.ex.map(examTile),
+        it.tri ? triTile() : "",
+        it.off ? `<span class="tag offt">${esc(it.off)}</span>` : "",
+        ...it.ev.map(t=>`<span class="tag ev">${esc(t)}</span>`),
+        ...it.pr.map(prepBtn),
+        ...(WEEKLY[k]||[]).filter(w=> !(w.sport && NO_TRAIN[s])).filter(w=> !(it.off && w.school) && !it.pr.some(p=>p.t.startsWith(w.skip||"~"))).map(w=>`<span class="${w.sport?"act":"tag cls"}">${esc(w.t)}</span>`),
+        ...MATCHES.filter(m=>m.d===s).map(m=>`<span class="act match">${esc(matchLabel(m))}</span>`)
+      ].join("");
+      h += `<div class="${cls.join(" ")}" role="gridcell" aria-label="${fmt(s)}"><div class="num"><span>${d.getDate()}${first?` <span class="mo">${MON[d.getMonth()]}</span>`:""}</span>${s===today?'<span class="mo hoy">hoy</span>':""}</div>${body}</div>`;
+      const hasAny = it.ex.length || it.tri || it.off || it.ev.length || it.pr.length || cf || MATCHES.some(m=>m.d===s);
+      if(hasAny){
+        if(d.getMonth()!==lastMonth){ ag += `<div class="mh">${MONL[d.getMonth()]}</div>`; lastMonth = d.getMonth(); }
+        ag += `<div class="ad ${s===today?"today":""}"><h3>${fmt(s)}${s===today?" · hoy":""}</h3>${body}</div>`;
+      }
+      d.setDate(d.getDate()+1);
+    }
+    w++;
+  }
+  R.getElementById("cal").innerHTML = h;
+  R.getElementById("agenda").innerHTML = ag;
+}
+
+function renderSummary(){
+  const upcoming = [...EXAMS.filter(e=>e.d>=today).map(e=>({d:e.d, s:e.s, t:SUBJ[e.s], sub:e.k+" · "+fmt(e.d)+" · "+e.h})),
+    ...(TERM.to>=today ? [{d:TERM.from, s:"gen", t:"Trimestrales", sub:"20–26 nov · asignaturas por confirmar"}] : [])].sort((x,y)=>x.d.localeCompare(y.d)).slice(0,3);
+  const nc = R.getElementById("nextCard"), nl = R.getElementById("nextLine");
+  const dtxt = n=> n===0 ? "hoy" : n===1 ? "1 día" : n+" días";
+  if(upcoming.length){
+    const f = upcoming[0], n = Math.max(0,daysTo(f.d));
+    nl.textContent = f.t+" · "+dtxt(n);
+    nc.innerHTML = `<span class="big">${n===0?"Hoy":n}<small>${n===0?"":n===1?"día":"días"}</small></span><span><span class="chip x" data-s="${f.s}">${esc(f.t)}</span></span><span class="note">${esc(f.sub)}</span>`+
+      (upcoming.length>1 ? `<span class="eyebrow" style="margin-top:4px">Después</span><ul class="next3">${upcoming.slice(1).map(u=>`<li><span class="dd">${dtxt(Math.max(0,daysTo(u.d)))}</span><span><span class="chip" data-s="${u.s}">${esc(u.t)}</span> <span class="note">${esc(u.sub)}</span></span></li>`).join("")}</ul>` : "");
+  } else {
+    nl.textContent = "no quedan exámenes";
+    nc.innerHTML = `<span class="big">—</span><span class="note">No quedan exámenes este trimestre.</span>`;
+  }
+  const total = P.length, dn = P.filter(p=>done[p.id]).length;
+  const due = P.filter(p=>p.d<today), dueDone = due.filter(p=>done[p.id]).length;
+  R.getElementById("doneBig").innerHTML = `${dn}<small>de ${total}</small>`;
+  R.getElementById("doneLine").textContent = dn+" de "+total+" sesiones";
+  R.getElementById("doneBar").style.width = (total?Math.round(100*dn/total):0)+"%";
+  R.getElementById("doneNote").textContent = due.length ? `${dueDone} de ${due.length} sesiones ya pasadas marcadas como hechas` : "Aún no ha pasado ninguna sesión";
+  const wl = []; const d = dt(today);
+  for(let i=0;i<7;i++){
+    const s = iso(d); const it = dayItems(s);
+    const chips = [...it.ex.map(e=>`<span class="chip x" data-s="${e.s}">Examen ${e.k.toLowerCase()} ${SHORT[e.s]} ${e.h}</span>`), it.tri?`<span class="chip x" data-s="gen">Trimestrales</span>`:"", ...it.pr.map(prepBtn)].join("");
+    if(chips) wl.push(`<li><span class="d">${i===0?"hoy":fmt(s)}</span><span class="items">${chips}</span></li>`);
+    d.setDate(d.getDate()+1);
+  }
+  const nSes = P.filter(p=> p.d>=today && daysTo(p.d)<7).length;
+  R.getElementById("weekLine").textContent = nSes ? nSes+(nSes===1?" sesión":" sesiones")+" de estudio" : "sin sesiones";
+  R.getElementById("weekList").innerHTML = wl.length ? wl.join("") : `<li><span class="d">—</span><span class="note">Nada programado esta semana. La preparación de los parciales empieza el lunes 5 de octubre.</span></li>`;
+}
+function renderExams(){
+  const rows = EXAMS.map(e=>{ const n = daysTo(e.d); return `<tr><td class="n">${fmt(e.d)}</td><td><span class="chip" data-s="${e.s}">${SUBJ[e.s]}</span></td><td class="n">${e.h}</td><td class="n">${n<0?"hecho":n===0?"hoy":n+" d"}</td></tr>`; });
+  const n = daysTo(TERM.from);
+  rows.push(`<tr><td class="n">20–26 nov</td><td>Exámenes trimestrales (todas)</td><td class="n">—</td><td class="n">${n<0?"—":n+" d"}</td></tr>`);
+  R.getElementById("exBody").innerHTML = rows.join("");
+  R.getElementById("exLine").textContent = "Exámenes parciales: " + EXAMS.map(e=>fmt(e.d)+" "+SUBJ[e.s]+" "+e.h).join(" · ") + ". Trimestrales: 20–26 nov (días por asignatura por confirmar).";
+}
+function renderLegend(){
+  R.getElementById("legend").innerHTML = ["phy","mat","bus","his","lit","eng"].map(s=>`<span data-s="${s}"><i class="sw" style="background:var(--c)"></i>${SUBJ[s]}</span>`).join("") +
+    `<span><i class="sw" style="background:var(--hot-t);outline:2px solid var(--hot);outline-offset:-2px"></i>Conflicto alto</span><span><i class="sw" style="background:var(--warm-t);outline:1.5px solid var(--warm);outline-offset:-1.5px"></i>Conflicto medio</span><span><i class="sw" style="background:var(--surface);outline:1.5px solid var(--warm);outline-offset:-1.5px"></i>Conflicto bajo</span><span><i class="sw" style="background:var(--event)"></i>Fecha del colegio</span><span class="note">Bloque de color: examen · Franja clara con casilla: sesión de preparación · Texto gris: clase de Física · Negrita: entrenos y partidos</span>`;
+}
+function renderConflicts(){
+  const rows = []; const d = dt(START);
+  while(iso(d)<=END){ const s = iso(d); const k = (d.getDay()+6)%7; const cf = conflictFor(s,k);
+    if(cf) rows.push(`<tr><td class="n">${fmt(s)}</td><td>${esc(cf.act)}</td><td>${esc(cf.why.split("|")[0])}${cf.why.includes("|")?`<span class="plan"> ${esc(cf.why.split("|")[1])}</span>`:""}</td><td class="n"><span class="lvl ${cf.lvl}">${cf.pct} %</span></td></tr>`);
+    d.setDate(d.getDate()+1); }
+  R.getElementById("cfBody").innerHTML = rows.join("");
+}
+// ---------- team view: one clear decision per training or match ----------
+function baseDecision(s, k){
+  const m = MATCHES.find(x=>x.d===s);
+  if(!m && NO_TRAIN[s] && (WEEKLY[k]||[]).some(w=>w.sport)) return {c:"none", t:"Sin entreno", time:NO_TRAIN[s], what:"", reason:"", pct:0};
+  const tr = (WEEKLY[k]||[]).find(w=>w.sport);
+  if(!m && !tr) return null;
+  const cf = conflictFor(s,k); const pct = cf ? cf.pct : 0;
+  const n = EXAM_DAYS.find(x=> x>s); const gap = n ? Math.round((dt(n)-dt(s))/86400000) : 99;
+  const mun = EVENTS.find(e=> /MUN/.test(e.t) && s>=e.from && s<=e.to);
+  const time = m ? (m.h+" · "+m.loc+(m.away?"":" (casa)")) : tr.t.replace("Entreno ","");
+  const reason = cf ? cf.why.split("|")[0].replace(/ Ocupa unas .*$/,"") : "";
+  if(DECIDED[s]){ const D = DECIDED[s]; return {c:D.c, t:D.t, time, what: m?"Partido":"Entreno", reason, short:D.short, pct}; }
+  const today_ex = EXAM_DAYS.includes(s);
+  const short = gap===1 ? "Examen al día siguiente" + (today_ex?" (y examen ese día)":"")
+    : gap<=3 ? (today_ex?"Examen ese día y otro en "+gap+" días":"Examen en "+gap+" días")
+    : gap<=7 ? "Examen en "+gap+" días"
+    : "Sin exámenes cerca";
+  if(m){
+    if(gap===1) return {c:"no", t:"No juega", time, what:"Partido", reason, short, pct};
+    if(gap<=3) return {c:"dudo", t:"Juega · a confirmar", time, what:"Partido", reason, short, pct};
+    if(mun) return {c:"dudo", t:"Si va al MUN, no juega", time, what:"Partido", reason:"Coincide con el viaje del MUN a Lisboa (5–7 nov).", pct};
+    return {c:"si", t:"Juega", time, what:"Partido", reason, short, pct};
+  }
+  // Rule agreed with the family: exam the next day = does not go; exam in 2–3 days = to be confirmed.
+  if(gap===1) return {c:"no", t:"No entrena", time, what:"Entreno", reason, short, pct};
+  if(gap<=3) return {c:"dudo", t:"Entreno a confirmar", time, what:"Entreno", reason, short, pct};
+  return {c:"si", t:"Entrena", time, what:"Entreno", reason, short, pct};
+}
+const LABEL = {Partido:{si:"Juega", dudo:"Juega · a confirmar", no:"No juega"}, Entreno:{si:"Entrena", dudo:"Entreno a confirmar", no:"No entrena"}};
+function decisionFor(s, k){
+  const b = baseDecision(s, k); if(!b || b.c==="none") return b;
+  const o = sport[s];
+  if(o && o!==b.c) return {...b, c:o, t:LABEL[b.what][o], base:b.c, edited:true};
+  return {...b, base:b.c};
+}
+function renderTeam(){
+  let h = `<div class="hd"></div>` + ["lun","mar","mié","jue","vie","sáb","dom"].map((d,i)=>`<div class="hd ${i>4?"we":""}">${d}</div>`).join("");
+  let ag = "", lastMonth = -1, w = 1; const rows = []; const cnt = {no:0,dudo:0,si:0};
+  const d = dt(START);
+  while(iso(d) <= END){
+    h += monthRow(d);
+    h += `<div class="wk">sem<b>${w}</b></div>`;
+    for(let k=0;k<7;k++){
+      const s = iso(d); const it = dayItems(s); const dec = decisionFor(s,k);
+      const cls = ["day"]; if(d.getMonth()%2) cls.push("alt"); if(d.getDate()===1) cls.push("m1"); if(k>4) cls.push("we"); if(it.off) cls.push("off"); if(s>=WIN.from && s<=WIN.to && k<5) cls.push("win");
+      const first = d.getDate()===1 || s===START;
+      const body = [
+        ...it.ex.map(e=>`<div class="exam" data-s="${e.s}"><b>Examen ${e.k.toLowerCase()}</b>${SUBJ[e.s]}</div>`),
+        it.tri ? `<div class="exam tri"><b>Exámenes</b>Trimestrales</div>` : "",
+        it.off ? `<span class="tag offt">${esc(it.off)}</span>` : "",
+        dec ? (dec.c==="none" ? `<span class="v none">${esc(dec.t)}<small>${esc(dec.time)}</small></span>` : `<button type="button" class="v ${dec.c}${dec.edited?" edited":""}" data-sport="${s}" data-cur="${dec.c}" data-base="${dec.base}" title="Pulsa para cambiar">${esc(dec.t)}<small>${esc(dec.what)} ${esc(dec.time)}</small></button>`) : ""
+      ].join("");
+      h += `<div class="${cls.join(" ")}" role="gridcell" aria-label="${fmt(s)}"><div class="num"><span>${d.getDate()}${first?` <span class="mo">${MON[d.getMonth()]}</span>`:""}</span></div>${body}</div>`;
+      if(dec && dec.c!=="none"){ cnt[dec.c]++; if(dec.c!=="si" || dec.what==="Partido" || DECIDED[s] || dec.edited) rows.push(`<tr><td class="n">${fmt(s)}</td><td>${esc(dec.what)} ${esc(dec.time)}</td><td><span class="lg-v v ${dec.c}" style="display:inline-block">${esc(dec.t)}</span></td><td>${esc(dec.short)}</td></tr>`); }
+      if(it.ex.length || it.tri || it.off || dec){
+        if(d.getMonth()!==lastMonth){ ag += `<div class="mh">${MONL[d.getMonth()]}</div>`; lastMonth = d.getMonth(); }
+        ag += `<div class="ad"><h3>${fmt(s)}</h3>${body}</div>`;
+      }
+      d.setDate(d.getDate()+1);
+    }
+    w++;
+  }
+  R.getElementById("calT").innerHTML = h;
+  R.getElementById("agendaT").innerHTML = ag;
+  R.getElementById("teamBody").innerHTML = rows.join("");
+  const nExam = EXAMS.length + TERM.days.length;
+  R.getElementById("teamSum").innerHTML =
+    `<div class="card no"><span class="eyebrow">No va</span><span class="big">${cnt.no}</span><span class="note">entrenos o partidos en los que no va</span></div>`+
+    `<div class="card dudo"><span class="eyebrow">A confirmar</span><span class="big">${cnt.dudo}</span><span class="note">examen en 2–3 días: se decide esa semana según cómo vaya el estudio</span></div>`+
+    `<div class="card"><span class="eyebrow">Días de examen</span><span class="big">${nExam}</span><span class="note">parciales 15–23 oct · trimestrales 20–26 nov</span></div>`;
+}
+R.getElementById("legendT").innerHTML =
+  `<span><span class="lg-v v no">No entrena / No juega</span> examen al día siguiente</span><span><span class="lg-v v dudo">A confirmar</span> examen en 2–3 días</span><span><span class="lg-v v si">Entrena / Juega</span></span><span><i class="sw" style="background:var(--crit-soft);outline:1.5px solid var(--crit);outline-offset:-1.5px"></i>Examen parcial o trimestral</span><span class="note">Rayado: no hay clase</span>`;
+function renderAll(){ renderSummary(); renderCal(); renderExams(); renderConflicts(); renderTeam(); }
+["foldNext","foldDone","foldWeek"].forEach(id=>{ const el = R.getElementById(id); if(!el) return;
+  try{ const v = localStorage.getItem("dp1-exams-"+id); if(v!==null) el.open = v==="1"; }catch(e){}
+  el.addEventListener("toggle", ()=>{ try{ localStorage.setItem("dp1-exams-"+id, el.open?"1":"0"); }catch(e){} });
+});
+function showView(v){
+  R.getElementById("viewTeam").hidden = v!=="team";
+  R.getElementById("viewStudy").hidden = v!=="study";
+  R.querySelectorAll(".tabs [data-v]").forEach(b=> b.setAttribute("aria-selected", String(b.dataset.v===v)));
+  try{ localStorage.setItem("dp1-exams-view", v); }catch(e){}
+}
+R.querySelector(".tabs").addEventListener("click", e=>{ const b = e.target.closest("[data-v]"); if(b) showView(b.dataset.v); });
+(function(){ let v = "team"; try{ v = localStorage.getItem("dp1-exams-view") || "team"; }catch(e){} if(location.hash==="#estudio") v = "study"; showView(v==="study"?"study":"team"); })();
+renderLegend(); renderAll();
+window.__examRender = ()=>{ syncFromTracker(); renderAll(); };
+// Click a training or match label to cycle its status.
+R.addEventListener("click", e=>{
+  const b = e.target.closest("[data-sport]"); if(!b) return;
+  const s = b.dataset.sport, next = {si:"dudo", dudo:"no", no:"si"}[b.dataset.cur];
+  if(next===b.dataset.base) delete sport[s]; else sport[s] = next;
+  saveSport(); renderAll();
+  const again = R.querySelector(`#calT [data-sport="${s}"]`) || R.querySelector(`[data-sport="${s}"]`); if(again) again.focus();
+});
+
+// ---------- PDF for the team (drawn with jsPDF, 1 or 2 A4 pages) ----------
+function loadJsPDF(){
+  if(window.jspdf && window.jspdf.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+  return new Promise((res, rej)=>{ const sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"; sc.onload = ()=> res(window.jspdf.jsPDF); sc.onerror = ()=> rej(new Error("load")); document.head.appendChild(sc); });
+}
+function teamModel(){
+  const weeks = []; const d = dt(START); const rows = []; const cnt = {no:0,dudo:0,si:0};
+  while(iso(d) <= END){
+    const days = []; let band = null;
+    const end = new Date(d); end.setDate(end.getDate()+6);
+    if(iso(d)===START) band = MONL[d.getMonth()]+" · "+MONL[end.getMonth()];
+    else if(end.getMonth()!==d.getMonth() || d.getDate()===1) band = MONL[end.getMonth()];
+    for(let k=0;k<7;k++){
+      const s = iso(d); const it = dayItems(s); const dec = decisionFor(s,k);
+      days.push({s, n:d.getDate(), m:d.getMonth(), first:d.getDate()===1, it, dec});
+      if(dec && dec.c!=="none"){ cnt[dec.c]++; if(dec.c!=="si" || dec.what==="Partido" || DECIDED[s] || dec.edited) rows.push({s, dec}); }
+      d.setDate(d.getDate()+1);
+    }
+    weeks.push({band, days});
+  }
+  return {weeks, rows, cnt};
+}
+async function makePdf(pages){
+  const JsPDF = await loadJsPDF();
+  const doc = new JsPDF({unit:"mm", format:"a4", orientation:"portrait"});
+  const M = 8, W = 210 - 2*M;
+  const C = {ink:[23,33,43], ink2:[74,85,96], muted:[119,130,140], line:[214,220,214], accent:[15,110,106],
+    no:[194,65,12], noT:[255,255,255], dudo:[255,241,191], dudoB:[184,138,0], dudoT:[107,79,0], si:[221,238,213], siT:[47,107,34],
+    ex:[179,55,43], exT:[241,211,206], surf:[238,242,239], alt:[226,237,233], none:[255,255,255], offT:[119,130,140]};
+  const {weeks, rows, cnt} = teamModel();
+  const big = pages===2;
+  let y = M;
+  const T = (txt, x, yy, o={})=>{ doc.setFont("helvetica", o.b?"bold":"normal"); doc.setFontSize(o.s||8); doc.setTextColor(...(o.c||C.ink)); doc.text(String(txt), x, yy, o.a?{align:o.a}:undefined); };
+  // header
+  T("Exámenes y baloncesto · 1.er trimestre 2026–27", M, y+5, {b:true, s:big?15:13});
+  y += big?9:8;
+  T("Rojo: examen al día siguiente, no va.  Amarillo: examen en 2–3 días, a confirmar esa semana.  Verde: va.", M, y+2.5, {s:big?8.5:7.5, c:C.ink2});
+  y += big?6:5;
+  T(`No va: ${cnt.no}   ·   A confirmar: ${cnt.dudo}   ·   Días de examen: ${EXAMS.length + TERM.days.length} (parciales 15–23 oct, trimestrales 20–26 nov)`, M, y+2.5, {b:true, s:big?8.5:7.5});
+  y += big?6:5;
+  // grid
+  const wkW = 6, colW = (W - wkW)/7, gap = 0.8;
+  const rowH = big ? 19.5 : 13.6, bandH = big ? 6 : 4.6;
+  ["lun","mar","mié","jue","vie","sáb","dom"].forEach((d,i)=> T(d, M+wkW+i*colW+colW/2, y+3, {s:6.5, c:i>4?C.accent:C.muted, a:"center"}));
+  y += 4.2;
+  weeks.forEach((wk, wi)=>{
+    if(wk.band){ T(wk.band.toUpperCase()+" 2026", M, y+3.4, {b:true, s:big?8.5:7.5, c:C.accent}); doc.setDrawColor(...C.accent); doc.setLineWidth(0.3); const tw = doc.getTextWidth(wk.band.toUpperCase()+" 2026"); doc.line(M+tw+2, y+2.4, M+W, y+2.4); y += bandH; }
+    T("sem", M+wkW/2, y+2.8, {s:4.5, c:C.muted, a:"center"}); T(wi+1, M+wkW/2, y+5.3, {b:true, s:6, c:C.ink2, a:"center"});
+    wk.days.forEach((dy, k)=>{
+      const x = M + wkW + k*colW, w = colW - gap;
+      doc.setFillColor(...(dy.m%2 ? C.alt : C.surf)); doc.roundedRect(x, y, w, rowH-gap, 0.8, 0.8, "F");
+      if(dy.first){ doc.setFillColor(...C.accent); doc.rect(x, y, 0.8, rowH-gap, "F"); }
+      if(dy.s>=WIN.from && dy.s<=WIN.to && k<5){ doc.setDrawColor(...C.ex); doc.setLineWidth(0.35); doc.roundedRect(x+0.2, y+0.2, w-0.4, rowH-gap-0.4, 0.8, 0.8, "S"); }
+      T(dy.n + (dy.first ? " "+MON[dy.m] : ""), x+1.3, y+(big?3.4:2.9), {b:true, s:big?7.5:6.3, c:dy.first?C.accent:C.ink});
+      let cy = y + (big?4.6:3.7);
+      const ih = big?5:3.9;
+      dy.it.ex.forEach(e=>{ doc.setFillColor(...C.exT); doc.setDrawColor(...C.ex); doc.setLineWidth(0.25); doc.roundedRect(x+1, cy, w-2, ih, 0.6, 0.6, "FD");
+        T("EXAMEN PARCIAL", x+1.8, cy+(big?1.9:1.5), {b:true, s:big?4.6:3.8, c:C.ex}); T(SUBJ[e.s], x+1.8, cy+(big?4.2:3.4), {b:true, s:big?6.6:5.4}); cy += ih + 0.6; });
+      if(dy.it.tri){ doc.setFillColor(...C.exT); doc.setDrawColor(...C.ex); doc.setLineDashPattern([0.6,0.5],0); doc.roundedRect(x+1, cy, w-2, ih, 0.6, 0.6, "FD"); doc.setLineDashPattern([],0);
+        T("EXÁMENES", x+1.8, cy+(big?1.9:1.5), {b:true, s:big?4.6:3.8, c:C.ex}); T("Trimestrales", x+1.8, cy+(big?4.2:3.4), {b:true, s:big?6.6:5.4}); cy += ih + 0.6; }
+      if(dy.it.off){ T(dy.it.off, x+1.3, cy+2, {s:big?5.4:4.6, c:C.offT}); cy += big?3:2.5; }
+      const dc = dy.dec;
+      if(dc){
+        const ph = big?6.4:5.2, px = x+1, pw = w-2;
+        if(dc.c==="none"){ doc.setDrawColor(...C.line); doc.setLineDashPattern([0.6,0.5],0); doc.setFillColor(255,255,255); doc.roundedRect(px, cy, pw, ph, 0.6, 0.6, "FD"); doc.setLineDashPattern([],0);
+          T(dc.t, px+pw/2, cy+(big?2.7:2.2), {b:true, s:big?6.4:5.2, c:C.muted, a:"center"}); T(dc.time, px+pw/2, cy+(big?5.2:4.3), {s:big?4.6:3.9, c:C.muted, a:"center"}); }
+        else {
+          const fill = dc.c==="no"?C.no:dc.c==="dudo"?C.dudo:C.si, txt = dc.c==="no"?C.noT:dc.c==="dudo"?C.dudoT:C.siT;
+          doc.setFillColor(...fill); if(dc.c==="dudo"){ doc.setDrawColor(...C.dudoB); doc.setLineWidth(0.3); doc.roundedRect(px, cy, pw, ph, 0.6, 0.6, "FD"); } else doc.roundedRect(px, cy, pw, ph, 0.6, 0.6, "F");
+          const main = dc.t.replace(" · a confirmar"," (a confirmar)");
+          const fsz = big?6.6:5.4; doc.setFont("helvetica","bold"); doc.setFontSize(fsz);
+          const mainFit = doc.getTextWidth(main) > pw-1 ? (dc.c==="dudo" ? "A confirmar" : main) : main;
+          T(mainFit, px+pw/2, cy+(big?2.8:2.3), {b:true, s:fsz, c:txt, a:"center"});
+          const sub = (dc.what==="Partido" ? dc.time.replace(" (casa)"," casa") : dc.time);
+          T(sub, px+pw/2, cy+(big?5.3:4.4), {s:big?4.6:3.9, c:txt, a:"center"});
+        }
+      }
+    });
+    y += rowH;
+  });
+  // table
+  const drawTable = (yy, fs, rh)=>{
+    const cols = big ? [0, 22, 80, 118] : [0, 20, 72, 104]; const hdr = ["Día","Actividad","Decisión","Exámenes"];
+    T(big ? "Partidos y días que no va o están por confirmar" : "Partidos y días que no va o están por confirmar", M, yy+3.5, {b:true, s:fs+2.5}); yy += 5.5;
+    hdr.forEach((h,i)=> T(h.toUpperCase(), M+cols[i], yy+2.5, {s:fs-1.8, c:C.muted})); yy += 3.2;
+    doc.setDrawColor(...C.line); doc.setLineWidth(0.2); doc.line(M, yy, M+W, yy);
+    rows.forEach(r=>{
+      const dc = r.dec;
+      T(fmt(r.s), M+cols[0], yy+rh*0.72, {s:fs, c:C.ink2});
+      T(dc.what+" "+dc.time, M+cols[1], yy+rh*0.72, {s:fs});
+      const fill = dc.c==="no"?C.no:dc.c==="dudo"?C.dudo:C.si, txt = dc.c==="no"?C.noT:dc.c==="dudo"?C.dudoT:C.siT;
+      doc.setFont("helvetica","bold"); doc.setFontSize(fs); const tw = doc.getTextWidth(dc.t)+3;
+      doc.setFillColor(...fill); doc.roundedRect(M+cols[2], yy+rh*0.14, tw, rh*0.74, 0.5, 0.5, "F");
+      T(dc.t, M+cols[2]+1.5, yy+rh*0.7, {b:true, s:fs, c:txt});
+      doc.setFont("helvetica","normal"); doc.setFontSize(fs); doc.setTextColor(...C.ink);
+      const lines = doc.splitTextToSize(dc.short || "", W - cols[3]);
+      doc.text(lines, M+cols[3], yy+rh*0.72);
+      yy += rh + (lines.length-1)*fs*0.36; doc.setDrawColor(...C.line); doc.line(M, yy, M+W, yy);
+    });
+    return yy;
+  };
+  const footer = (yy, fs)=>{ const t = "Exámenes parciales: " + EXAMS.map(e=>fmt(e.d)+" "+SUBJ[e.s]+" "+e.h).join(" · ") + ". Trimestrales: 20–26 nov (días por asignatura por confirmar).";
+    doc.setFont("helvetica","normal"); doc.setFontSize(fs); doc.setTextColor(...C.muted); doc.text(doc.splitTextToSize(t, W), M, yy+3); };
+  if(!big){ const yy = drawTable(y+1.5, 6.4, 3.25); footer(yy, 5.8); }
+  else {
+    doc.addPage(); y = M;
+    T("Exámenes y baloncesto · 1.er trimestre 2026–27", M, y+5, {b:true, s:13}); y += 9;
+    const lines = [
+      "Regla: con examen al día siguiente no entrena ni juega; con examen en 2–3 días, se confirma esa semana según cómo vaya el estudio.",
+      "El estudio de cada examen empieza unos 10 días antes, se intensifica los 4–5 días previos y la víspera es lo más crítico.",
+      "Entrenos: lunes y viernes 19:00–20:00, miércoles 20:00–21:15. Partidos: llegar 45 min antes; los de fuera incluyen el viaje."];
+    doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor(...C.ink2);
+    lines.forEach(l=>{ const sp = doc.splitTextToSize(l, W); doc.text(sp, M, y+3); y += 4.2*sp.length; });
+    y += 2;
+    const yy = drawTable(y, 8.6, 5.4); footer(yy+2, 7.5);
+  }
+  return doc;
+}
+async function downloadPdf(pages, btn){
+  const msg = R.getElementById("pdfMsg");
+  const btns = [R.getElementById("pdf1"), R.getElementById("pdf2")]; btns.forEach(b=> b.disabled = true); msg.textContent = "Preparando el PDF…";
+  try{
+    const doc = await makePdf(pages);
+    const name = "Examenes-baloncesto-T1-" + (pages===1 ? "1pag" : "2pag") + ".pdf";
+    const blob = doc.output("blob");
+    let saved = false;
+    try{ const dl = window.claude && window.claude.use ? await window.claude.use("downloads") : null; if(dl){ await dl.save({filename:name, data:blob}); saved = true; } }
+    catch(e){ if(e && e.code==="declined"){ msg.textContent = ""; return; } }
+    if(!saved){ const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 3000); }
+    msg.textContent = "PDF listo: " + name;
+  }catch(e){ msg.textContent = "No se ha podido crear el PDF. Comprueba la conexión y vuelve a intentarlo."; }
+  finally{ btns.forEach(b=> b.disabled = false); }
+}
+R.getElementById("pdf1").addEventListener("click", ()=> downloadPdf(1));
+R.getElementById("pdf2").addEventListener("click", ()=> downloadPdf(2));
+window.__examPdf = makePdf;
+
+function save(){ if(TRK()) TRK().save("prep", {...done}); }
+function saveSport(){ if(TRK()) TRK().save("sport", {...sport}); }
+R.addEventListener("click", e=>{
+  const b = e.target.closest(".prep"); if(!b) return;
+  const id = b.dataset.id;
+  if(done[id]) delete done[id]; else done[id] = today;
+  save(); renderAll();
+  const again = R.querySelector(`.cal .prep[data-id="${id}"]`) || R.querySelector(`.prep[data-id="${id}"]`);
+  if(again && false) again.focus();
+});
+
+})();
+</script>
 
 </body>
 </html>
