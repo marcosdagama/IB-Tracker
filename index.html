@@ -846,7 +846,6 @@ const TERM = {
     {from:"2026-10-21", to:"2026-10-21", type:"exam", t:"Partial exam: History SL, 11:30–12:30"},
     {from:"2026-10-23", to:"2026-10-23", type:"exam", t:"Partial exam: Business Management HL, 8:00"},
     {from:"2026-11-02", to:"2026-11-06", type:"event", t:"Interim report week"},
-    {from:"2026-11-05", to:"2026-11-07", type:"event", t:"MUN Lisbon (if taking part)"},
     {from:"2026-11-20", to:"2026-11-26", type:"exam",  t:"Term exams"},
     {from:"2026-11-30", to:"2026-12-04", type:"event", t:"First-term evaluation week"},
     {from:"2026-12-10", to:"2026-12-10", type:"event", t:"Human Rights day"}
@@ -895,7 +894,7 @@ const SPRINTS = [
 "Revision plan for the partials: one past-style practice test per subject in the 3 days before its exam",
 "After each partial: marks written down and the self-check ratings updated"]
   }},
- {id:"s3", n:"Sprint 3", title:"Projectiles & functions", start:"2026-10-26", end:"2026-11-06", events:[{d:"2026-10-30",t:"Incidències day"},{d:"2026-11-02",t:"Interim report week (avaluació orientativa), 2–6 Nov"},{d:"2026-11-05",t:"MUN Lisbon trip, 5–7 Nov (if taking part)"}],
+ {id:"s3", n:"Sprint 3", title:"Projectiles & functions", start:"2026-10-26", end:"2026-11-06", events:[{d:"2026-10-30",t:"Incidències day"},{d:"2026-11-02",t:"Interim report week (avaluació orientativa), 2–6 Nov"}],
   focus:"Projectile motion and the language of functions. The interim report arrives this sprint: use it with the first timed self-test in both lead subjects.",
   items:{
    phy:{practice:"15 projectile problems + a timed 15-question multiple-choice set (about 30 min).",
@@ -1227,6 +1226,8 @@ renderCalendar();
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.11", date:"29 Sep 2026", items:[
+    "MUN Lisbon trip (5–7 Nov) removed from the calendar: not taking part"]},
   {v:"1.10", date:"28 Sep 2026", items:[
     "Business Management: command terms now follow the school's sheet, all 31 with their definitions, grouped AO1–AO4"]},
   {v:"1.9", date:"28 Sep 2026", items:[
