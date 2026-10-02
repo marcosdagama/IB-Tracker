@@ -1265,10 +1265,23 @@ function renderCountdown(){
 }
 renderCountdown();
 
+/* ---------- keep date-based parts current ----------
+   Countdowns, "today", the current sprint and the exam tab are worked out when the page loads.
+   If the page stays open (Dock app, a tab left open overnight), reload it once the date changes. */
+(function(){
+  const loadedDay = todayISO();
+  const check = ()=>{ if(todayISO()!==loadedDay){ try{ saveLocal(); }catch(e){} location.reload(); } };
+  document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) check(); });
+  window.addEventListener("focus", check);
+  setInterval(check, 5*60*1000);
+})();
+
 
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.17", date:"2 Oct 2026", items:[
+    "Days left to exams, today's highlight and the current sprint now refresh by themselves when the date changes, even if the page stays open"]},
   {v:"1.16", date:"29 Sep 2026", items:[
     "Physics tutoring moved from Tuesday 18:00–19:00 to Monday 17:00–18:00 (timetable, evening reminder, sprint items and exam calendar)"]},
   {v:"1.15", date:"29 Sep 2026", items:[
