@@ -208,14 +208,14 @@ details.tip.block summary::before{color:var(--accent)}
 .guide-grid > details.tip.block:has(.cornell){grid-column:span 2}
 @media (max-width:820px){.guide-grid > details.tip.block:has(.cornell){grid-column:auto}}
 
-.tabbar{--t1:#0E5F5B;--t2:#1E7650;--t3:#3C8540;--t4:#2F6E73;--tabc:var(--t1);display:flex;gap:6px;align-items:flex-end;width:100%;padding:0 6px;border-bottom:5px solid var(--tabc);transition:border-color .2s ease}
+.tabbar{--t1:#0E5F5B;--t2:#1E7650;--t3:#3C8540;--t4:#2F6E73;--t5:#2E5E86;--tabc:var(--t1);display:flex;gap:6px;align-items:flex-end;width:100%;padding:0 6px;border-bottom:5px solid var(--tabc);transition:border-color .2s ease}
 .tabbar button{appearance:none;flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:.01em;line-height:1.15;padding:9px 16px 8px;margin-top:8px;border:0;border-radius:10px 10px 0 0;background:color-mix(in srgb, var(--c) 18%, #ffffff);color:var(--c);box-shadow:inset 0 0 0 1.5px color-mix(in srgb, var(--c) 45%, #ffffff);cursor:pointer;white-space:nowrap;transition:background .15s ease,margin .15s ease,padding .15s ease}
 .tabbar button small{font-family:var(--body);font-size:12px;font-weight:400;opacity:.9;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .tabbar button:hover{background:color-mix(in srgb, var(--c) 30%, #ffffff)}
 .tabbar button[aria-selected="true"]{background:var(--c);color:#fff;box-shadow:none;margin-top:0;padding-top:13px;padding-bottom:10px}
 .tabbar button:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
 .tabbar .lbl-short{display:none}
-#tab-tracker{--c:var(--t1)} #tab-cal{--c:var(--t2)} #tab-exams{--c:var(--t4)} #tab-guide{--c:var(--t3)}
+#tab-tracker{--c:var(--t1)} #tab-cal{--c:var(--t2)} #tab-exams{--c:var(--t4)} #tab-grades{--c:var(--t5)} #tab-guide{--c:var(--t3)}
 @media (max-width:520px){.tabbar .lbl-long{display:none}.tabbar .lbl-short{display:inline}.tabbar{gap:4px;padding:0 2px}.tabbar button small{display:none}.tabbar button{font-size:14px;padding:8px 8px 7px}}
 .view{display:flex;flex-direction:column;gap:22px}
 .view[hidden],[hidden]{display:none!important}
@@ -322,6 +322,57 @@ table.cal{border-collapse:separate;border-spacing:3px;width:100%;min-width:720px
 .note{font-size:12.5px;color:var(--muted)}
 footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 @media (prefers-reduced-motion:no-preference){.sprint-btn,.meter .track i,.sprint-btn .bar i{transition:all .25s ease}}
+
+/* ---------- Notas IB ---------- */
+.gr-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.gr-tile{border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:8px;background:var(--surface);padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.gr-tile .s{font-weight:600;color:var(--ink);font-size:14px}
+.gr-tile .g{font-family:var(--display);font-size:36px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.gr-tile .g small{font-family:var(--body);font-size:13px;font-weight:600;color:var(--ink-2);margin-left:6px}
+.gr-tile .c{font-size:12px;color:var(--muted)}
+.gr-tile .t{font-family:var(--mono);font-size:11.5px;color:var(--ink-2)}
+.gr-tile.total{border-left-color:var(--ink)}
+.gr-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.gr-legend{display:flex;flex-wrap:wrap;gap:6px}
+.gr-legend button{appearance:none;font:inherit;font-size:13px;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:3px 10px;cursor:pointer}
+.gr-legend button i{width:14px;height:3px;border-radius:2px;background:var(--sc)}
+.gr-legend button[aria-pressed="false"]{color:var(--muted)}
+.gr-legend button[aria-pressed="false"] i{background:var(--line)}
+.gr-chart{width:100%;min-height:220px;position:relative}
+.gr-chart svg{display:block;width:100%;height:auto;overflow:visible}
+.gr-chart .empty{font-size:14px;color:var(--ink-2);padding:30px 4px}
+.gr-tip{position:fixed;z-index:30;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;line-height:1.35;border-radius:6px;padding:7px 9px;max-width:260px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.gr-tip b{font-weight:600}
+.gr-two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px;align-items:start}
+@media (max-width:900px){.gr-two{grid-template-columns:1fr}}
+.gr-form{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.gr-form label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.gr-form select,.gr-form input{font:inherit;font-size:14px;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;min-width:0;width:100%}
+.gr-form .gr-score span{display:flex;align-items:center;gap:6px;font-weight:400;color:var(--ink-2)}
+.gr-form .gr-score input{width:5.5em}
+.gr-form .gr-wide,.gr-preview,.gr-actions{grid-column:1 / -1}
+.gr-preview{font-size:14px;background:var(--surface-2);border-radius:6px;padding:8px 10px;color:var(--ink)}
+.gr-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+@media (max-width:480px){.gr-form{grid-template-columns:1fr}}
+.gr-tablewrap{overflow-x:auto}
+.gr-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.gr-table th{font-family:var(--mono);font-size:11px;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:4px 6px;border-bottom:1px solid var(--line);white-space:nowrap}
+.gr-table td{padding:6px;border-bottom:1px solid var(--line);vertical-align:top}
+.gr-table td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gr-table .sw{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--sc);margin-right:6px;vertical-align:0}
+.gr-table .g7{font-family:var(--display);font-weight:700;font-size:17px}
+.gr-table button{appearance:none;font:inherit;font-size:12.5px;font-weight:600;color:var(--crit);background:none;border:0;cursor:pointer;padding:2px 4px}
+.gr-table .empty{color:var(--ink-2);padding:14px 6px}
+.gr-bands{display:flex;flex-direction:column;gap:14px}
+.gr-band{border-top:1px solid var(--line);padding-top:10px}
+.gr-band h4{margin:0 0 6px;font-family:var(--display);font-size:16px;display:flex;align-items:center;gap:8px}
+.gr-band h4 i{width:12px;height:12px;border-radius:3px;background:var(--sc)}
+.gr-band table{border-collapse:collapse;font-size:13px}
+.gr-band th,.gr-band td{padding:3px 5px;text-align:center}
+.gr-band th{font-family:var(--mono);font-weight:400;color:var(--muted);font-size:11px}
+.gr-band td.l{text-align:left;white-space:nowrap;color:var(--ink)}
+.gr-band input{width:3.6em;font:inherit;font-size:13px;text-align:center;border:1px solid var(--line);border-radius:4px;padding:3px 2px;background:var(--bg);color:var(--ink)}
+.gr-band .reset{appearance:none;font:inherit;font-size:12px;color:var(--accent);background:none;border:0;cursor:pointer;font-weight:600;padding:2px 0}
 .info-tbl{width:100%;border-collapse:collapse;margin:.4rem 0 .6rem;font-size:.92rem}
 .info-tbl th,.info-tbl td{border:1px solid var(--line,#dfe3e6);padding:.35rem .55rem;text-align:left}
 .info-tbl th{background:rgba(15,110,106,.08)}
@@ -353,6 +404,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
     <button type="button" role="tab" id="tab-cal" data-view="cal" aria-selected="false" aria-controls="view-cal"><span class="lbl-long">Calendar and timetable</span><span class="lbl-short">Calendar</span><small>Term dates and weekly classes</small></button>
     <button type="button" role="tab" id="tab-guide" data-view="guide" aria-selected="false" aria-controls="view-guide">Study guide<small>How to study</small></button>
     <button type="button" role="tab" id="tab-exams" data-view="exams" aria-selected="false" aria-controls="view-exams"><span class="lbl-long">Exámenes y básquet</span><span class="lbl-short">Exámenes</span><small>Calendario para el equipo</small></button>
+    <button type="button" role="tab" id="tab-grades" data-view="grades" aria-selected="false" aria-controls="view-grades"><span class="lbl-long">Notas IB</span><span class="lbl-short">Notas</span><small>Papers y progreso</small></button>
   </div>
 
   <div id="view-tracker" class="view" role="tabpanel" aria-labelledby="tab-tracker">
@@ -527,6 +579,41 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 
   <div id="view-exams" class="view" role="tabpanel" aria-labelledby="tab-exams" hidden>
     <div id="examsHost"></div>
+  </div>
+
+
+  <div id="view-grades" class="view" role="tabpanel" aria-labelledby="tab-grades" hidden>
+    <p class="guide-intro">Apunta la nota de cada paper o prueba tipo IB. Cada nota se convierte a la escala 1–7 con la tabla de su paper, y la nota estimada de cada asignatura combina sus papers según el peso que tienen en el IB.</p>
+    <section class="gr-tiles" id="grTiles" aria-label="Nota estimada por asignatura"></section>
+    <section class="panel" aria-labelledby="grChartH">
+      <div class="gr-head"><h3 id="grChartH">Progreso de la nota estimada (1–7)</h3><span class="note">Cada punto es la nota estimada de la asignatura después de una nueva nota. Pulsa una asignatura de la leyenda para ocultarla o mostrarla.</span></div>
+      <div class="gr-legend" id="grLegend"></div>
+      <div class="gr-chart" id="grChart"></div>
+      <div class="gr-tip" id="grTip" hidden></div>
+    </section>
+    <div class="gr-two">
+      <section class="panel" aria-labelledby="grAddH">
+        <h3 id="grAddH">Añadir una nota</h3>
+        <form class="gr-form" id="grForm" novalidate>
+          <label>Asignatura<select id="grSubj"></select></label>
+          <label>Paper<select id="grComp"></select></label>
+          <label>Fecha<input type="date" id="grDate" required></label>
+          <label class="gr-score">Nota<span><input type="number" id="grScore" step="0.01" min="0" inputmode="decimal" required> sobre <input type="number" id="grMax" step="0.01" min="0.01" value="10" inputmode="decimal" required></span></label>
+          <label class="gr-wide">Comentario (opcional)<input type="text" id="grLabel" maxlength="80" placeholder="p. ej. parcial de octubre, práctica Paper 1"></label>
+          <p class="gr-preview" id="grPreview">Escribe la nota para ver la conversión.</p>
+          <div class="gr-actions"><button type="submit" class="btn">Guardar nota</button><span class="note" id="grMsg"></span></div>
+        </form>
+      </section>
+      <section class="panel" aria-labelledby="grListH">
+        <h3 id="grListH">Notas guardadas</h3>
+        <div class="gr-tablewrap"><table class="gr-table" id="grTable"></table></div>
+      </section>
+    </div>
+    <details class="panel tt" id="grBandsPanel">
+      <summary><h3>Conversión a la escala 1–7 y peso de cada paper</h3><span class="note">Pon aquí los cortes que use cada profesor</span><span class="cal-toggle"></span></summary>
+      <p class="note">Cada casilla es el porcentaje mínimo para sacar esa nota. Por defecto, Matemáticas usa los cortes del colegio (7 = 85 %, 6 = 75 %, 5 = 60 %, 4 = 50 %, 3 = 40 %, 2 = 20 %). El resto lleva unos cortes orientativos hasta que el profesor dé los suyos. Los pesos son los del IB y no se cambian.</p>
+      <div id="grBands"></div>
+    </details>
   </div>
 
   <div id="view-guide" class="view" role="tabpanel" aria-labelledby="tab-guide" hidden>
@@ -1006,11 +1093,11 @@ const SPRINTS = [
 
 /* ---------- state ---------- */
 const LS_KEY = "dp1-term1-v1";
-let state = {done:{}, rate:{}, notes:{}, meta:{}, prep:{}, sport:{}};
+let state = {done:{}, rate:{}, notes:{}, meta:{}, prep:{}, sport:{}, grades:{entries:[], bands:{}}};
 let active = null;
 let db = null, docRef = null, canWrite = true;
 
-function normalize(o){ o = o||{}; return {done:{...(o.done||{})}, rate:{...(o.rate||{})}, notes:{...(o.notes||{})}, meta:{...(o.meta||{})}, prep:{...(o.prep||{})}, sport:{...(o.sport||{})}}; }
+function normalize(o){ o = o||{}; return {done:{...(o.done||{})}, rate:{...(o.rate||{})}, notes:{...(o.notes||{})}, meta:{...(o.meta||{})}, prep:{...(o.prep||{})}, sport:{...(o.sport||{})}, grades:{entries:[...(((o.grades||{}).entries)||[])], bands:{...(((o.grades||{}).bands)||{})}}}; }
 function loadLocal(){ try{ const s = localStorage.getItem(LS_KEY); if(s){ state = normalize(JSON.parse(s)); } }catch(e){} }
 function saveLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
 loadLocal();
@@ -1022,7 +1109,7 @@ function persist(){
   clearTimeout(saveTimer);
   setSync("Saving…", true);
   saveTimer = setTimeout(async ()=>{
-    try{ const snap = {done:state.done, rate:state.rate, notes:state.notes, meta:state.meta, prep:state.prep, sport:state.sport, updated:Date.now()}; await docRef.set(snap); await db.doc("backups/"+todayISO()).set(snap); setSync("Saved · shared", true); renderBackup(); }
+    try{ const snap = {done:state.done, rate:state.rate, notes:state.notes, meta:state.meta, prep:state.prep, sport:state.sport, grades:state.grades, updated:Date.now()}; await docRef.set(snap); await db.doc("backups/"+todayISO()).set(snap); setSync("Saved · shared", true); renderBackup(); }
     catch(e){ setSync("Saved on this device only", false); }
   }, 700);
 }
@@ -1161,7 +1248,7 @@ function renderHeat(){
   document.getElementById("heat").innerHTML = h + "</tbody>";
 }
 
-function renderAll(){ renderTimeline(); renderSummary(); renderSprint(); renderHeat(); if(typeof renderCalendar==="function") renderCalendar(); if(window.__examRender) window.__examRender(); }
+function renderAll(){ renderTimeline(); renderSummary(); renderSprint(); renderHeat(); if(typeof renderCalendar==="function") renderCalendar(); if(window.__examRender) window.__examRender(); if(window.__gradesRender) window.__gradesRender(); }
 // Bridge for the Exámenes y básquet tab: it reads and saves its part of the shared record here.
 window.__trk = {state: ()=> state, save: (k, v)=>{ state[k] = v; persist(); }};
 renderAll();
@@ -1280,6 +1367,10 @@ renderCountdown();
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.19", date:"2 Nov 2026", items:[
+    "New tab: Notas IB — record each IB-style paper mark, converted to 1–7 with that paper's own cut-offs",
+    "Estimated grade per subject, weighted by the IB weight of each paper, with a progress chart over time",
+    "Editable conversion tables per paper; grades are saved with the tracker and included in the backup file"]},
   {v:"1.18", date:"3 Oct 2026", items:[
     "International Literature: reading list by term from the teacher (term 1: Vallejo, Kafka, Carner; term 2: Sánchez Piñol, Ibsen; term 3: Rodoreda)",
     "Literature items in every sprint rewritten to follow that order"]},
@@ -1364,13 +1455,13 @@ const CHANGELOG = [
 /* ---------- tabs ---------- */
 function showView(v){
   document.querySelectorAll(".tabbar [role=tab]").forEach(b=> b.setAttribute("aria-selected", String(b.dataset.view===v)));
-  document.querySelector(".tabbar").style.setProperty("--tabc", "var(--t"+({tracker:1,cal:2,exams:4,guide:3}[v])+")");
-  ["tracker","cal","exams","guide"].forEach(x=> document.getElementById("view-"+x).hidden = v!==x);
+  document.querySelector(".tabbar").style.setProperty("--tabc", "var(--t"+({tracker:1,cal:2,exams:4,guide:3,grades:5}[v])+")");
+  ["tracker","cal","exams","guide","grades"].forEach(x=> document.getElementById("view-"+x).hidden = v!==x);
   try{ localStorage.setItem(LS_KEY+".view", v); }catch(e){}
 }
 document.querySelector(".tabbar").addEventListener("click", e=>{ const b = e.target.closest("[data-view]"); if(!b) return; showView(b.dataset.view); window.scrollTo({top:0}); });
-document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const order = ["tracker","cal","guide","exams"]; const cur = order.indexOf(document.querySelector(".tabbar [aria-selected=true]").dataset.view); const next = order[(cur + (e.key==="ArrowRight"?1:3)) % 4]; showView(next); document.getElementById("tab-"+next).focus(); });
-(function(){ let v = (location.hash||"").replace("#",""); if(v==="guia") v = "guide"; if(v==="calendar") v = "cal"; if(v==="examenes") v = "exams"; if(!["guide","tracker","cal","exams"].includes(v)){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(["guide","cal","exams"].includes(v) ? v : "tracker"); })();
+document.querySelector(".tabbar").addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const order = ["tracker","cal","guide","exams","grades"]; const cur = order.indexOf(document.querySelector(".tabbar [aria-selected=true]").dataset.view); const next = order[(cur + (e.key==="ArrowRight"?1:4)) % 5]; showView(next); document.getElementById("tab-"+next).focus(); });
+(function(){ let v = (location.hash||"").replace("#",""); if(v==="guia") v = "guide"; if(v==="calendar") v = "cal"; if(v==="examenes") v = "exams"; if(v==="notas") v = "grades"; if(!["guide","tracker","cal","exams","grades"].includes(v)){ try{ v = localStorage.getItem(LS_KEY+".view"); }catch(e){} } showView(["guide","cal","exams","grades"].includes(v) ? v : "tracker"); })();
 
 
 /* ---------- study guide language ---------- */
@@ -1385,7 +1476,7 @@ document.querySelector(".lang-switch").addEventListener("click", e=>{ const b = 
 
 /* ---------- backup & restore ---------- */
 const APP_ID = "ib-tracker-dp1-term1";
-function exportData(){ return {app:APP_ID, schema:1, exported:new Date().toISOString(), done:state.done, rate:state.rate, notes:state.notes, meta:state.meta, prep:state.prep, sport:state.sport}; }
+function exportData(){ return {app:APP_ID, schema:1, exported:new Date().toISOString(), done:state.done, rate:state.rate, notes:state.notes, meta:state.meta, prep:state.prep, sport:state.sport, grades:state.grades}; }
 function countTicks(o){ return Object.keys((o&&o.done)||{}).length; }
 function daysSince(iso){ if(!iso) return null; return Math.floor((Date.now()-new Date(iso).getTime())/86400000); }
 function renderBackup(){
@@ -2307,6 +2398,173 @@ R.addEventListener("click", e=>{
   if(again && false) again.focus();
 });
 
+})();
+</script>
+<script>
+(function(){
+/* ---------- Notas IB: marks per paper, conversion to 1–7, weighted estimate, progress chart ---------- */
+const TRK = ()=> window.__trk || null;
+const SUBJ = [
+  {id:"phy", name:"Physics HL", c:"#2a78d6", comps:[["P1","Paper 1 (opción múltiple + datos)",36],["P2","Paper 2 (respuesta corta y larga)",44],["IA","IA (investigación científica)",20]]},
+  {id:"mat", name:"Maths AA SL", c:"#eb6834", comps:[["P1","Paper 1 (sin calculadora)",40],["P2","Paper 2 (con calculadora)",40],["IA","IA (exploración matemática)",20]]},
+  {id:"eng", name:"English B HL", c:"#1baf7a", comps:[["P1","Paper 1 (writing)",25],["P2","Paper 2 (listening + reading)",50],["IO","Individual oral",25]]},
+  {id:"bus", name:"Business HL", c:"#eda100", comps:[["P1","Paper 1 (caso previo)",25],["P2","Paper 2 (cuantitativo)",30],["P3","Paper 3 (empresa social)",25],["IA","IA (proyecto de investigación)",20]]},
+  {id:"his", name:"History SL", c:"#e87ba4", comps:[["P1","Paper 1 (fuentes)",30],["P2","Paper 2 (ensayos)",40],["IA","IA (investigación histórica)",30]]},
+  {id:"lit", name:"Literatura SL", c:"#008300", comps:[["P1","Paper 1 (comentario)",35],["P2","Paper 2 (ensayo comparativo)",35],["IO","Oral individual",30]]}
+];
+const S = Object.fromEntries(SUBJ.map(s=>[s.id,s]));
+const DEF_MAT = [85,75,60,50,40,20], DEF_GEN = [80,68,56,45,34,20];   // min % for 7,6,5,4,3,2
+const defaultBands = (sid)=> sid==="mat" ? DEF_MAT.slice() : DEF_GEN.slice();
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nf = (x, d=1) => (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toString().replace(".",",");
+const MON = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const fmtD = iso => { const d = new Date(iso+"T12:00:00"); return d.getDate()+" "+MON[d.getMonth()]+" "+String(d.getFullYear()).slice(2); };
+const todayISO = ()=>{ const d = new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
+
+let G = {entries:[], bands:{}};
+const hidden = new Set();
+function load(){ const st = TRK() ? TRK().state() : null; const g = (st && st.grades) || {}; G = {entries:[...(g.entries||[])], bands:{...(g.bands||{})}}; }
+function save(){ if(TRK()) TRK().save("grades", {entries:G.entries, bands:G.bands}); }
+function bandsFor(sid, cid){ const b = G.bands[sid+"."+cid]; return (Array.isArray(b) && b.length===6) ? b : defaultBands(sid); }
+function toGrade(pct, sid, cid){ const b = bandsFor(sid, cid); for(let i=0;i<6;i++){ if(pct >= b[i]) return 7-i; } return 1; }
+function pctOf(e){ return e.max>0 ? 100*e.score/e.max : 0; }
+// Estimated subject grade at a date: latest mark per paper up to that date, weighted by IB weight over the papers with data.
+function estimate(sid, upTo){
+  const s = S[sid]; let wsum = 0, gsum = 0; const used = [];
+  s.comps.forEach(([cid,,w])=>{
+    const es = G.entries.filter(e=> e.subj===sid && e.comp===cid && (!upTo || e.date<=upTo)).sort((a,b)=> a.date.localeCompare(b.date) || a.t-b.t);
+    if(!es.length) return;
+    const last = es[es.length-1]; const g = toGrade(pctOf(last), sid, cid);
+    wsum += w; gsum += w*g; used.push(cid);
+  });
+  if(!wsum) return null;
+  return {value: gsum/wsum, cover: wsum, used};
+}
+
+/* ---------- tiles ---------- */
+function renderTiles(){
+  let total = 0, n = 0;
+  const html = SUBJ.map(s=>{
+    const e = estimate(s.id);
+    const dates = [...new Set(G.entries.filter(x=>x.subj===s.id).map(x=>x.date))].sort();
+    let trend = "";
+    if(e && dates.length>1){ const prev = estimate(s.id, dates[dates.length-2]); if(prev){ const d = e.value - prev.value; trend = Math.abs(d)<0.05 ? "= igual que antes" : (d>0?"▲ +":"▼ −")+nf(Math.abs(d))+" desde la nota anterior"; } }
+    if(e){ total += Math.round(e.value); n++; }
+    return `<div class="gr-tile" style="--sc:${s.c}"><span class="s">${esc(s.name)}</span>`+
+      (e ? `<span class="g">${Math.round(e.value)}<small>(${e.value.toFixed(1).replace(".",",")})</small></span><span class="c">Con ${e.cover} % del peso: ${e.used.join(", ")}</span>${trend?`<span class="t">${trend}</span>`:""}`
+         : `<span class="g" style="color:var(--muted)">—</span><span class="c">Sin notas todavía</span>`)+`</div>`;
+  }).join("");
+  const tot = `<div class="gr-tile total"><span class="s">Total estimado</span><span class="g">${n?total:"—"}<small>${n?`/ ${n*7}`:""}</small></span><span class="c">${n?`${n} de 6 asignaturas con nota · sin TOK ni monografía (hasta 3 puntos más)`:"Aparece al guardar la primera nota"}</span></div>`;
+  $("grTiles").innerHTML = html + tot;
+}
+
+/* ---------- chart (inline SVG, one line per subject, y = 1–7) ---------- */
+function renderChart(){
+  const box = $("grChart");
+  const series = SUBJ.map(s=>{
+    const dates = [...new Set(G.entries.filter(x=>x.subj===s.id).map(x=>x.date))].sort();
+    return {s, pts: dates.map(d=>({d, e: estimate(s.id, d)})).filter(p=>p.e)};
+  });
+  $("grLegend").innerHTML = SUBJ.map(s=>`<button type="button" data-ser="${s.id}" aria-pressed="${!hidden.has(s.id)}" style="--sc:${s.c}"><i></i>${esc(s.name)}</button>`).join("");
+  const all = series.flatMap(x=>x.pts.map(p=>p.d));
+  if(!all.length){ box.innerHTML = `<p class="empty">Todavía no hay notas. Guarda la primera con el formulario de abajo y aquí aparecerá su evolución.</p>`; return; }
+  const W = Math.max(320, box.clientWidth || 800), H = 260, m = {l:34, r:16, t:12, b:30};
+  const t0 = new Date(Math.min(...all.map(d=>+new Date(d+"T12:00:00")), +new Date("2026-09-15T12:00:00")));
+  const t1 = new Date(Math.max(...all.map(d=>+new Date(d+"T12:00:00")), Date.now()) + 7*86400000);
+  const x = d => m.l + (W-m.l-m.r) * ((+new Date(d+"T12:00:00") - t0) / (t1 - t0));
+  const y = v => m.t + (H-m.t-m.b) * (7 - v) / 6;
+  let g = "";
+  for(let v=1; v<=7; v++){ g += `<line x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${m.l-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--mono)">${v}</text>`; }
+  // month ticks
+  const mt = new Date(t0.getFullYear(), t0.getMonth()+1, 1);
+  for(; mt < t1; mt.setMonth(mt.getMonth()+1)){ const iso = mt.toISOString().slice(0,10); const xx = x(iso); g += `<line x1="${xx}" x2="${xx}" y1="${H-m.b}" y2="${H-m.b+4}" stroke="var(--muted)"/><text x="${xx}" y="${H-m.b+16}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--mono)">${MON[mt.getMonth()]}</text>`; }
+  let lines = "", dots = "";
+  series.forEach(({s, pts})=>{
+    if(hidden.has(s.id) || !pts.length) return;
+    if(pts.length>1) lines += `<polyline fill="none" stroke="${s.c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points="${pts.map(p=>`${x(p.d)},${y(p.e.value)}`).join(" ")}"/>`;
+    pts.forEach(p=>{ dots += `<circle cx="${x(p.d)}" cy="${y(p.e.value)}" r="4.5" fill="${s.c}" stroke="var(--surface)" stroke-width="2"/><circle class="hit" cx="${x(p.d)}" cy="${y(p.e.value)}" r="12" fill="transparent" data-s="${s.id}" data-d="${p.d}"/>`; });
+  });
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución de la nota estimada por asignatura, escala 1 a 7">${g}${lines}${dots}</svg>`;
+}
+function showTip(ev, sid, d){
+  const s = S[sid], e = estimate(sid, d);
+  const day = G.entries.filter(x=> x.subj===sid && x.date===d).map(x=>`${esc(x.comp)}: ${nf(x.score,2)}/${nf(x.max,2)} → ${toGrade(pctOf(x), sid, x.comp)}`).join("<br>");
+  const tip = $("grTip"); tip.innerHTML = `<b>${esc(s.name)}</b> · ${fmtD(d)}<br>Nota estimada: <b>${nf(e.value)}</b> (${Math.round(e.value)})<br>${day}`;
+  tip.hidden = false; const r = tip.getBoundingClientRect();
+  let left = ev.clientX + 14, top = ev.clientY + 14; if(left + r.width > innerWidth - 8) left = ev.clientX - r.width - 14; if(top + r.height > innerHeight - 8) top = ev.clientY - r.height - 14;
+  tip.style.left = left+"px"; tip.style.top = top+"px";
+}
+
+/* ---------- form ---------- */
+function fillComps(){ const s = S[$("grSubj").value]; $("grComp").innerHTML = s.comps.map(([cid,lbl,w])=>`<option value="${cid}">${esc(lbl)} · ${w} %</option>`).join(""); preview(); }
+function preview(){
+  const sid = $("grSubj").value, cid = $("grComp").value, sc = parseFloat(String($("grScore").value).replace(",",".")), mx = parseFloat(String($("grMax").value).replace(",","."));
+  if(!(sc>=0) || !(mx>0)){ $("grPreview").textContent = "Escribe la nota para ver la conversión."; return; }
+  if(sc>mx){ $("grPreview").textContent = "La nota no puede ser mayor que el máximo."; return; }
+  const pct = 100*sc/mx; $("grPreview").innerHTML = `${nf(sc,2)} sobre ${nf(mx,2)} = <b>${nf(pct)} %</b> → nota IB <b>${toGrade(pct, sid, cid)}</b> con la tabla de ${esc(cid)} de ${esc(S[sid].name)}`;
+}
+
+/* ---------- table of marks ---------- */
+let confirmId = null;
+function renderTable(){
+  const es = [...G.entries].sort((a,b)=> b.date.localeCompare(a.date) || b.t-a.t);
+  if(!es.length){ $("grTable").innerHTML = `<tbody><tr><td class="empty">Aún no hay notas guardadas.</td></tr></tbody>`; return; }
+  $("grTable").innerHTML = `<thead><tr><th>Fecha</th><th>Asignatura</th><th>Paper</th><th>Nota</th><th>%</th><th>1–7</th><th></th></tr></thead><tbody>`+
+    es.map(e=>{ const s = S[e.subj]; const pct = pctOf(e);
+      return `<tr><td class="n">${fmtD(e.date)}</td><td><span class="sw" style="--sc:${s.c}"></span>${esc(s.name)}${e.label?`<br><span class="note">${esc(e.label)}</span>`:""}</td><td>${esc(e.comp)}</td><td class="n">${nf(e.score,2)}/${nf(e.max,2)}</td><td class="n">${nf(pct)}</td><td class="g7">${toGrade(pct, e.subj, e.comp)}</td><td>${confirmId===e.t?`<button type="button" data-del="${e.t}">¿Borrar? Sí</button> <button type="button" data-cancel="1" style="color:var(--ink-2)">No</button>`:`<button type="button" data-ask="${e.t}">Borrar</button>`}</td></tr>`; }).join("")+`</tbody>`;
+}
+
+/* ---------- conversion tables ---------- */
+function renderBands(){
+  $("grBands").innerHTML = `<div class="gr-bands">`+SUBJ.map(s=>`<div class="gr-band" style="--sc:${s.c}"><h4><i></i>${esc(s.name)}</h4><div class="gr-tablewrap"><table><thead><tr><th style="text-align:left">Paper · peso</th>${[7,6,5,4,3,2].map(n=>`<th>${n} desde</th>`).join("")}<th></th></tr></thead><tbody>`+
+    s.comps.map(([cid,lbl,w])=>{ const b = bandsFor(s.id,cid); const custom = !!G.bands[s.id+"."+cid];
+      return `<tr><td class="l">${esc(lbl)} · ${w} %</td>${b.map((v,i)=>`<td><input type="number" min="0" max="100" step="1" value="${v}" data-band="${s.id}.${cid}" data-i="${i}" aria-label="${esc(s.name)} ${esc(cid)}: porcentaje mínimo para un ${7-i}"></td>`).join("")}<td>${custom?`<button type="button" class="reset" data-reset="${s.id}.${cid}">Restablecer</button>`:`<span class="note">por defecto</span>`}</td></tr>`; }).join("")+
+    `</tbody></table></div></div>`).join("")+`</div>`;
+}
+
+function renderAll(){ renderTiles(); renderChart(); renderTable(); }
+
+/* ---------- events ---------- */
+$("grSubj").innerHTML = SUBJ.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
+$("grDate").value = todayISO();
+$("grSubj").addEventListener("change", fillComps);
+["grComp","grScore","grMax"].forEach(id=> $(id).addEventListener("input", preview));
+$("grForm").addEventListener("submit", ev=>{
+  ev.preventDefault();
+  const sid = $("grSubj").value, cid = $("grComp").value, date = $("grDate").value;
+  const sc = parseFloat(String($("grScore").value).replace(",",".")), mx = parseFloat(String($("grMax").value).replace(",","."));
+  const msg = $("grMsg");
+  if(!date){ msg.textContent = "Pon la fecha de la prueba."; return; }
+  if(!(sc>=0) || !(mx>0) || sc>mx){ msg.textContent = "Revisa la nota: debe estar entre 0 y el máximo."; return; }
+  G.entries.push({t:Date.now(), subj:sid, comp:cid, date, score:sc, max:mx, label:$("grLabel").value.trim()});
+  save(); renderAll();
+  msg.textContent = `Guardada: ${S[sid].name} ${cid}, nota ${toGrade(100*sc/mx, sid, cid)}.`;
+  $("grScore").value = ""; $("grLabel").value = ""; preview();
+});
+$("grTable").addEventListener("click", e=>{
+  const a = e.target.closest("[data-ask]"), d = e.target.closest("[data-del]"), c = e.target.closest("[data-cancel]");
+  if(a){ confirmId = +a.dataset.ask; renderTable(); }
+  else if(c){ confirmId = null; renderTable(); }
+  else if(d){ G.entries = G.entries.filter(x=> x.t !== +d.dataset.del); confirmId = null; save(); renderAll(); }
+});
+$("grLegend").addEventListener("click", e=>{ const b = e.target.closest("[data-ser]"); if(!b) return; const id = b.dataset.ser; hidden.has(id) ? hidden.delete(id) : hidden.add(id); renderChart(); });
+$("grChart").addEventListener("mousemove", e=>{ const h = e.target.closest(".hit"); if(h) showTip(e, h.dataset.s, h.dataset.d); else $("grTip").hidden = true; });
+$("grChart").addEventListener("mouseleave", ()=> $("grTip").hidden = true);
+$("grChart").addEventListener("click", e=>{ const h = e.target.closest(".hit"); if(h) showTip(e, h.dataset.s, h.dataset.d); });
+$("grBands").addEventListener("change", e=>{
+  const inp = e.target.closest("[data-band]"); if(!inp) return;
+  const key = inp.dataset.band, [sid,cid] = key.split(".");
+  const b = bandsFor(sid,cid).slice(); let v = Math.max(0, Math.min(100, Math.round(+inp.value||0))); b[+inp.dataset.i] = v;
+  for(let i=1;i<6;i++){ if(b[i] > b[i-1]) b[i] = b[i-1]; }   // cut-offs must go down from 7 to 2
+  G.bands[key] = b; save(); renderBands(); renderAll(); preview();
+});
+$("grBands").addEventListener("click", e=>{ const r = e.target.closest("[data-reset]"); if(!r) return; delete G.bands[r.dataset.reset]; save(); renderBands(); renderAll(); preview(); });
+let rz; addEventListener("resize", ()=>{ clearTimeout(rz); rz = setTimeout(renderChart, 150); });
+document.querySelector(".tabbar").addEventListener("click", e=>{ const b = e.target.closest("[data-view='grades']"); if(b) setTimeout(renderChart, 0); });
+
+load(); fillComps(); renderBands(); renderAll();
+window.__gradesRender = ()=>{ load(); renderBands(); renderAll(); preview(); };
 })();
 </script>
 
