@@ -351,6 +351,8 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
 .gr-form .gr-score span{display:flex;align-items:center;gap:6px;font-weight:400;color:var(--ink-2)}
 .gr-form .gr-score input{width:5.5em}
 .gr-form .gr-wide,.gr-preview,.gr-actions{grid-column:1 / -1}
+.gr-form label.gr-check{flex-direction:row;align-items:center;gap:8px;font-weight:400;color:var(--ink)}
+.gr-form label.gr-check input{width:auto}
 .gr-preview{font-size:14px;background:var(--surface-2);border-radius:6px;padding:8px 10px;color:var(--ink)}
 .gr-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 @media (max-width:480px){.gr-form{grid-template-columns:1fr}}
@@ -599,6 +601,7 @@ footer{font-size:12.5px;color:var(--muted);max-width:90ch}
           <label>Paper<select id="grComp"></select></label>
           <label>Fecha<input type="date" id="grDate" required></label>
           <label class="gr-score">Nota<span><input type="number" id="grScore" step="0.01" min="0" inputmode="decimal" required> sobre <input type="number" id="grMax" step="0.01" min="0.01" value="10" inputmode="decimal" required></span></label>
+          <label class="gr-check gr-wide"><input type="checkbox" id="grDirect"> La nota ya está en la escala del IB (1–7): se usa tal cual, sin convertir</label>
           <label class="gr-wide">Comentario (opcional)<input type="text" id="grLabel" maxlength="80" placeholder="p. ej. parcial de octubre, práctica Paper 1"></label>
           <p class="gr-preview" id="grPreview">Escribe la nota para ver la conversión.</p>
           <div class="gr-actions"><button type="submit" class="btn">Guardar nota</button><span class="note" id="grMsg"></span></div>
@@ -1367,6 +1370,9 @@ renderCountdown();
 /* ---------- what's new ----------
    Add a new entry at the TOP of CHANGELOG every time the tracker changes. */
 const CHANGELOG = [
+  {v:"1.20", date:"3 Nov 2026", items:[
+    "Notas IB: marks that already come on the IB 1–7 scale can be saved as they are, without conversion",
+    "History: first partial added (6 out of 7)"]},
   {v:"1.19", date:"2 Nov 2026", items:[
     "New tab: Notas IB — record each IB-style paper mark, converted to 1–7 with that paper's own cut-offs",
     "Estimated grade per subject, weighted by the IB weight of each paper, with a progress chart over time",
@@ -2429,13 +2435,15 @@ function save(){ if(TRK()) TRK().save("grades", {entries:G.entries, bands:G.band
 function bandsFor(sid, cid){ const b = G.bands[sid+"."+cid]; return (Array.isArray(b) && b.length===6) ? b : defaultBands(sid); }
 function toGrade(pct, sid, cid){ const b = bandsFor(sid, cid); for(let i=0;i<6;i++){ if(pct >= b[i]) return 7-i; } return 1; }
 function pctOf(e){ return e.max>0 ? 100*e.score/e.max : 0; }
+// Marks the school already gives on the IB 1–7 scale are used as they are, without conversion.
+function gradeOf(e){ return e.direct ? Math.max(1, Math.min(7, Math.round(e.score))) : toGrade(pctOf(e), e.subj, e.comp); }
 // Estimated subject grade at a date: latest mark per paper up to that date, weighted by IB weight over the papers with data.
 function estimate(sid, upTo){
   const s = S[sid]; let wsum = 0, gsum = 0; const used = [];
   s.comps.forEach(([cid,,w])=>{
     const es = G.entries.filter(e=> e.subj===sid && e.comp===cid && (!upTo || e.date<=upTo)).sort((a,b)=> a.date.localeCompare(b.date) || a.t-b.t);
     if(!es.length) return;
-    const last = es[es.length-1]; const g = toGrade(pctOf(last), sid, cid);
+    const last = es[es.length-1]; const g = gradeOf(last);
     wsum += w; gsum += w*g; used.push(cid);
   });
   if(!wsum) return null;
@@ -2489,7 +2497,7 @@ function renderChart(){
 }
 function showTip(ev, sid, d){
   const s = S[sid], e = estimate(sid, d);
-  const day = G.entries.filter(x=> x.subj===sid && x.date===d).map(x=>`${esc(x.comp)}: ${nf(x.score,2)}/${nf(x.max,2)} → ${toGrade(pctOf(x), sid, x.comp)}`).join("<br>");
+  const day = G.entries.filter(x=> x.subj===sid && x.date===d).map(x=>`${esc(x.comp)}: ${x.direct?`nota IB ${gradeOf(x)}`:`${nf(x.score,2)}/${nf(x.max,2)} → ${gradeOf(x)}`}`).join("<br>");
   const tip = $("grTip"); tip.innerHTML = `<b>${esc(s.name)}</b> · ${fmtD(d)}<br>Nota estimada: <b>${nf(e.value)}</b> (${Math.round(e.value)})<br>${day}`;
   tip.hidden = false; const r = tip.getBoundingClientRect();
   let left = ev.clientX + 14, top = ev.clientY + 14; if(left + r.width > innerWidth - 8) left = ev.clientX - r.width - 14; if(top + r.height > innerHeight - 8) top = ev.clientY - r.height - 14;
@@ -2500,6 +2508,7 @@ function showTip(ev, sid, d){
 function fillComps(){ const s = S[$("grSubj").value]; $("grComp").innerHTML = s.comps.map(([cid,lbl,w])=>`<option value="${cid}">${esc(lbl)} · ${w} %</option>`).join(""); preview(); }
 function preview(){
   const sid = $("grSubj").value, cid = $("grComp").value, sc = parseFloat(String($("grScore").value).replace(",",".")), mx = parseFloat(String($("grMax").value).replace(",","."));
+  if($("grDirect").checked){ $("grPreview").innerHTML = (sc>=1 && sc<=7) ? `Nota IB <b>${Math.round(sc)}</b>, sin conversión` : "Con escala IB, la nota va de 1 a 7."; return; }
   if(!(sc>=0) || !(mx>0)){ $("grPreview").textContent = "Escribe la nota para ver la conversión."; return; }
   if(sc>mx){ $("grPreview").textContent = "La nota no puede ser mayor que el máximo."; return; }
   const pct = 100*sc/mx; $("grPreview").innerHTML = `${nf(sc,2)} sobre ${nf(mx,2)} = <b>${nf(pct)} %</b> → nota IB <b>${toGrade(pct, sid, cid)}</b> con la tabla de ${esc(cid)} de ${esc(S[sid].name)}`;
@@ -2512,7 +2521,7 @@ function renderTable(){
   if(!es.length){ $("grTable").innerHTML = `<tbody><tr><td class="empty">Aún no hay notas guardadas.</td></tr></tbody>`; return; }
   $("grTable").innerHTML = `<thead><tr><th>Fecha</th><th>Asignatura</th><th>Paper</th><th>Nota</th><th>%</th><th>1–7</th><th></th></tr></thead><tbody>`+
     es.map(e=>{ const s = S[e.subj]; const pct = pctOf(e);
-      return `<tr><td class="n">${fmtD(e.date)}</td><td><span class="sw" style="--sc:${s.c}"></span>${esc(s.name)}${e.label?`<br><span class="note">${esc(e.label)}</span>`:""}</td><td>${esc(e.comp)}</td><td class="n">${nf(e.score,2)}/${nf(e.max,2)}</td><td class="n">${nf(pct)}</td><td class="g7">${toGrade(pct, e.subj, e.comp)}</td><td>${confirmId===e.t?`<button type="button" data-del="${e.t}">¿Borrar? Sí</button> <button type="button" data-cancel="1" style="color:var(--ink-2)">No</button>`:`<button type="button" data-ask="${e.t}">Borrar</button>`}</td></tr>`; }).join("")+`</tbody>`;
+      return `<tr><td class="n">${fmtD(e.date)}</td><td><span class="sw" style="--sc:${s.c}"></span>${esc(s.name)}${e.label?`<br><span class="note">${esc(e.label)}</span>`:""}</td><td>${esc(e.comp)}</td><td class="n">${e.direct?"nota IB":`${nf(e.score,2)}/${nf(e.max,2)}`}</td><td class="n">${e.direct?"—":nf(pct)}</td><td class="g7">${gradeOf(e)}</td><td>${confirmId===e.t?`<button type="button" data-del="${e.t}">¿Borrar? Sí</button> <button type="button" data-cancel="1" style="color:var(--ink-2)">No</button>`:`<button type="button" data-ask="${e.t}">Borrar</button>`}</td></tr>`; }).join("")+`</tbody>`;
 }
 
 /* ---------- conversion tables ---------- */
@@ -2530,16 +2539,19 @@ $("grSubj").innerHTML = SUBJ.map(s=>`<option value="${s.id}">${esc(s.name)}</opt
 $("grDate").value = todayISO();
 $("grSubj").addEventListener("change", fillComps);
 ["grComp","grScore","grMax"].forEach(id=> $(id).addEventListener("input", preview));
+$("grDirect").addEventListener("change", ()=>{ const on = $("grDirect").checked; $("grMax").disabled = on; if(on) $("grMax").value = 7; preview(); });
 $("grForm").addEventListener("submit", ev=>{
   ev.preventDefault();
   const sid = $("grSubj").value, cid = $("grComp").value, date = $("grDate").value;
   const sc = parseFloat(String($("grScore").value).replace(",",".")), mx = parseFloat(String($("grMax").value).replace(",","."));
   const msg = $("grMsg");
   if(!date){ msg.textContent = "Pon la fecha de la prueba."; return; }
-  if(!(sc>=0) || !(mx>0) || sc>mx){ msg.textContent = "Revisa la nota: debe estar entre 0 y el máximo."; return; }
-  G.entries.push({t:Date.now(), subj:sid, comp:cid, date, score:sc, max:mx, label:$("grLabel").value.trim()});
+  const direct = $("grDirect").checked;
+  if(direct ? !(sc>=1 && sc<=7) : (!(sc>=0) || !(mx>0) || sc>mx)){ msg.textContent = direct ? "Con escala IB, la nota va de 1 a 7." : "Revisa la nota: debe estar entre 0 y el máximo."; return; }
+  const ent = {t:Date.now(), subj:sid, comp:cid, date, score:sc, max: direct ? 7 : mx, label:$("grLabel").value.trim()}; if(direct) ent.direct = true;
+  G.entries.push(ent);
   save(); renderAll();
-  msg.textContent = `Guardada: ${S[sid].name} ${cid}, nota ${toGrade(100*sc/mx, sid, cid)}.`;
+  msg.textContent = `Guardada: ${S[sid].name} ${cid}, nota ${gradeOf(ent)}.`;
   $("grScore").value = ""; $("grLabel").value = ""; preview();
 });
 $("grTable").addEventListener("click", e=>{
